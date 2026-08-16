@@ -1,0 +1,1137 @@
+.page {
+  width: 1280px;
+  min-height: 4190px;
+  margin: 0 auto;
+  position: relative;
+  background: #ffffff;
+}
+
+.hero,
+.heroCopy,
+.story,
+.storyCopy,
+.values,
+.visionBlock,
+.missionBlock,
+.visionHead,
+.missionHead,
+.valuesBoard,
+.valuesHead,
+.valuesList,
+.valueItem,
+.team,
+.teamHeader {
+  display: contents;
+}
+
+.heroPanel {
+  position: absolute;
+  left: 22px;
+  top: 104px;
+  width: 1236px;
+  height: 491px;
+  background: #006838;
+  border-radius: 30px;
+}
+
+.heroWave {
+  position: absolute;
+  left: 22px;
+  top: 453px;
+  width: 1236px;
+  height: 142px;
+  overflow: hidden;
+  border-radius: 0 0 30px 30px;
+  pointer-events: none;
+}
+
+.heroWaveInner {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -36.43%;
+  bottom: -32.5%;
+  -webkit-mask-image: url("/images/partner-wave-mask.svg");
+  mask-image: url("/images/partner-wave-mask.svg");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 1236px 142px;
+  mask-size: 1236px 142px;
+  -webkit-mask-position: -0.001px 51.727px;
+  mask-position: -0.001px 51.727px;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
+}
+
+.heroWaveInner img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pageTitle {
+  position: absolute;
+  left: 569px;
+  top: 154px;
+  width: 142px;
+  height: 40px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 32, "wght" 700;
+  font-weight: 700;
+  font-size: 33px;
+  line-height: normal;
+  font-style: normal;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.badge {
+  position: absolute;
+  left: 113px;
+  top: 225px;
+  width: 146px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 18px;
+  background: #ffffff;
+  border-radius: 43px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 400;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: normal;
+  font-style: normal;
+  color: #006838;
+  white-space: nowrap;
+}
+
+.badge img {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+.heading {
+  position: absolute;
+  left: 113px;
+  top: 287px;
+  width: 430px;
+  height: 70px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 32, "wght" 600;
+  font-weight: 600;
+  font-size: 29px;
+  line-height: normal;
+  font-style: normal;
+  color: #ffffff;
+  word-break: break-word;
+}
+
+.body {
+  position: absolute;
+  left: 113px;
+  top: 380px;
+  width: 418px;
+  height: 165px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 400;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: normal;
+  font-style: normal;
+  color: #ffffff;
+  word-break: break-word;
+}
+
+.cta {
+  position: absolute;
+  left: 113px;
+  top: 513px;
+  z-index: 2;
+  width: 225px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  background: #02b702;
+  border: none;
+  border-radius: 43px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 400;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: normal;
+  font-style: normal;
+  color: #ffffff;
+  white-space: nowrap;
+}
+
+.photo {
+  position: absolute;
+  left: 579px;
+  top: 255px;
+  width: 537px;
+  height: 417px;
+  padding: 4px;
+  background: #ffffff;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 26px;
+}
+
+.storyBadge {
+  position: absolute;
+  left: 116px;
+  top: 747px;
+  width: 129px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 18px;
+  background: #ffffff;
+  border-radius: 43px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 400;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: normal;
+  font-style: normal;
+  color: #006838;
+  white-space: nowrap;
+}
+
+.storyBadge img {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+.storyPhoto {
+  position: absolute;
+  left: 187px;
+  top: 828px;
+  width: 422px;
+  height: 328px;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.storyPhoto img {
+  width: 422px;
+  height: 328px;
+  object-fit: cover;
+  border-radius: 30px;
+}
+
+.storyHeading {
+  position: absolute;
+  left: 664px;
+  top: 846px;
+  width: 430px;
+  height: 70px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 32, "wght" 600;
+  font-weight: 600;
+  font-size: 29px;
+  line-height: normal;
+  font-style: normal;
+  color: #000000;
+  word-break: break-word;
+}
+
+.storyBody {
+  position: absolute;
+  left: 664px;
+  top: 939px;
+  width: 418px;
+  height: 165px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 400;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: normal;
+  font-style: normal;
+  color: #000000;
+  word-break: break-word;
+}
+
+.visionCard {
+  position: absolute;
+  left: 184px;
+  top: 1214px;
+  width: 425px;
+  height: 219px;
+  background: #ffffff;
+  border: 1px solid #02b702;
+  border-radius: 30px;
+}
+
+.missionCard {
+  position: absolute;
+  left: 650px;
+  top: 1214px;
+  width: 425px;
+  height: 219px;
+  background: #ffffff;
+  border: 1px solid #02b702;
+  border-radius: 30px;
+}
+
+.valuesPanel {
+  position: absolute;
+  left: 183px;
+  top: 1475px;
+  width: 886px;
+  height: 503px;
+  background: linear-gradient(to top, #d1ffd1, #ffffff);
+  border: 1px solid #02b702;
+  border-radius: 30px;
+  overflow: hidden;
+}
+
+.valuesWave {
+  position: absolute;
+  left: 184px;
+  top: 1836px;
+  width: 885px;
+  height: 142px;
+  overflow: hidden;
+  border-radius: 0 0 30px 30px;
+  pointer-events: none;
+}
+
+.valuesWaveInner {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 885px;
+  height: 142px;
+  background: #006838;
+  -webkit-mask-image: url("/images/partner-wave-mask.svg");
+  mask-image: url("/images/partner-wave-mask.svg");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: 885px 142px;
+  mask-size: 885px 142px;
+  -webkit-mask-position: 0 0;
+  mask-position: 0 0;
+  -webkit-mask-mode: alpha;
+  mask-mode: alpha;
+}
+
+.visionTitle {
+  position: absolute;
+  left: 211px;
+  top: 1234px;
+  width: 159px;
+  height: 40px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 32, "wght" 700;
+  font-weight: 700;
+  font-size: 33px;
+  line-height: 40px;
+  font-style: normal;
+  color: #006838;
+  white-space: nowrap;
+}
+
+.missionTitle {
+  position: absolute;
+  left: 677px;
+  top: 1234px;
+  width: 183px;
+  height: 40px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 32, "wght" 700;
+  font-weight: 700;
+  font-size: 33px;
+  line-height: 40px;
+  font-style: normal;
+  color: #006838;
+  white-space: nowrap;
+}
+
+.valuesTitle {
+  position: absolute;
+  left: 210px;
+  top: 1495px;
+  width: 166px;
+  height: 40px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 32, "wght" 700;
+  font-weight: 700;
+  font-size: 33px;
+  line-height: 40px;
+  font-style: normal;
+  color: #006838;
+  white-space: nowrap;
+}
+
+.visionBody,
+.missionBody {
+  position: absolute;
+  top: 1299px;
+  width: 367px;
+  height: 112px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 400;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 22.4px;
+  font-style: normal;
+  color: #000000;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.visionBody {
+  left: 211px;
+}
+
+.missionBody {
+  left: 677px;
+}
+
+.visionIcon,
+.missionIcon,
+.valuesIcon {
+  position: absolute;
+  top: 1232.73px;
+  width: 40.43px;
+  height: 43.15px;
+  object-fit: contain;
+}
+
+.visionIcon {
+  left: 539px;
+}
+
+.missionIcon {
+  left: 1005px;
+}
+
+.valuesIcon {
+  left: 1000px;
+  top: 1493.73px;
+}
+
+.valuesLine {
+  position: absolute;
+  left: 219px;
+  top: 1550px;
+  width: 823px;
+  height: 1px;
+  background: #02b702;
+}
+
+.valueName1,
+.valueName2,
+.valueName3,
+.valueName4,
+.valueName5 {
+  position: absolute;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 32, "wght" 600;
+  font-weight: 600;
+  font-size: 23px;
+  line-height: 28px;
+  font-style: normal;
+  color: #02b702;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.valueName1 {
+  left: 210px;
+  top: 1586px;
+  width: 220px;
+  height: 28px;
+  white-space: nowrap;
+}
+
+.valueName2 {
+  left: 517px;
+  top: 1586px;
+  width: 246px;
+  height: 56px;
+}
+
+.valueName3 {
+  left: 789px;
+  top: 1586px;
+  width: 246px;
+  height: 28px;
+  white-space: nowrap;
+}
+
+.valueName4 {
+  left: 210px;
+  top: 1755px;
+  width: 256px;
+  height: 56px;
+}
+
+.valueName5 {
+  left: 517px;
+  top: 1755px;
+  width: 256px;
+  height: 28px;
+  white-space: nowrap;
+}
+
+.valueBody1,
+.valueBody2,
+.valueBody3,
+.valueBody4,
+.valueBody5 {
+  position: absolute;
+  width: 229px;
+  height: 49px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 400;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24.5px;
+  font-style: normal;
+  color: #000000;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.valueBody1 {
+  left: 210px;
+  top: 1628px;
+}
+
+.valueBody2 {
+  left: 517px;
+  top: 1653px;
+}
+
+.valueBody3 {
+  left: 789px;
+  top: 1627px;
+}
+
+.valueBody4 {
+  left: 210px;
+  top: 1811px;
+}
+
+.valueBody5 {
+  left: 517px;
+  top: 1811px;
+}
+
+.valuesLogo {
+  position: absolute;
+  left: 802px;
+  top: 1756px;
+  width: 222px;
+  height: 70px;
+  z-index: 1;
+}
+
+.valuesLogo img {
+  width: 222px;
+  height: 70px;
+  object-fit: contain;
+  object-position: left center;
+}
+
+.teamBadge {
+  position: absolute;
+  left: 22px;
+  top: 2062px;
+  width: 130px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 10px 18px;
+  background: #ffffff;
+  border-radius: 43px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 400;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: normal;
+  font-style: normal;
+  color: #006838;
+  white-space: nowrap;
+}
+
+.teamBadge img {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+}
+
+.teamHeading {
+  position: absolute;
+  left: 22px;
+  top: 2126px;
+  width: 541px;
+  height: 35px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 32, "wght" 600;
+  font-weight: 600;
+  font-size: 29px;
+  line-height: 35px;
+  font-style: normal;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.teamGrid {
+  position: absolute;
+  left: 22px;
+  top: 2206px;
+  width: 1236px;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  gap: 22px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  scroll-margin-top: 96px;
+}
+
+.teamGrid::-webkit-scrollbar {
+  display: none;
+}
+
+.teamCard {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  flex: 0 0 294px;
+  width: 294px;
+  min-width: 0;
+  scroll-snap-align: start;
+}
+
+.teamPhoto {
+  position: relative;
+  width: 294px;
+  height: 355px;
+  border-radius: 22px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.teamPhoto img {
+  width: 294px;
+  height: 355px;
+  object-fit: cover;
+  border-radius: 22px;
+}
+
+.teamName {
+  position: relative;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 32, "wght" 600;
+  font-weight: 600;
+  font-size: 29px;
+  line-height: 35px;
+  font-style: normal;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.teamTitle {
+  position: relative;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 400;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: normal;
+  font-style: normal;
+  color: #000000;
+  white-space: nowrap;
+}
+
+.teamMeet {
+  position: absolute;
+  left: 1127px;
+  top: 2734px;
+  width: 131px;
+  height: 47px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 13px 11.5px;
+  background: #ffffff;
+  border: 1px solid #006838;
+  border-radius: 43px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 400;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: normal;
+  font-style: normal;
+  color: #006838;
+  white-space: nowrap;
+}
+
+.teamPrev,
+.teamNext {
+  position: absolute;
+  top: 2691px;
+  width: 29px;
+  height: 29px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 2;
+}
+
+.teamPrev {
+  left: 1194px;
+}
+
+.teamNext {
+  left: 1229px;
+}
+
+.teamPrev img,
+.teamNext img {
+  position: absolute;
+}
+
+.teamPrev img:first-child,
+.teamNext img:first-child {
+  left: 0;
+  top: 0;
+  width: 29px;
+  height: 29px;
+}
+
+.teamPrevChevron,
+.teamNextChevron {
+  left: 8px;
+  top: 9px;
+  width: 14px;
+  height: 11px;
+}
+
+.teamPrevChevron {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 900px) {
+  .page {
+    width: 100%;
+    min-height: 0;
+    overflow-x: hidden;
+  }
+
+  .hero {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    margin: 84px 16px 24px;
+    padding: 28px 18px 32px;
+    background: #006838;
+    border-radius: 30px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .heroPanel {
+    display: none;
+  }
+
+  .heroWave {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 90px;
+    border-radius: 0 0 30px 30px;
+  }
+
+  .heroWaveInner {
+    -webkit-mask-size: 100% 100%;
+    mask-size: 100% 100%;
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+
+  .heroCopy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+    position: relative;
+    z-index: 1;
+    width: 100%;
+  }
+
+  .pageTitle,
+  .badge,
+  .heading,
+  .body,
+  .cta,
+  .photo {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .pageTitle,
+  .heading,
+  .body {
+    white-space: normal;
+  }
+
+  .heading {
+    font-size: 24px;
+  }
+
+  .photo {
+    width: 100%;
+    max-width: 370px;
+    aspect-ratio: 537 / 417;
+    z-index: 1;
+  }
+
+  .photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .story {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+    padding: 8px 16px 40px;
+  }
+
+  .storyCopy {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .storyBadge,
+  .storyPhoto,
+  .storyHeading,
+  .storyBody {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+  }
+
+  .storyPhoto {
+    width: 100%;
+    max-width: 370px;
+    aspect-ratio: 422 / 328;
+  }
+
+  .storyPhoto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .storyHeading {
+    font-size: 24px;
+  }
+
+  .values {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 8px 16px 40px;
+  }
+
+  .visionBlock,
+  .missionBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+    padding: 20px 18px;
+    background: #ffffff;
+    border: 1px solid #02b702;
+    border-radius: 30px;
+  }
+
+  .visionCard,
+  .missionCard {
+    display: none;
+  }
+
+  .visionHead,
+  .missionHead,
+  .valuesHead {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .valuesBoard {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    padding: 20px 18px 28px;
+    background: linear-gradient(to top, #d1ffd1, #ffffff);
+    border: 1px solid #02b702;
+    border-radius: 30px;
+    overflow: hidden;
+  }
+
+  .valuesPanel {
+    display: none;
+  }
+
+  .valuesWave {
+    display: none;
+  }
+
+  .valuesList {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+  }
+
+  .valueItem {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .visionTitle,
+  .missionTitle,
+  .valuesTitle,
+  .visionBody,
+  .missionBody,
+  .visionIcon,
+  .missionIcon,
+  .valuesIcon,
+  .valuesLine,
+  .valueName1,
+  .valueName2,
+  .valueName3,
+  .valueName4,
+  .valueName5,
+  .valueBody1,
+  .valueBody2,
+  .valueBody3,
+  .valueBody4,
+  .valueBody5,
+  .valuesLogo {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    max-width: 100%;
+    height: auto;
+    white-space: normal;
+  }
+
+  .visionTitle,
+  .missionTitle,
+  .valuesTitle {
+    font-size: 24px;
+    line-height: 1.2;
+  }
+
+  .valuesLine {
+    width: 100%;
+  }
+
+  .valuesLogo {
+    width: 180px;
+  }
+
+  .valuesLogo img {
+    width: 100%;
+    height: auto;
+  }
+
+  .team {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 8px 16px 40px;
+    overflow: hidden;
+  }
+
+  .teamHeader {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      "badge nav"
+      "heading heading";
+    align-items: center;
+    column-gap: 12px;
+    row-gap: 12px;
+    width: 100%;
+  }
+
+  .teamBadge {
+    position: relative;
+    left: auto;
+    top: auto;
+    grid-area: badge;
+  }
+
+  .teamHeading {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    grid-area: heading;
+    font-size: 24px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  .teamNav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    grid-area: nav;
+  }
+
+  .teamPrev,
+  .teamNext {
+    position: relative;
+    left: auto;
+    top: auto;
+  }
+
+  .teamGrid {
+    position: relative;
+    left: auto;
+    top: auto;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    gap: 12px;
+    width: 100vw;
+    margin-left: -16px;
+    padding-left: 16px;
+    padding-right: 16px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-padding-left: 16px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .teamGrid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .teamCard {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    flex: 0 0 calc((100vw - 28px) / 1.5);
+    scroll-snap-align: start;
+  }
+
+  .teamPhoto {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: 100%;
+    height: auto;
+    max-height: 285px;
+    aspect-ratio: 294 / 355;
+  }
+
+  .teamPhoto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .teamName,
+  .teamTitle {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    font-size: 18px;
+    line-height: 1.2;
+    white-space: normal;
+  }
+
+  .teamTitle {
+    font-size: 14px;
+  }
+
+  .teamMeet {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: auto;
+    white-space: nowrap;
+    align-self: flex-start;
+  }
+}

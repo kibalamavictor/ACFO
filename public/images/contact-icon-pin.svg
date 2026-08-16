@@ -1,0 +1,24 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Frame 1984078008">
+<g clip-path="url(#clip0_0_4)">
+<rect width="64" height="64" rx="9.14286" fill="#F7F7F7"/>
+<g id="Ellipse 72" opacity="0.6" filter="url(#filter0_f_0_4)">
+<circle cx="32.3517" cy="59.0769" r="16.8791" fill="#02B702"/>
+</g>
+<g id="Group 1171276065">
+<path id="Vector" d="M35 31C35 31.7956 34.6839 32.5587 34.1213 33.1213C33.5587 33.6839 32.7956 34 32 34C31.2044 34 30.4413 33.6839 29.8787 33.1213C29.3161 32.5587 29 31.7956 29 31C29 30.2044 29.3161 29.4413 29.8787 28.8787C30.4413 28.3161 31.2044 28 32 28C32.7956 28 33.5587 28.3161 34.1213 28.8787C34.6839 29.4413 35 30.2044 35 31Z" stroke="black" stroke-width="2"/>
+<path id="Vector_2" d="M40 31C40 36.396 34.104 40.108 32.435 41.05C32.3027 41.1264 32.1527 41.1666 32 41.1666C31.8473 41.1666 31.6973 41.1264 31.565 41.05C29.895 40.108 24 36.396 24 31C24 28.8783 24.8429 26.8434 26.3431 25.3431C27.8434 23.8429 29.8783 23 32 23C34.1217 23 36.1566 23.8429 37.6569 25.3431C39.1571 26.8434 40 28.8783 40 31Z" stroke="black" stroke-width="2"/>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_f_0_4" x="-8.43956" y="18.2857" width="81.5824" height="81.5824" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feGaussianBlur stdDeviation="11.956" result="effect1_foregroundBlur_0_4"/>
+</filter>
+<clipPath id="clip0_0_4">
+<rect width="64" height="64" rx="9.14286" fill="white"/>
+</clipPath>
+</defs>
+</svg>

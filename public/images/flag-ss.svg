@@ -1,0 +1,9 @@
+<svg width="22" height="16" viewBox="0 0 22 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M0 2.2L11 0V16L0 13.2V2.2Z" fill="#0F47AF"/>
+  <path d="M4.8 8.1L7.4 9.9L6.5 6.9L8.8 5.1H5.8L4.8 2.2L3.8 5.1H0.8L3.1 6.9L2.2 9.9L4.8 8.1Z" fill="#FCDD09"/>
+  <path d="M7 0H22V5.1H7V0Z" fill="#000000"/>
+  <path d="M7 5.1H22V5.9H7V5.1Z" fill="#FFFFFF"/>
+  <path d="M7 5.9H22V10.1H7V5.9Z" fill="#DA121A"/>
+  <path d="M7 10.1H22V10.9H7V10.1Z" fill="#FFFFFF"/>
+  <path d="M7 10.9H22V16H7V10.9Z" fill="#078930"/>
+</svg>
