@@ -42,6 +42,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "A team member with this id already exists" }, { status: 409 });
   }
 
-  const persisted = saveTeam([...team, member]);
+  const persisted = await saveTeam([...team, member]);
   return NextResponse.json({ member, persisted }, { status: 201 });
 }

@@ -5,6 +5,7 @@ services:
     ports:
       - "3001:3000"
     environment:
+      CMS_ADMIN_EMAIL: ${CMS_ADMIN_EMAIL:-admin@acfo.org}
       CMS_PASSWORD: ${CMS_PASSWORD:-acfo-admin}
       CMS_SECRET: ${CMS_SECRET:-acfo-local-dev-secret}
     volumes:

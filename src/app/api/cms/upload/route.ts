@@ -1,7 +1,8 @@
-import { mkdirSync, writeFileSync } from "node:fs";
-import path from "node:path";
 import { NextResponse } from "next/server";
+import path from "node:path";
 import { slugify } from "@/lib/cms/public";
+import { writeUpload } from "@/lib/cms/data-dir";
+import { pushRemoteUpload } from "@/lib/cms/remote";
 import { optimizeUpload } from "@/lib/optimize-image";
 
 export const runtime = "nodejs";
@@ -22,50 +23,55 @@ const EXTENSIONS: Record<string, string> = {
   "image/svg+xml": ".svg",
 };
 
+function isUpload(value: FormDataEntryValue | null): value is File {
+  return Boolean(
+    value &&
+      typeof value === "object" &&
+      typeof (value as File).arrayBuffer === "function",
+  );
+}
+
 export async function POST(request: Request) {
   const form = await request.formData();
   const file = form.get("file");
 
-  if (!(file instanceof File)) {
+  if (!isUpload(file)) {
     return NextResponse.json({ error: "Choose an image to upload" }, { status: 400 });
   }
 
-  if (!ALLOWED.has(file.type)) {
+  const type = file.type || "image/jpeg";
+  if (type && !ALLOWED.has(type) && type !== "application/octet-stream") {
     return NextResponse.json({ error: "Use a JPG, PNG, WEBP, GIF, or SVG image" }, { status: 400 });
   }
 
-  if (file.size > 6 * 1024 * 1024) {
-    return NextResponse.json({ error: "Images must be 6MB or smaller" }, { status: 400 });
+  if (file.size > 8 * 1024 * 1024) {
+    return NextResponse.json({ error: "Images must be 8MB or smaller" }, { status: 400 });
   }
 
+  const originalName = "name" in file && typeof file.name === "string" ? file.name : "upload.jpg";
   const original = Buffer.from(await file.arrayBuffer());
   let buffer: Buffer = original;
-  let ext = EXTENSIONS[file.type] || path.extname(file.name) || ".jpg";
+  let ext = EXTENSIONS[type] || path.extname(originalName) || ".jpg";
+  let contentType = type || "image/jpeg";
 
   try {
-    const optimized = await optimizeUpload(original, file.type);
+    const optimized = await optimizeUpload(original, type);
     buffer = Buffer.from(optimized.buffer);
     ext = optimized.ext;
+    contentType = optimized.mime;
   } catch {
     buffer = original;
   }
 
-  const base = slugify(path.basename(file.name, path.extname(file.name))) || "upload";
+  const base = slugify(path.basename(originalName, path.extname(originalName))) || "upload";
   const filename = `${Date.now()}-${base}${ext}`;
-  const directory = path.join(process.cwd(), "public", "uploads");
 
-  try {
-    mkdirSync(directory, { recursive: true });
-    writeFileSync(path.join(directory, filename), buffer);
-  } catch {
-    return NextResponse.json(
-      {
-        error:
-          "Could not save the upload. On hosted serverless platforms, files may be read-only.",
-      },
-      { status: 500 },
-    );
+  const remoteUrl = await pushRemoteUpload(filename, buffer, contentType);
+  const saved = writeUpload(filename, buffer);
+
+  if (!remoteUrl && !saved) {
+    return NextResponse.json({ error: "Could not save the upload." }, { status: 500 });
   }
 
-  return NextResponse.json({ url: `/uploads/${filename}` });
+  return NextResponse.json({ url: remoteUrl || `/media/${filename}` });
 }

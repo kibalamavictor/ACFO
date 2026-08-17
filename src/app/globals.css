@@ -51,11 +51,14 @@ body {
   touch-action: manipulation;
 }
 
-@media (max-width: 1279px) {
-  html,
-  body {
-    overflow-x: clip;
-  }
+html.site-scale {
+  overflow-x: hidden;
+}
+
+html.site-scale body {
+  width: 1280px;
+  min-width: 1280px;
+  overflow-x: hidden;
 }
 
 a {

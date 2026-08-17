@@ -50,7 +50,7 @@ export async function PUT(request: Request, context: RouteContext) {
     return NextResponse.json({ error: "A story with this slug already exists" }, { status: 409 });
   }
 
-  const persisted = saveNews(
+  const persisted = await saveNews(
     news.map((item) => (item.slug === slug ? next : item)),
   );
   return NextResponse.json({ story: next, persisted });
@@ -63,6 +63,6 @@ export async function DELETE(_request: Request, context: RouteContext) {
     return NextResponse.json({ error: "Story not found" }, { status: 404 });
   }
 
-  const persisted = saveNews(news.filter((item) => item.slug !== slug));
+  const persisted = await saveNews(news.filter((item) => item.slug !== slug));
   return NextResponse.json({ ok: true, persisted });
 }

@@ -21,6 +21,6 @@ export async function PUT(request: Request) {
     ...body,
   };
 
-  const persisted = saveSettings(next);
+  const persisted = await saveSettings(next);
   return NextResponse.json({ settings: next, persisted });
 }

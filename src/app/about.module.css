@@ -800,7 +800,7 @@
   transform: rotate(180deg);
 }
 
-@media (max-width: 900px) {
+@media (max-width: 0) {
   .page {
     width: 100%;
     min-height: 0;

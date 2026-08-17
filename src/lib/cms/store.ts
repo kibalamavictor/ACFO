@@ -1,6 +1,4 @@
-import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
-import path from "node:path";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 import { newsStories } from "@/data/news";
 import { programmes, projects, getProgrammeReach } from "@/data/projects";
 import { teamMembers } from "@/data/team";
@@ -8,6 +6,8 @@ import { defaultEducationBody } from "@/lib/cms/article";
 import { migrateProgramme } from "@/lib/cms/programmes";
 import { defaultPages, mergePages, type PageId, type PagesContent } from "@/lib/cms/pages";
 import { defaultSettings } from "@/lib/cms/public";
+import { readJsonFile, writeJsonFile } from "@/lib/cms/data-dir";
+import { pullRemoteJson, pushRemoteJson } from "@/lib/cms/remote";
 import type {
   CmsNewsStory,
   CmsProgramme,
@@ -17,42 +17,62 @@ import type {
   SiteSettings,
 } from "@/lib/cms/types";
 
-const CONTENT_DIR = path.join(process.cwd(), "content");
-
 type ContentFile = "news" | "team" | "programmes" | "settings" | "pages";
 
 const memory: Partial<Record<ContentFile, unknown>> = {};
-
-function filePath(name: ContentFile) {
-  return path.join(CONTENT_DIR, `${name}.json`);
-}
+const dirty = new Set<ContentFile>();
+const FILES: ContentFile[] = ["pages", "news", "team", "programmes", "settings"];
 
 function readJson<T>(name: ContentFile, fallback: T): T {
-  if (memory[name]) {
+  noStore();
+
+  if (dirty.has(name) && memory[name] !== undefined) {
     return memory[name] as T;
   }
 
-  try {
-    const raw = readFileSync(filePath(name), "utf8");
-    const parsed = JSON.parse(raw) as T;
-    memory[name] = parsed;
-    return parsed;
-  } catch {
-    memory[name] = fallback;
-    return fallback;
+  const raw = readJsonFile(`${name}.json`);
+  if (raw) {
+    try {
+      const parsed = JSON.parse(raw) as T;
+      memory[name] = parsed;
+      return parsed;
+    } catch {
+      // fall through
+    }
   }
+
+  if (memory[name] !== undefined) {
+    return memory[name] as T;
+  }
+
+  return fallback;
 }
 
 function writeJson(name: ContentFile, value: unknown) {
   memory[name] = value;
+  dirty.add(name);
+  return writeJsonFile(`${name}.json`, `${JSON.stringify(value, null, 2)}\n`);
+}
 
-  try {
-    mkdirSync(CONTENT_DIR, { recursive: true });
-    writeFileSync(filePath(name), `${JSON.stringify(value, null, 2)}\n`, "utf8");
-    return true;
-  } catch {
-    return false;
-  }
+export async function hydrateCms() {
+  noStore();
+  await Promise.all(
+    FILES.map(async (name) => {
+      if (dirty.has(name) && memory[name] !== undefined) {
+        return;
+      }
+      const remote = await pullRemoteJson(name);
+      if (remote != null) {
+        memory[name] = remote;
+      }
+    }),
+  );
+}
+
+async function persistJson(name: ContentFile, value: unknown) {
+  writeJson(name, value);
+  await pushRemoteJson(name, value);
+  return true;
 }
 
 function seedNews(): CmsNewsStory[] {
@@ -102,6 +122,7 @@ ${programme.excerpt || programme.body}
 
 export function revalidateSite() {
   revalidatePath("/", "layout");
+  revalidatePath("/");
   revalidatePath("/news");
   revalidatePath("/news/[slug]");
   revalidatePath("/about-us");
@@ -120,8 +141,8 @@ export function getNews(): CmsNewsStory[] {
   return readJson("news", seedNews());
 }
 
-export function saveNews(next: CmsNewsStory[]) {
-  const ok = writeJson("news", next);
+export async function saveNews(next: CmsNewsStory[]) {
+  const ok = await persistJson("news", next);
   revalidateSite();
   return ok;
 }
@@ -130,8 +151,8 @@ export function getTeam(): CmsTeamMember[] {
   return readJson("team", teamMembers);
 }
 
-export function saveTeam(next: CmsTeamMember[]) {
-  const ok = writeJson("team", next);
+export async function saveTeam(next: CmsTeamMember[]) {
+  const ok = await persistJson("team", next);
   revalidateSite();
   return ok;
 }
@@ -148,7 +169,7 @@ export function getProgrammeById(id: string) {
   return getPublishedProgrammes().find((programme) => programme.id === id);
 }
 
-export function saveProgrammes(next: CmsProgramme[]) {
+export async function saveProgrammes(next: CmsProgramme[]) {
   const projects = next.map((programme) => ({
     id: `${programme.id}-reach`,
     title: programme.title,
@@ -175,11 +196,11 @@ export function getProgrammesData(): {
   };
 }
 
-export function saveProgrammesData(next: {
+export async function saveProgrammesData(next: {
   programmes: CmsProgramme[];
   projects: CmsProject[];
 }) {
-  const ok = writeJson("programmes", next);
+  const ok = await persistJson("programmes", next);
   revalidateSite();
   return ok;
 }
@@ -188,8 +209,8 @@ export function getSettings(): SiteSettings {
   return { ...defaultSettings, ...readJson("settings", defaultSettings) };
 }
 
-export function saveSettings(next: SiteSettings) {
-  const ok = writeJson("settings", next);
+export async function saveSettings(next: SiteSettings) {
+  const ok = await persistJson("settings", next);
   revalidateSite();
   return ok;
 }
@@ -198,13 +219,13 @@ export function getPages(): PagesContent {
   return mergePages(readJson("pages", defaultPages));
 }
 
-export function savePages(next: PagesContent) {
-  const ok = writeJson("pages", next);
+export async function savePages(next: PagesContent) {
+  const ok = await persistJson("pages", next);
   revalidateSite();
   return ok;
 }
 
-export function savePage(pageId: PageId, sectionMap: PagesContent[PageId]) {
+export async function savePage(pageId: PageId, sectionMap: PagesContent[PageId]) {
   const pages = getPages();
   return savePages(mergePages({ ...pages, [pageId]: sectionMap }));
 }

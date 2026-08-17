@@ -673,7 +673,7 @@
   mask-mode: alpha;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 0) {
   .page {
     width: 100%;
     min-height: 0;

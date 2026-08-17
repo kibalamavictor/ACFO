@@ -1,24 +1,27 @@
 import type { Metadata } from "next";
 import { SiteContentProvider } from "@/components/cms/SiteContentProvider";
-import { getSiteContent } from "@/lib/cms/store";
+import ViewportScale from "@/components/ViewportScale";
+import { getSiteContent, hydrateCms } from "@/lib/cms/store";
 import { rootMetadata } from "@/lib/seo/metadata";
 import "./globals.css";
 
 export const metadata: Metadata = rootMetadata();
 
 export const viewport = {
-  width: "device-width",
-  initialScale: 1,
+  width: 1280,
   themeColor: "#006838",
 };
 
-export const revalidate = 60;
+export const dynamic = "force-dynamic";
 
-export default function RootLayout({
+const SCALE_SCRIPT = `(function(){if(location.pathname.indexOf("/admin")===0)return;var s=(window.innerWidth||1280)/1280;document.documentElement.classList.add("site-scale");document.documentElement.style.setProperty("--site-scale",String(s));var b=document.body;if(b){b.style.zoom=String(s);b.style.margin="0";}})();`;
+
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  await hydrateCms();
   const content = getSiteContent();
 
   return (
@@ -35,7 +38,10 @@ export default function RootLayout({
         <link rel="author" href="/humans.txt" />
       </head>
       <body>
-        <SiteContentProvider initial={content}>{children}</SiteContentProvider>
+        <script dangerouslySetInnerHTML={{ __html: SCALE_SCRIPT }} />
+        <SiteContentProvider initial={content}>
+          <ViewportScale>{children}</ViewportScale>
+        </SiteContentProvider>
       </body>
     </html>
   );

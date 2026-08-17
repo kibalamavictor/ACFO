@@ -7,10 +7,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 export default function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
-  const isDev = process.env.NODE_ENV === "development";
 
   const onSubmit = async (event: FormEvent) => {
     event.preventDefault();
@@ -21,10 +21,13 @@ export default function LoginForm() {
       const response = await fetch("/api/cms/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password }),
+        body: JSON.stringify({ email, password }),
       });
+      const result = (await response.json().catch(() => null)) as {
+        error?: string;
+      } | null;
       if (!response.ok) {
-        throw new Error("That password is not correct.");
+        throw new Error(result?.error || "Email or password is not correct.");
       }
       router.push(searchParams.get("next") || "/admin");
       router.refresh();
@@ -60,6 +63,15 @@ export default function LoginForm() {
         <form onSubmit={(event) => void onSubmit(event)}>
           {error ? <p className="cmsBanner cmsBannerError">{error}</p> : null}
           <input
+            type="email"
+            name="email"
+            autoComplete="username"
+            placeholder="Email"
+            value={email}
+            onChange={(event) => setEmail(event.target.value)}
+            required
+          />
+          <input
             type="password"
             name="password"
             autoComplete="current-password"
@@ -72,12 +84,6 @@ export default function LoginForm() {
             {saving ? "Signing in…" : "Sign in"}
           </button>
         </form>
-
-        {isDev ? (
-          <p className="cmsLoginHint">
-            Local default password: <strong>acfo-admin</strong>
-          </p>
-        ) : null}
       </section>
     </div>
   );

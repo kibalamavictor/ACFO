@@ -668,7 +668,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 0) {
   .page {
     width: 100%;
     min-height: 0;
@@ -943,7 +943,7 @@
   }
 }
 
-@media (min-width: 1024px) and (max-width: 1279px) {
+@media (max-width: 0) {
   .featuredCards,
   .latestCards,
   .moreCards {
@@ -951,7 +951,7 @@
   }
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 0) {
   .featured {
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
@@ -963,7 +963,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 0) {
   .hero {
     margin: 84px 16px 24px;
     padding: 28px 18px 40px;
@@ -1151,7 +1151,7 @@
   }
 }
 
-@media (max-width: 480px) {
+@media (max-width: 0) {
   .filterRow {
     gap: calc(6px / 1.2);
   }

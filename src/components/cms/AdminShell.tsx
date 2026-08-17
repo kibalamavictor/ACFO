@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useCmsSession } from "@/components/cms/CmsSession";
 
 const LINKS = [
   { href: "/admin", label: "Dashboard" },
@@ -10,6 +11,7 @@ const LINKS = [
   { href: "/admin/news", label: "News" },
   { href: "/admin/team", label: "Team" },
   { href: "/admin/programmes", label: "Programmes" },
+  { href: "/admin/editors", label: "Editors", adminOnly: true },
   { href: "/admin/settings", label: "Settings" },
 ];
 
@@ -31,8 +33,12 @@ export default function AdminShell({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const user = useCmsSession();
   const [open, setOpen] = useState(false);
   const [leaving, setLeaving] = useState(false);
+  const links = LINKS.filter(
+    (item) => !item.adminOnly || user?.role === "admin",
+  );
 
   const logout = async () => {
     setLeaving(true);
@@ -55,7 +61,7 @@ export default function AdminShell({
         </span>
 
         <nav className="cmsTopLinks" aria-label="CMS">
-          {LINKS.map((item) => (
+          {links.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -93,7 +99,7 @@ export default function AdminShell({
 
       {open ? (
         <nav className="cmsMobileNav" aria-label="CMS mobile">
-          {LINKS.map((item) => (
+          {links.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -113,7 +119,7 @@ export default function AdminShell({
 
       <div className="cmsBody">
         <aside className="cmsSidebar">
-          {LINKS.map((item) => (
+          {links.map((item) => (
             <Link
               key={item.href}
               href={item.href}

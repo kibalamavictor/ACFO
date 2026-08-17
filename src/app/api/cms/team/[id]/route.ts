@@ -41,7 +41,7 @@ export async function PUT(request: Request, context: RouteContext) {
     return NextResponse.json({ error: "A team member with this id already exists" }, { status: 409 });
   }
 
-  const persisted = saveTeam(team.map((item) => (item.id === id ? next : item)));
+  const persisted = await saveTeam(team.map((item) => (item.id === id ? next : item)));
   return NextResponse.json({ member: next, persisted });
 }
 
@@ -52,6 +52,6 @@ export async function DELETE(_request: Request, context: RouteContext) {
     return NextResponse.json({ error: "Team member not found" }, { status: 404 });
   }
 
-  const persisted = saveTeam(team.filter((item) => item.id !== id));
+  const persisted = await saveTeam(team.filter((item) => item.id !== id));
   return NextResponse.json({ ok: true, persisted });
 }

@@ -22,6 +22,6 @@ export async function PUT(request: Request, context: RouteContext) {
     return NextResponse.json({ error: "Invalid page content" }, { status: 400 });
   }
 
-  const persisted = savePage(pageId, body);
+  const persisted = await savePage(pageId, body);
   return NextResponse.json({ pageId, persisted });
 }

@@ -15,6 +15,18 @@ export type CmsProject = ProjectRecord;
 
 export type CmsTeamMember = TeamMember;
 
+export type CmsUserRole = "admin" | "editor";
+
+export type CmsUser = {
+  id: string;
+  name: string;
+  email: string;
+  passwordHash: string;
+  role: CmsUserRole;
+};
+
+export type CmsPublicUser = Omit<CmsUser, "passwordHash">;
+
 export type SiteSettings = {
   orgName: string;
   blurb: string;

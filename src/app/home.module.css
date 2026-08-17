@@ -1941,7 +1941,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 0) {
   .page {
     width: 100%;
     min-height: 0;
@@ -2085,7 +2085,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 0) {
   .links,
   .contact,
   .donate {
@@ -2212,7 +2212,7 @@
   }
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 0) {
   .about {
     display: flex;
     flex-direction: column;
@@ -2306,7 +2306,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 0) {
   .about {
     padding: 8px 16px 40px;
     gap: 20px;
@@ -2328,7 +2328,7 @@
   }
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 0) {
   .partnerSection {
     display: block;
     position: relative;
@@ -2440,7 +2440,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 0) {
   .partnerSection {
     margin: 8px 16px 24px;
     padding: 32px 16px 64px;
@@ -2549,7 +2549,7 @@
   }
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 0) {
   .programmesSection {
     display: flex;
     flex-direction: column;
@@ -2718,7 +2718,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 0) {
   .programmesSection {
     padding: 8px 16px 40px;
   }
@@ -2824,7 +2824,7 @@
   }
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 0) {
   .communityStage {
     position: relative;
     left: auto;
@@ -2905,7 +2905,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 0) {
   .communityStage {
     height: auto;
     min-height: 0;
@@ -2948,7 +2948,7 @@
   }
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 0) {
   .partnersSection {
     display: flex;
     flex-direction: column;
@@ -3008,7 +3008,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 0) {
   .partnersSection {
     padding: 24px 0 32px;
     gap: 20px;
@@ -3046,7 +3046,7 @@
   }
 }
 
-@media (min-width: 1280px) {
+@media all {
   .partnersSection {
     display: flex;
     flex-direction: column;
@@ -3107,7 +3107,7 @@
   }
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 0) {
   .newsSection {
     display: flex;
     flex-direction: column;
@@ -3219,7 +3219,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 0) {
   .newsSection {
     padding: 8px 16px 40px;
     overflow: hidden;
@@ -3270,7 +3270,7 @@
   }
 }
 
-@media (max-width: 1279px) {
+@media (max-width: 0) {
   .footer {
     position: relative;
     left: auto;
@@ -3402,7 +3402,7 @@
   }
 }
 
-@media (max-width: 900px) {
+@media (max-width: 0) {
   .footer {
     margin-top: -24px;
     border-radius: 24px 24px 0 0;

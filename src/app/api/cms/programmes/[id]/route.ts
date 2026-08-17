@@ -44,7 +44,7 @@ export async function PUT(request: Request, context: RouteContext) {
     );
   }
 
-  const persisted = saveProgrammes(
+  const persisted = await saveProgrammes(
     programmes.map((item) => (item.id === id ? next : item)),
   );
 
@@ -59,6 +59,6 @@ export async function DELETE(_request: Request, context: RouteContext) {
     return NextResponse.json({ error: "Programme not found" }, { status: 404 });
   }
 
-  const persisted = saveProgrammes(programmes.filter((item) => item.id !== id));
+  const persisted = await saveProgrammes(programmes.filter((item) => item.id !== id));
   return NextResponse.json({ ok: true, persisted });
 }

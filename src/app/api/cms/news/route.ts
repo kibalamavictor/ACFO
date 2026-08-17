@@ -40,6 +40,6 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "A story with this slug already exists" }, { status: 409 });
   }
 
-  const persisted = saveNews([story, ...news]);
+  const persisted = await saveNews([story, ...news]);
   return NextResponse.json({ story, persisted }, { status: 201 });
 }

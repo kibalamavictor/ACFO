@@ -2,6 +2,40 @@
 
 import { useEffect, useState } from "react";
 
+async function prepareUpload(file: File) {
+  if (
+    file.type === "image/svg+xml" ||
+    file.type === "image/gif" ||
+    !file.type.startsWith("image/")
+  ) {
+    return file;
+  }
+
+  try {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, 1600 / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+    canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+    const context = canvas.getContext("2d");
+    if (!context) {
+      return file;
+    }
+    context.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise<Blob | null>((resolve) =>
+      canvas.toBlob(resolve, "image/jpeg", 0.82),
+    );
+    if (!blob) {
+      return file;
+    }
+    return new File([blob], file.name.replace(/\.[^.]+$/, ".jpg"), {
+      type: "image/jpeg",
+    });
+  } catch {
+    return file;
+  }
+}
+
 export default function ImageField({
   label,
   value,
@@ -26,8 +60,9 @@ export default function ImageField({
 
     setUploading(true);
     setError("");
+    const prepared = await prepareUpload(file);
     const data = new FormData();
-    data.append("file", file);
+    data.append("file", prepared);
 
     try {
       const response = await fetch("/api/cms/upload", {

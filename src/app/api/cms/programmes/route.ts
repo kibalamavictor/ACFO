@@ -25,6 +25,6 @@ export async function POST(request: Request) {
     );
   }
 
-  const persisted = saveProgrammes([programme, ...programmes]);
+  const persisted = await saveProgrammes([programme, ...programmes]);
   return NextResponse.json({ programme, persisted }, { status: 201 });
 }

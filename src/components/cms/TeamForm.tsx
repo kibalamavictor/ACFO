@@ -62,6 +62,7 @@ export default function TeamForm({
         throw new Error(result.error || "Could not save team member");
       }
       router.push("/admin/team");
+      window.dispatchEvent(new Event("acfo-cms-updated"));
       router.refresh();
     } catch (caught) {
       setError(
