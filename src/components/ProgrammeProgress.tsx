@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { getProgrammeImpact, type ProgrammeId } from "@/data/projects";
+import { useSiteContent } from "@/components/cms/SiteContentProvider";
+import { programmeImpact } from "@/lib/cms/public";
 import styles from "@/app/home.module.css";
 
 type ProgrammeProgressProps = {
-  programmeId: ProgrammeId;
+  programmeId: string;
   className: string;
   style?: React.CSSProperties;
 };
@@ -22,7 +23,8 @@ export default function ProgrammeProgress({
   className,
   style,
 }: ProgrammeProgressProps) {
-  const { reach, target, title } = getProgrammeImpact(programmeId);
+  const content = useSiteContent();
+  const { reach, target, title } = programmeImpact(content, programmeId);
   const rootRef = useRef<HTMLDivElement>(null);
   const fillRef = useRef<HTMLDivElement>(null);
   const counterRef = useRef<HTMLDivElement>(null);

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import styles from "@/app/news.module.css";
-import { getNewsHref } from "@/data/news";
+import { getNewsHref } from "@/lib/cms/public";
 
 type NewsStoryCardProps = {
   slug: string;
@@ -36,7 +36,7 @@ export default function NewsStoryCard({
           className={styles.storyPhoto}
           style={{ left, top: photoTop }}
         >
-          <img src={photo} alt={alt} width={399} height={248} />
+          <img src={photo} alt={alt} width={399} height={248} loading="lazy" decoding="async" />
         </div>
         <div
           className={styles.storyChip}

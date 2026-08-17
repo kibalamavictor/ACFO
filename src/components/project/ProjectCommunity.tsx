@@ -1,5 +1,6 @@
 "use client";
 
+import { useRef } from "react";
 import Link from "next/link";
 import {
   motion,
@@ -7,6 +8,7 @@ import {
   useMotionValue,
   useReducedMotion,
 } from "framer-motion";
+import { useInView } from "@/lib/useInView";
 import home from "@/app/home.module.css";
 import programmes from "@/app/programmes.module.css";
 import styles from "@/app/project.module.css";
@@ -63,16 +65,17 @@ function OrbitingPortrait({
   alt,
   orbit,
   angle,
-}: (typeof PORTRAITS)[number]) {
+  active,
+}: (typeof PORTRAITS)[number] & { active: boolean }) {
   const reduceMotion = useReducedMotion();
   const { cx, cy, r, direction } = ORBITS[orbit];
   const x = useMotionValue(cx + r * Math.cos(angle));
   const y = useMotionValue(cy + r * Math.sin(angle));
 
   useAnimationFrame((t) => {
+    if (!active || reduceMotion) return;
     const turn =
-      angle +
-      (reduceMotion ? 0 : (direction * (t / 1000) * Math.PI * 2) / ORBIT_DURATION);
+      angle + (direction * (t / 1000) * Math.PI * 2) / ORBIT_DURATION;
     x.set(cx + r * Math.cos(turn));
     y.set(cy + r * Math.sin(turn));
   });
@@ -86,14 +89,18 @@ function OrbitingPortrait({
       whileTap={{ scale: 1.22, zIndex: 5 }}
       aria-label={alt}
     >
-      <img src={src} alt="" width={PHOTO} height={PHOTO} />
+      <img src={src} alt="" width={PHOTO} height={PHOTO} loading="lazy" decoding="async" />
     </motion.button>
   );
 }
 
 export default function ProjectCommunity() {
+  const stageRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(stageRef);
+
   return (
     <div
+      ref={stageRef}
       className={`${home.communityStage} ${programmes.communityStage} ${styles.communityStage}`}
       style={{ top: 3738, height: 531 }}
     >
@@ -106,7 +113,7 @@ export default function ProjectCommunity() {
 
       <div className={styles.communityOrbit}>
         {PORTRAITS.map((portrait) => (
-          <OrbitingPortrait key={portrait.src} {...portrait} />
+          <OrbitingPortrait key={portrait.src} {...portrait} active={inView} />
         ))}
       </div>
 

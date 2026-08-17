@@ -2,7 +2,9 @@
 
 import styles from "@/app/news.module.css";
 import NewsStoryCard from "@/components/news/NewsStoryCard";
-import { newsStories, type NewsStory } from "@/data/news";
+import { useSiteContent } from "@/components/cms/SiteContentProvider";
+import { publishedNews } from "@/lib/cms/public";
+import type { NewsStory } from "@/data/news";
 
 const COLS = [22, 444, 864] as const;
 const PHOTO_TOP = 2806;
@@ -10,8 +12,6 @@ const ROW_STRIDE = 464;
 const CHIP_OFFSET = 274;
 const TITLE_OFFSET = 315;
 const MORE_OFFSET = 368;
-
-const MORE_STORIES = newsStories.slice(6);
 
 type NewsMoreProps = {
   heading?: string;
@@ -30,9 +30,11 @@ export default function NewsMore({
   loadMoreFilled = false,
   onLoadMore,
   headingColor,
-  stories = MORE_STORIES,
+  stories,
 }: NewsMoreProps) {
-  const cards = stories.slice(0, rows * 3);
+  const { news } = useSiteContent();
+  const source = stories ?? publishedNews(news).slice(6);
+  const cards = source.slice(0, rows * 3);
 
   if (cards.length === 0) {
     return null;
@@ -81,7 +83,7 @@ export default function NewsMore({
         })}
       </div>
 
-      {showLoadMore && stories.length > rows * 3 ? (
+      {showLoadMore && source.length > rows * 3 ? (
         <button
           type="button"
           className={

@@ -8,6 +8,9 @@ import {
   useMotionValue,
   useReducedMotion,
 } from "framer-motion";
+import { usePage } from "@/components/cms/SiteContentProvider";
+import { text } from "@/lib/cms/pages";
+import { useInView } from "@/lib/useInView";
 import styles from "@/app/home.module.css";
 
 const PHOTO = 97;
@@ -176,7 +179,8 @@ function OrbitingPortrait({
   alt,
   angle,
   layout,
-}: (typeof PORTRAITS)[number] & { layout: OrbitLayout }) {
+  active,
+}: (typeof PORTRAITS)[number] & { layout: OrbitLayout; active: boolean }) {
   const reduceMotion = useReducedMotion();
   const layoutRef = useRef(layout);
   layoutRef.current = layout;
@@ -184,10 +188,10 @@ function OrbitingPortrait({
   const y = useMotionValue(layout.cy + layout.ry * Math.sin(angle));
 
   useAnimationFrame((t) => {
+    if (!active || reduceMotion) return;
     const { cx, cy, rx, ry, direction } = layoutRef.current;
     const turn =
-      angle +
-      (reduceMotion ? 0 : (direction * (t / 1000) * Math.PI * 2) / ORBIT_DURATION);
+      angle + (direction * (t / 1000) * Math.PI * 2) / ORBIT_DURATION;
     x.set(cx + rx * Math.cos(turn));
     y.set(cy + ry * Math.sin(turn));
   });
@@ -201,7 +205,7 @@ function OrbitingPortrait({
       whileTap={{ scale: 1.22, zIndex: 5 }}
       aria-label={alt}
     >
-      <img src={src} alt="" width={PHOTO} height={PHOTO} />
+      <img src={src} alt="" width={PHOTO} height={PHOTO} loading="lazy" decoding="async" />
     </motion.button>
   );
 }
@@ -211,35 +215,54 @@ type CommunityProps = {
 };
 
 export default function Community({ top = 3317 }: CommunityProps) {
+  const section = usePage("home").community;
   const stageRef = useRef<HTMLDivElement>(null);
   const copyRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState(DESKTOP);
   const [copy, setCopy] = useState<CopyBox | null>(null);
   const orbits = layoutFor(size.width, size.height, copy);
+  const inView = useInView(stageRef);
 
   useEffect(() => {
     const stage = stageRef.current;
     const copyEl = copyRef.current;
     if (!stage) return;
 
+    let frame = 0;
     const update = () => {
-      const stageBox = stage.getBoundingClientRect();
-      if (stageBox.width > 0 && stageBox.height > 0) {
-        setSize({ width: stageBox.width, height: stageBox.height });
-      }
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const stageBox = stage.getBoundingClientRect();
+        if (stageBox.width > 0 && stageBox.height > 0) {
+          setSize((current) =>
+            current.width === stageBox.width && current.height === stageBox.height
+              ? current
+              : { width: stageBox.width, height: stageBox.height },
+          );
+        }
 
-      if (!copyEl) return;
-      const copyBox = copyEl.getBoundingClientRect();
-      if (copyBox.width < 8 || copyBox.height < 8) {
-        setCopy(null);
-        return;
-      }
+        if (!copyEl) return;
+        const copyBox = copyEl.getBoundingClientRect();
+        if (copyBox.width < 8 || copyBox.height < 8) {
+          setCopy(null);
+          return;
+        }
 
-      setCopy({
-        left: copyBox.left - stageBox.left,
-        top: copyBox.top - stageBox.top,
-        right: copyBox.right - stageBox.left,
-        bottom: copyBox.bottom - stageBox.top,
+        const next = {
+          left: copyBox.left - stageBox.left,
+          top: copyBox.top - stageBox.top,
+          right: copyBox.right - stageBox.left,
+          bottom: copyBox.bottom - stageBox.top,
+        };
+        setCopy((current) =>
+          current &&
+          current.left === next.left &&
+          current.top === next.top &&
+          current.right === next.right &&
+          current.bottom === next.bottom
+            ? current
+            : next,
+        );
       });
     };
 
@@ -247,10 +270,9 @@ export default function Community({ top = 3317 }: CommunityProps) {
     const observer = new ResizeObserver(update);
     observer.observe(stage);
     if (copyEl) observer.observe(copyEl);
-    window.addEventListener("resize", update);
     return () => {
+      cancelAnimationFrame(frame);
       observer.disconnect();
-      window.removeEventListener("resize", update);
     };
   }, []);
 
@@ -267,6 +289,7 @@ export default function Community({ top = 3317 }: CommunityProps) {
             key={portrait.src}
             {...portrait}
             layout={orbits[portrait.orbit]}
+            active={inView}
           />
         ))}
       </div>
@@ -274,26 +297,29 @@ export default function Community({ top = 3317 }: CommunityProps) {
       <div className={styles.communityCopy} ref={copyRef}>
         <div className={styles.communityBadge}>
           <img src="/images/badge-dot.svg" alt="" width={10} height={10} />
-          Join Our Community
+          {text(section.badge, "Join Our Community")}
         </div>
 
-        <h2 className={styles.communityHeading}>
-          Together, We Can Build Brighter Futures
-        </h2>
+        <h2 className={styles.communityHeading}>{text(section.heading)}</h2>
 
         <div className={styles.communityStatRow}>
-          <p className={styles.communityStat}>1000+</p>
+          <p className={styles.communityStat}>{text(section.stat, "1000+")}</p>
           <p className={styles.communityStatLabel}>
-            Children
-            <br />
-            Saved
+            {text(section.statLabel, "Children\nSaved")
+              .split("\n")
+              .map((line, index) => (
+                <span key={`${line}-${index}`}>
+                  {index > 0 ? <br /> : null}
+                  {line}
+                </span>
+              ))}
           </p>
         </div>
 
-        <p className={styles.communitySub}>Every action matters</p>
+        <p className={styles.communitySub}>{text(section.sub, "Every action matters")}</p>
 
         <Link href="/contact-us" className={styles.communityCta}>
-          Join Our Community
+          {text(section.cta, "Join Our Community")}
         </Link>
       </div>
     </div>

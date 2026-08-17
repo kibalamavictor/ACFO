@@ -1,0 +1,13 @@
+services:
+  web:
+    build: .
+    container_name: acfo-web
+    ports:
+      - "3001:3000"
+    environment:
+      CMS_PASSWORD: ${CMS_PASSWORD:-acfo-admin}
+      CMS_SECRET: ${CMS_SECRET:-acfo-local-dev-secret}
+    volumes:
+      - ./content:/app/content
+      - ./public/uploads:/app/public/uploads
+    restart: unless-stopped

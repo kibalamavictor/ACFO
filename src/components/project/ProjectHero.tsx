@@ -1,8 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { usePage } from "@/components/cms/SiteContentProvider";
+import CmsCopy from "@/components/cms/CmsCopy";
+import { text } from "@/lib/cms/pages";
 import home from "@/app/home.module.css";
 import styles from "@/app/project.module.css";
 
 export default function ProjectHero() {
+  const hero = usePage("education").hero;
+
   return (
     <section className={styles.hero}>
       <div
@@ -17,8 +24,8 @@ export default function ProjectHero() {
 
       <div className={styles.photo}>
         <img
-          src="/images/programme-education.jpg"
-          alt="Children in a classroom"
+          src={text(hero.photo, "/images/programme-education.jpg")}
+          alt={text(hero.photoAlt)}
           width={399}
           height={248}
         />
@@ -27,19 +34,15 @@ export default function ProjectHero() {
       <div className={styles.heroCopy}>
         <div className={styles.badge}>
           <img src="/images/badge-dot.svg" alt="" width={10} height={10} />
-          Education
+          {text(hero.badge, "Education")}
         </div>
 
-        <h1 className={styles.heading}>Education Access & Quality</h1>
+        <h1 className={styles.heading}>{text(hero.heading)}</h1>
 
-        <p className={styles.body}>
-          We promote inclusive, equitable, and quality education for children and
-          young people, helping create opportunities for them to learn, grow, and
-          reach their potential.
-        </p>
+        <CmsCopy className={styles.body} value={text(hero.body)} />
 
         <Link href="/donate" className={styles.cta}>
-          Support Education
+          {text(hero.cta, "Support Education")}
         </Link>
       </div>
     </section>

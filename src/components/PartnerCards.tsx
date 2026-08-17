@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+import { usePage } from "@/components/cms/SiteContentProvider";
+import { list, text } from "@/lib/cms/pages";
 import styles from "@/app/home.module.css";
 
-const CARDS = [
+const CARD_LOOK = [
   {
     cardClass: styles.partnerCard1,
     iconClass: styles.partnerIcon1,
@@ -12,8 +14,6 @@ const CARDS = [
     icon: "/images/partner-icon-community.svg",
     iconWidth: 52,
     iconHeight: 46,
-    title: "Community-Led Solutions",
-    body: "We work hand in hand with local communities to ensure every programme is relevant, inclusive, and sustainable.",
   },
   {
     cardClass: styles.partnerCard2,
@@ -23,8 +23,6 @@ const CARDS = [
     icon: "/images/partner-icon-transparent.svg",
     iconWidth: 28,
     iconHeight: 33,
-    title: "Transparent & Accountable",
-    body: "We uphold integrity, accountability, and responsible stewardship in everything we do.",
   },
   {
     cardClass: styles.partnerCard3,
@@ -34,8 +32,6 @@ const CARDS = [
     icon: "/images/partner-icon-partnerships.svg",
     iconWidth: 35,
     iconHeight: 35,
-    title: "Strong Partnerships",
-    body: "We collaborate with governments, NGOs, UN agencies, academic institutions, and the private sector to maximize impact.",
   },
   {
     cardClass: styles.partnerCard4,
@@ -45,23 +41,23 @@ const CARDS = [
     icon: "/images/partner-icon-community.svg",
     iconWidth: 52,
     iconHeight: 46,
-    title: "Holistic Programmes",
-    body: "Our integrated approach connects education, child protection, health, livelihoods, environmental sustainability, and WASH to create lasting change.",
   },
 ] as const;
 
 export default function PartnerCards() {
   const [openTitle, setOpenTitle] = useState<string | null>(null);
+  const cards = list<{ title: string; body: string }>(usePage("home").partner.cards);
 
   return (
     <div className={styles.partnerCards}>
-      {CARDS.map((card) => {
+        {cards.map((card, index) => {
+        const look = CARD_LOOK[index] ?? CARD_LOOK[0];
         const open = openTitle === card.title;
 
         return (
           <article
-            key={card.title}
-            className={`${card.cardClass} ${open ? styles.partnerCardOpen : ""}`}
+            key={`${card.title}-${index}`}
+            className={`${look.cardClass} ${open ? styles.partnerCardOpen : ""}`}
             onClick={() => setOpenTitle(open ? null : card.title)}
           >
             <button
@@ -74,16 +70,16 @@ export default function PartnerCards() {
               }}
             >
               <img
-                className={card.iconClass}
-                src={card.icon}
+                className={look.iconClass}
+                src={look.icon}
                 alt=""
-                width={card.iconWidth}
-                height={card.iconHeight}
+                width={look.iconWidth}
+                height={look.iconHeight}
               />
-              <span className={card.titleClass}>{card.title}</span>
+              <span className={look.titleClass}>{text(card.title)}</span>
               <span className={styles.partnerCardChevron} aria-hidden="true" />
             </button>
-            <p className={card.bodyClass}>{card.body}</p>
+            <p className={look.bodyClass}>{text(card.body)}</p>
           </article>
         );
       })}

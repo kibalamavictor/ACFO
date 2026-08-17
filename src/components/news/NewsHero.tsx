@@ -1,6 +1,12 @@
+"use client";
+
+import { usePage } from "@/components/cms/SiteContentProvider";
+import { text } from "@/lib/cms/pages";
 import styles from "@/app/news.module.css";
 
 export default function NewsHero() {
+  const hero = usePage("news").hero;
+
   return (
     <section className={styles.hero}>
       <div className={styles.heroPanel} />
@@ -14,15 +20,12 @@ export default function NewsHero() {
       <div className={styles.heroCopy}>
         <div className={styles.badge}>
           <img src="/images/badge-dot.svg" alt="" width={10} height={10} />
-          News
+          {text(hero.badge, "News")}
         </div>
 
-        <h1 className={styles.heading}>Stories From Our Work</h1>
+        <h1 className={styles.heading}>{text(hero.heading)}</h1>
 
-        <p className={styles.body}>
-          Discover the latest stories, updates, insights, and community highlights
-          from African Children&apos;s Foundation Organization.
-        </p>
+        <p className={styles.body}>{text(hero.body)}</p>
       </div>
     </section>
   );

@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import Link from "next/link";
+import { useSiteContent } from "@/components/cms/SiteContentProvider";
 import styles from "@/app/home.module.css";
 
 const FOOTER_HEIGHT = 505;
@@ -13,17 +14,7 @@ const QUICK_LINKS = [
   { label: "In Press", href: "/news" },
 ];
 
-const SUPPORT_LINKS = [
-  { label: "Contact us", href: "/contact-us" },
-  { label: "Whatsapp", href: "https://wa.me/211923117001" },
-];
-
-const SOCIAL = [
-  { label: "Instagram", href: "https://african-child.org/", src: "/images/footer-instagram.svg" },
-  { label: "X", href: "https://african-child.org/", src: "/images/footer-x.svg" },
-  { label: "LinkedIn", href: "https://www.linkedin.com/company/african-children-s-foundation-organization", src: "/images/footer-linkedin.svg" },
-  { label: "Facebook", href: "https://african-child.org/", src: "/images/footer-facebook.svg" },
-];
+const SUPPORT_LINKS = [{ label: "Contact us", href: "/contact-us" }];
 
 type FooterProps = {
   top?: number;
@@ -32,6 +23,17 @@ type FooterProps = {
 
 export default function Footer({ top = 4611, cover = 0 }: FooterProps) {
   const [subscribed, setSubscribed] = useState(false);
+  const { settings } = useSiteContent();
+  const supportLinks = [
+    ...SUPPORT_LINKS,
+    { label: "Whatsapp", href: settings.whatsapp },
+  ];
+  const social = [
+    { label: "Instagram", href: settings.instagram, src: "/images/footer-instagram.svg" },
+    { label: "X", href: settings.x, src: "/images/footer-x.svg" },
+    { label: "LinkedIn", href: settings.linkedin, src: "/images/footer-linkedin.svg" },
+    { label: "Facebook", href: settings.facebook, src: "/images/footer-facebook.svg" },
+  ];
 
   const onNewsletterSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -51,7 +53,9 @@ export default function Footer({ top = 4611, cover = 0 }: FooterProps) {
       }}
     >
       <div className={styles.footerBar} />
-      <div className={styles.footerWave} aria-hidden="true" />
+      <div className={styles.footerWave} aria-hidden="true">
+        <div className={styles.footerWaveInner} />
+      </div>
 
       <div className={styles.footerInner} style={{ top: cover }}>
         <div className={styles.footerBrand}>
@@ -72,12 +76,7 @@ export default function Footer({ top = 4611, cover = 0 }: FooterProps) {
             />
           </Link>
 
-          <p className={styles.footerAbout}>
-            African Children&apos;s Foundation Organization (ACFO) is a national,
-            non-profit and non-political civil society organization dedicated to
-            advancing the rights and wellbeing of vulnerable children and
-            communities in South Sudan.
-          </p>
+          <p className={styles.footerAbout}>{settings.blurb}</p>
         </div>
 
         <div className={styles.footerLinks}>
@@ -95,7 +94,7 @@ export default function Footer({ top = 4611, cover = 0 }: FooterProps) {
           <nav className={styles.footerSupport} aria-label="Support">
             <p className={styles.footerHeading}>Support</p>
             <div className={styles.footerItems}>
-              {SUPPORT_LINKS.map((item) => (
+              {supportLinks.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}
@@ -150,7 +149,7 @@ export default function Footer({ top = 4611, cover = 0 }: FooterProps) {
           <div className={styles.footerFollow}>
             <p className={styles.footerHeading}>Follow Us</p>
             <div className={styles.footerSocial}>
-              {SOCIAL.map((item) => (
+              {social.map((item) => (
                 <Link
                   key={item.label}
                   href={item.href}

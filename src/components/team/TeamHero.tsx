@@ -1,6 +1,12 @@
+"use client";
+
+import { usePage } from "@/components/cms/SiteContentProvider";
+import { text } from "@/lib/cms/pages";
 import styles from "@/app/programmes.module.css";
 
 export default function TeamHero() {
+  const hero = usePage("team").hero;
+
   return (
     <section className={styles.hero}>
       <div className={styles.heroPanel} />
@@ -14,16 +20,12 @@ export default function TeamHero() {
       <div className={styles.heroCopy}>
         <div className={styles.badge}>
           <img src="/images/badge-dot.svg" alt="" width={10} height={10} />
-          Our Team
+          {text(hero.badge, "Our Team")}
         </div>
 
-        <h1 className={styles.heading}>The People Behind Our Work</h1>
+        <h1 className={styles.heading}>{text(hero.heading)}</h1>
 
-        <p className={styles.body}>
-          Meet the staff and volunteers who design, deliver, and support ACFO
-          programmes across South Sudan. This directory will grow as we add
-          names, photos, and roles.
-        </p>
+        <p className={styles.body}>{text(hero.body)}</p>
       </div>
     </section>
   );

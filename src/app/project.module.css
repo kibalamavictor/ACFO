@@ -8,11 +8,12 @@
 
 .hero,
 .heroCopy,
+.detail,
+.detailMain,
 .whatWeDo,
 .whatWeDoCopy,
 .activities,
 .activity,
-.support,
 .supportHead,
 .supportPhotos,
 .girls,
@@ -226,10 +227,11 @@
   word-break: break-word;
 }
 
-.supportCard {
+.support {
   position: absolute;
   left: 781px;
   top: 606px;
+  z-index: 2;
   width: 390px;
   height: 536px;
   background: #006838;
@@ -239,8 +241,8 @@
 
 .supportWave {
   position: absolute;
-  left: 781px;
-  top: 1000px;
+  left: 0;
+  top: 394px;
   z-index: 1;
   width: 390px;
   height: 142px;
@@ -267,8 +269,8 @@
 
 .supportHeading {
   position: absolute;
-  left: 818px;
-  top: 646px;
+  left: 37px;
+  top: 40px;
   z-index: 2;
   width: 257px;
   height: 141px;
@@ -285,8 +287,8 @@
 
 .supportMap {
   position: absolute;
-  left: 1049px;
-  top: 646px;
+  left: 268px;
+  top: 40px;
   z-index: 2;
   width: 112px;
   height: 120px;
@@ -295,8 +297,8 @@
 
 .supportBody {
   position: absolute;
-  left: 821px;
-  top: 805px;
+  left: 40px;
+  top: 199px;
   z-index: 2;
   width: 298px;
   height: 83px;
@@ -328,8 +330,8 @@
 
 .supportCta {
   position: absolute;
-  left: 804px;
-  top: 1071px;
+  left: 23px;
+  top: 465px;
   z-index: 3;
   width: 344px;
   height: 39px;
@@ -614,13 +616,182 @@
   white-space: nowrap;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 1299px) {
   .page {
     width: 100%;
     min-height: 0;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
+  .detail {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(260px, 340px);
+    gap: 28px 24px;
+    padding: 8px 24px 48px;
+    align-items: start;
+  }
+
+  .detailMain {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .support {
+    position: sticky;
+    left: auto;
+    top: 88px;
+    align-self: start;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 28px 22px 24px;
+    z-index: 3;
+  }
+
+  .supportWave {
+    left: 0;
+    right: 0;
+    top: auto;
+    bottom: 0;
+    width: 100%;
+    height: 142px;
+    border-radius: 0 0 30px 30px;
+  }
+
+  .supportWaveInner {
+    -webkit-mask-size: calc(1236 / 390 * 100%) 142px;
+    mask-size: calc(1236 / 390 * 100%) 142px;
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
+  }
+}
+
+@media (min-width: 1280px) and (max-width: 1299px) {
+  .support {
+    top: 24px;
+  }
+}
+
+@media (max-width: 1099px) {
+  .detail {
+    grid-template-columns: 1fr;
+  }
+
+  .support {
+    position: relative;
+    top: auto;
+    max-width: 520px;
+    z-index: 1;
+  }
+}
+
+@media (min-width: 1300px) {
+  .detail {
+    display: grid;
+    grid-template-columns: 537px 312px;
+    justify-content: space-between;
+    align-items: start;
+    position: absolute;
+    left: 133px;
+    top: 580px;
+    width: 1038px;
+    z-index: 2;
+  }
+
+  .detailMain {
+    display: flex;
+    flex-direction: column;
+    gap: 48px;
+    min-width: 0;
+  }
+
+  .whatWeDo,
+  .girls,
+  .approach {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .whatWeDoCopy,
+  .girlsCopy,
+  .approachCopy {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 10px;
+    width: 100%;
+  }
+
+  .sectionDot,
+  .sectionHeading,
+  .sectionIntro,
+  .sectionPhoto,
+  .activityTitle,
+  .activityBody,
+  .girlsDot,
+  .girlsHeading,
+  .girlsPhoto,
+  .girlsBody,
+  .approachDot,
+  .approachHeading,
+  .approachPhoto,
+  .approachBody {
+    position: relative;
+    left: auto;
+    top: auto !important;
+    width: auto !important;
+    max-width: 100%;
+    height: auto;
+    white-space: normal;
+  }
+
+  .sectionPhoto,
+  .girlsPhoto,
+  .approachPhoto {
+    width: 100%;
+    max-width: 537px;
+    height: auto;
+    aspect-ratio: 537 / 334;
+  }
+
+  .sectionPhoto img,
+  .girlsPhoto img,
+  .approachPhoto img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .activities {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .activity {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  .support {
+    position: sticky;
+    left: auto;
+    top: 24px;
+    align-self: start;
+    z-index: 3;
+    zoom: 0.8;
+  }
+}
+
+@media (max-width: 1299px) {
   .hero {
     display: flex;
     flex-direction: column;
@@ -777,42 +948,6 @@
     gap: 6px;
   }
 
-  .support {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 16px;
-    position: relative;
-    width: 100%;
-    padding: 24px 18px 28px;
-    background: #006838;
-    border-radius: 30px;
-    overflow: hidden;
-  }
-
-  .supportCard {
-    display: none;
-  }
-
-  .supportWave {
-    position: absolute;
-    left: 0;
-    right: 0;
-    top: auto;
-    bottom: 0;
-    width: 100%;
-    height: 90px;
-    border-radius: 0 0 30px 30px;
-    z-index: 0;
-  }
-
-  .supportWaveInner {
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
-    -webkit-mask-position: 0 0;
-    mask-position: 0 0;
-  }
-
   .supportHead {
     display: flex;
     align-items: flex-start;
@@ -964,5 +1099,23 @@
 
   .communityHeading {
     font-size: 24px;
+  }
+}
+
+@media (max-width: 900px) {
+  .hero {
+    margin: 84px 16px 24px;
+    padding: 28px 18px 28px;
+  }
+
+  .detail {
+    padding: 8px 16px 40px;
+  }
+
+  .whatWeDo,
+  .girls,
+  .approach,
+  .gallery {
+    padding: 8px 0 32px;
   }
 }

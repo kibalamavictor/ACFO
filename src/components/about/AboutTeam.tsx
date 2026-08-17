@@ -2,22 +2,25 @@
 
 import { useRef } from "react";
 import Link from "next/link";
-import { teamMembers } from "@/data/team";
+import { usePage, useSiteContent } from "@/components/cms/SiteContentProvider";
+import { text } from "@/lib/cms/pages";
 import { scrollCarousel } from "@/lib/scrollCarousel";
 import styles from "@/app/about.module.css";
 
 export default function AboutTeam() {
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const { team: teamMembers } = useSiteContent();
+  const copy = usePage("about").team;
 
   return (
     <section className={styles.team}>
       <div className={styles.teamHeader}>
         <div className={styles.teamBadge}>
           <img src="/images/badge-dot.svg" alt="" width={10} height={10} />
-          Our Team
+          {text(copy.badge, "Our Team")}
         </div>
 
-        <h2 className={styles.teamHeading}>The People Behind Our Work</h2>
+        <h2 className={styles.teamHeading}>{text(copy.heading)}</h2>
       </div>
 
       <div className={styles.teamGrid} ref={scrollerRef}>
@@ -31,8 +34,36 @@ export default function AboutTeam() {
                 height={355}
               />
             </div>
-            <p className={styles.teamName}>{member.name}</p>
-            <p className={styles.teamTitle}>{member.title}</p>
+            <div className={styles.teamMeta}>
+              <div className={styles.teamCopy}>
+                <p className={styles.teamName}>{member.name}</p>
+                <p className={styles.teamTitle}>{member.title}</p>
+              </div>
+              <div className={styles.teamSocial} aria-label={`${member.name} social links`}>
+                <a
+                  className={styles.teamSocialLink}
+                  href={member.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${member.name} on LinkedIn`}
+                  style={{
+                    maskImage: 'url("/images/footer-linkedin.svg")',
+                    WebkitMaskImage: 'url("/images/footer-linkedin.svg")',
+                  }}
+                />
+                <a
+                  className={styles.teamSocialLink}
+                  href={member.instagram}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${member.name} on Instagram`}
+                  style={{
+                    maskImage: 'url("/images/footer-instagram.svg")',
+                    WebkitMaskImage: 'url("/images/footer-instagram.svg")',
+                  }}
+                />
+              </div>
+            </div>
           </article>
         ))}
       </div>
@@ -82,7 +113,7 @@ export default function AboutTeam() {
       </div>
 
       <Link href="/our-team" className={styles.teamMeet}>
-        Meet All Team
+        {text(copy.cta, "Meet All Team")}
       </Link>
     </section>
   );

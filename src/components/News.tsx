@@ -3,26 +3,29 @@
 import { useRef } from "react";
 import Link from "next/link";
 import styles from "@/app/home.module.css";
-import { getNewsHref, newsStories } from "@/data/news";
+import { usePage, useSiteContent } from "@/components/cms/SiteContentProvider";
+import { text } from "@/lib/cms/pages";
+import { getNewsHref, publishedNews } from "@/lib/cms/public";
 import { scrollCarousel } from "@/lib/scrollCarousel";
 
 export default function News() {
   const scrollerRef = useRef<HTMLDivElement>(null);
+  const { news } = useSiteContent();
+  const newsStories = publishedNews(news);
+  const copy = usePage("home").news;
 
   return (
     <section className={styles.newsSection}>
       <div className={styles.newsHeader}>
         <div className={styles.newsBadge}>
           <img src="/images/badge-dot.svg" alt="" width={10} height={10} />
-          Latest News
+          {text(copy.badge, "Latest News")}
         </div>
 
-        <h2 className={styles.newsHeading}>
-          Stories of Hope, Progress, and Community Impact
-        </h2>
+        <h2 className={styles.newsHeading}>{text(copy.heading)}</h2>
 
         <Link href="/news" className={styles.newsSeeMore}>
-          See more
+          {text(copy.cta, "See more")}
         </Link>
 
         <div className={styles.newsNav}>
@@ -80,6 +83,8 @@ export default function News() {
                   alt={story.photoAlt}
                   width={294}
                   height={182}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
               <div className={styles.newsChip}>{story.chip}</div>

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import styles from "@/app/home.module.css";
 
@@ -13,9 +13,40 @@ const NAV_LINKS = [
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+  const lastY = useRef(0);
+
+  useEffect(() => {
+    lastY.current = window.scrollY;
+
+    const onScroll = () => {
+      const y = window.scrollY;
+
+      if (open || y < 8) {
+        setHidden(false);
+        lastY.current = y;
+        return;
+      }
+
+      if (y > lastY.current + 6) {
+        setHidden(true);
+      } else if (y < lastY.current - 6) {
+        setHidden(false);
+      }
+
+      lastY.current = y;
+    };
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [open]);
 
   return (
-    <header className={`${styles.header} ${open ? styles.headerOpen : ""}`}>
+    <header
+      className={`${styles.header} ${open ? styles.headerOpen : ""} ${
+        hidden ? styles.headerHidden : ""
+      }`}
+    >
       <Link href="/" className={styles.logo} aria-label="ACFO home">
         <img
           className={styles.wordmark}

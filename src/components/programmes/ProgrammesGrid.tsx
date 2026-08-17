@@ -3,7 +3,9 @@
 import { useState } from "react";
 import Link from "next/link";
 import ProgrammeProgress from "@/components/ProgrammeProgress";
-import { filterProgrammes } from "@/data/projects";
+import CmsCopy from "@/components/cms/CmsCopy";
+import { useSiteContent } from "@/components/cms/SiteContentProvider";
+import { filterProgrammes, getProgrammeHref, publishedProgrammes } from "@/lib/cms/public";
 import styles from "@/app/programmes.module.css";
 
 const FILTER_GAP = 23;
@@ -49,7 +51,8 @@ function getFilterLeft(label: FilterLabel, selected: FilterLabel) {
 
 export default function ProgrammesGrid() {
   const [selected, setSelected] = useState<FilterLabel>("All");
-  const visible = filterProgrammes(selected);
+  const { programmes: allProgrammes } = useSiteContent();
+  const visible = filterProgrammes(publishedProgrammes(allProgrammes), selected);
 
   return (
     <section className={styles.grid}>
@@ -88,6 +91,8 @@ export default function ProgrammesGrid() {
                   alt={programme.photoAlt}
                   width={399}
                   height={248}
+                  loading="lazy"
+                  decoding="async"
                 />
               </div>
 
@@ -103,7 +108,11 @@ export default function ProgrammesGrid() {
                 <h2 className={styles.title}>{programme.title}</h2>
               </div>
 
-              <p className={styles.cardBody}>{programme.body}</p>
+              <CmsCopy
+                className={styles.cardBody}
+                value={programme.body}
+                mode="inline"
+              />
 
               <ProgrammeProgress
                 programmeId={programme.id}
@@ -116,7 +125,7 @@ export default function ProgrammesGrid() {
                   {programme.targetLabel}
                 </p>
 
-                <Link href={programme.href} className={styles.learn}>
+                <Link href={getProgrammeHref(programme.id)} className={styles.learn}>
                   Learn More
                 </Link>
               </div>

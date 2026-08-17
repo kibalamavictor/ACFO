@@ -1,7 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import FormattedText from "@/components/cms/FormattedText";
+import { parseArticleBody } from "@/lib/cms/article";
+import type { CmsNewsStory } from "@/lib/cms/types";
 import styles from "@/app/blog.module.css";
 
 const LINKS = [
@@ -46,12 +49,40 @@ const SUPPORT_PHOTOS = [
   },
 ] as const;
 
-export default function BlogArticle() {
-  const [active, setActive] = useState("#introduction");
+export default function BlogArticle({
+  story,
+  primaryCta = {
+    href: "/donate",
+    label: "Support Our Education Programme",
+  },
+  secondaryCta = {
+    href: "/our-programmes",
+    label: "Partner With ACFO",
+  },
+}: {
+  story?: CmsNewsStory;
+  primaryCta?: { href: string; label: string };
+  secondaryCta?: { href: string; label: string };
+}) {
+  const sections = useMemo(
+    () => (story?.body ? parseArticleBody(story.body) : null),
+    [story?.body],
+  );
+  const links = useMemo(
+    () =>
+      sections
+        ? sections.map((section) => ({
+            href: `#${section.id}`,
+            label: section.heading,
+          }))
+        : LINKS.map((item) => ({ href: item.href, label: item.label })),
+    [sections],
+  );
+  const [active, setActive] = useState(links[0]?.href ?? "#introduction");
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    const headings = LINKS.map((item) =>
+    const headings = links.map((item) =>
       document.getElementById(item.href.slice(1)),
     ).filter((node): node is HTMLElement => Boolean(node));
 
@@ -74,7 +105,7 @@ export default function BlogArticle() {
 
     headings.forEach((heading) => observer.observe(heading));
     return () => observer.disconnect();
-  }, []);
+  }, [links]);
 
   const sharePage = async (id: (typeof SHARE)[number]["id"]) => {
     const url = window.location.href;
@@ -108,7 +139,7 @@ export default function BlogArticle() {
       <div className={styles.articleSidebar}>
         <h2 className={styles.quickHeading}>Quick Links</h2>
         <nav className={styles.quickNav} aria-label="Article sections">
-          {LINKS.map((item) => (
+          {links.map((item) => (
             <a
               key={item.href}
               href={item.href}
@@ -147,6 +178,86 @@ export default function BlogArticle() {
       </div>
 
       <div className={styles.articleMain}>
+        {sections ? (
+          <>
+            {sections.map((section, sectionIndex) => (
+              <section key={section.id} className={styles.articleBlock}>
+                <h2 id={section.id} className={styles.blockHeading}>
+                  <img src="/images/programme-dot.svg" alt="" width={10} height={10} />
+                  {section.heading}
+                </h2>
+                {section.blocks.map((block, blockIndex) => {
+                  if (block.type === "image") {
+                    return (
+                      <div key={`${section.id}-img-${blockIndex}`} className={styles.introPhoto}>
+                        <img
+                          src={block.src}
+                          alt={block.alt}
+                          width={473}
+                          height={248}
+                        />
+                      </div>
+                    );
+                  }
+                  if (block.type === "quote") {
+                    return (
+                      <p
+                        key={`${section.id}-q-${blockIndex}`}
+                        className={styles.commitmentQuote}
+                      >
+                        <FormattedText value={block.text} />
+                      </p>
+                    );
+                  }
+                  if (block.type === "list") {
+                    return (
+                      <ul
+                        key={`${section.id}-list-${blockIndex}`}
+                        className={styles.articleList}
+                      >
+                        {block.items.map((item, itemIndex) => (
+                          <li key={itemIndex}>
+                            <FormattedText value={item} />
+                          </li>
+                        ))}
+                      </ul>
+                    );
+                  }
+                  if (block.type === "subheading") {
+                    return (
+                      <h3
+                        key={`${section.id}-sub-${blockIndex}`}
+                        id={block.id}
+                        className={styles.subheading}
+                      >
+                        <FormattedText value={block.text} />
+                      </h3>
+                    );
+                  }
+                  return (
+                    <p
+                      key={`${section.id}-p-${blockIndex}`}
+                      className={styles.introP1}
+                    >
+                      <FormattedText value={block.text} />
+                    </p>
+                  );
+                })}
+                {sectionIndex === sections.length - 1 ? (
+                  <div className={styles.articleCtas}>
+                    <Link href={primaryCta.href} className={styles.ctaLime}>
+                      {primaryCta.label}
+                    </Link>
+                    <Link href={secondaryCta.href} className={styles.ctaForest}>
+                      {secondaryCta.label}
+                    </Link>
+                  </div>
+                ) : null}
+              </section>
+            ))}
+          </>
+        ) : (
+          <>
         <section className={styles.articleBlock}>
           <h2 id="introduction" className={styles.blockHeading}>
             <img src="/images/programme-dot.svg" alt="" width={10} height={10} />
@@ -251,14 +362,16 @@ export default function BlogArticle() {
             Together, We Can Help More Children Build Brighter Futures.
           </p>
           <div className={styles.articleCtas}>
-            <Link href="/donate" className={styles.ctaLime}>
-              Support Our Education Programme
+            <Link href={primaryCta.href} className={styles.ctaLime}>
+              {primaryCta.label}
             </Link>
-            <Link href="/our-programmes" className={styles.ctaForest}>
-              Partner With ACFO
+            <Link href={secondaryCta.href} className={styles.ctaForest}>
+              {secondaryCta.label}
             </Link>
           </div>
         </section>
+          </>
+        )}
       </div>
 
       <aside className={styles.supportCard}>

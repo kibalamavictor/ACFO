@@ -263,6 +263,34 @@
   scroll-margin-top: 88px;
 }
 
+.subheading {
+  position: absolute;
+  left: 356.67px;
+  width: 473.33px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 32, "wght" 600;
+  font-weight: 600;
+  font-size: 20px;
+  color: #000000;
+  scroll-margin-top: 88px;
+}
+
+.articleList {
+  position: absolute;
+  left: 356.67px;
+  width: 473.33px;
+  margin: 0;
+  padding-left: 22px;
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #000000;
+}
+
 .shareIcon {
   width: 20px;
   height: 20px;
@@ -334,6 +362,22 @@
 
 .introP2 {
   top: 590px;
+}
+
+.introP1 strong,
+.introP2 strong,
+.articleList strong,
+.commitmentQuote strong,
+.subheading strong {
+  font-weight: 700;
+}
+
+.introP1 em,
+.introP2 em,
+.articleList em,
+.commitmentQuote em,
+.subheading em {
+  font-style: italic;
 }
 
 .introPhoto {
@@ -698,7 +742,7 @@
   .page {
     width: 100%;
     min-height: 0;
-    overflow-x: hidden;
+    overflow-x: clip;
   }
 
   .relatedSpacer {
@@ -718,7 +762,7 @@
     align-items: center;
     gap: 28px;
     margin: 84px 24px 32px;
-    padding: 32px 28px 48px;
+    padding: 32px 28px 100px;
     background: #006838;
     border-radius: 30px;
     overflow: hidden;
@@ -736,13 +780,16 @@
     top: auto;
     bottom: 0;
     width: 100%;
-    height: 110px;
+    height: 142px;
     border-radius: 0 0 30px 30px;
   }
 
   .heroWaveInner {
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
+    inset: 0;
+    top: 0;
+    bottom: 0;
+    -webkit-mask-size: calc(1236 / 390 * 100%) 142px;
+    mask-size: calc(1236 / 390 * 100%) 142px;
     -webkit-mask-position: 0 0;
     mask-position: 0 0;
   }
@@ -816,6 +863,7 @@
     position: sticky;
     top: 88px;
     align-self: start;
+    z-index: 3;
   }
 
   .articleMain {
@@ -858,7 +906,9 @@
   .commitmentHeading,
   .commitmentP,
   .commitmentQuote,
-  .articleCtas {
+  .articleCtas,
+  .subheading,
+  .articleList {
     position: relative;
     left: auto;
     top: auto;
@@ -909,19 +959,24 @@
     flex-direction: column;
     gap: 16px;
     padding: 28px 22px 24px;
+    z-index: 3;
   }
 
   .supportWave {
     left: 0;
+    right: 0;
     top: auto;
     bottom: 0;
     width: 100%;
-    height: 110px;
+    height: 142px;
+    border-radius: 0 0 30px 30px;
   }
 
   .supportWaveInner {
-    -webkit-mask-size: 100% 100%;
-    mask-size: 100% 100%;
+    -webkit-mask-size: calc(1236 / 390 * 100%) 142px;
+    mask-size: calc(1236 / 390 * 100%) 142px;
+    -webkit-mask-position: 0 0;
+    mask-position: 0 0;
   }
 
   .supportHead {
@@ -980,7 +1035,14 @@
   }
 }
 
-@media (max-width: 1100px) {
+@media (min-width: 1280px) and (max-width: 1299px) {
+  .articleSidebar,
+  .supportCard {
+    top: 24px;
+  }
+}
+
+@media (max-width: 1099px) {
   .article {
     grid-template-columns: minmax(160px, 200px) minmax(0, 1fr);
     grid-template-areas:
@@ -992,6 +1054,7 @@
     position: relative;
     top: auto;
     max-width: 520px;
+    z-index: 1;
   }
 }
 
@@ -1001,11 +1064,7 @@
     align-items: flex-start;
     gap: 16px;
     margin: 84px 16px 24px;
-    padding: 28px 18px 32px;
-  }
-
-  .heroWave {
-    height: 90px;
+    padding: 28px 18px 28px;
   }
 
   .heroCopy {
@@ -1076,10 +1135,6 @@
     padding: 24px 18px 28px;
   }
 
-  .supportWave {
-    height: 90px;
-  }
-
   .supportHeading {
     font-size: 24px;
     line-height: 1.2;
@@ -1117,7 +1172,7 @@
 @media (min-width: 1300px) {
   .article {
     display: grid;
-    grid-template-columns: 200px minmax(0, 473px) 390px;
+    grid-template-columns: 200px minmax(0, 473px) 312px;
     justify-content: space-between;
     align-items: start;
     position: absolute;
@@ -1137,8 +1192,9 @@
   .articleSidebar {
     gap: 18px;
     position: sticky;
-    top: 88px;
+    top: 24px;
     align-self: start;
+    z-index: 3;
   }
 
   .articleMain {
@@ -1172,7 +1228,9 @@
   .commitmentHeading,
   .commitmentP,
   .commitmentQuote,
-  .articleCtas {
+  .articleCtas,
+  .subheading,
+  .articleList {
     position: relative;
     left: auto;
     top: auto;
@@ -1219,7 +1277,9 @@
   .supportCard {
     position: sticky;
     left: auto;
-    top: 88px;
+    top: 24px;
     align-self: start;
+    z-index: 3;
+    zoom: 0.8;
   }
 }

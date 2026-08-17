@@ -3,3 +3,10 @@ node_modules
 out
 .DS_Store
 *.log
+.vercel
+.env
+.env.local
+content/*.json
+public/uploads/*
+!public/uploads/.gitkeep
+tsconfig.tsbuildinfo

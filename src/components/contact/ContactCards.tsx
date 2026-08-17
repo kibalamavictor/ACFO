@@ -1,7 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { usePage, useSiteContent } from "@/components/cms/SiteContentProvider";
+import { text } from "@/lib/cms/pages";
+import { mailHref, phoneHref } from "@/lib/cms/public";
 import styles from "@/app/contact.module.css";
 
 export default function ContactCards() {
+  const { settings } = useSiteContent();
+  const cards = usePage("contact").cards;
+
   return (
     <section className={styles.cards}>
       <div className={`${styles.cardGlow} ${styles.cardGlowCall}`} />
@@ -24,12 +32,10 @@ export default function ContactCards() {
             width={64}
             height={64}
           />
-          <h2 className={styles.cardTitle}>Call Us</h2>
-          <p className={styles.cardBody}>
-            Get immediate assistance from Our Support team
-          </p>
-          <a className={styles.cardValue} href="tel:+211000000000">
-            +211 000 000 000
+          <h2 className={styles.cardTitle}>{text(cards.callTitle, "Call Us")}</h2>
+          <p className={styles.cardBody}>{text(cards.callBody)}</p>
+          <a className={styles.cardValue} href={phoneHref(settings.phone)}>
+            {settings.phone}
           </a>
         </article>
 
@@ -48,12 +54,10 @@ export default function ContactCards() {
             width={64}
             height={64}
           />
-          <h2 className={styles.cardTitle}>Email Us</h2>
-          <p className={styles.cardBody}>
-            Speak with our team for general enquiries
-          </p>
-          <a className={styles.cardValue} href="mailto:info@acfo.com">
-            info@acfo.com
+          <h2 className={styles.cardTitle}>{text(cards.emailTitle, "Email Us")}</h2>
+          <p className={styles.cardBody}>{text(cards.emailBody)}</p>
+          <a className={styles.cardValue} href={mailHref(settings.email)}>
+            {settings.email}
           </a>
         </article>
 
@@ -72,15 +76,15 @@ export default function ContactCards() {
             width={64}
             height={64}
           />
-          <h2 className={styles.cardTitle}>Visit Us</h2>
-          <p className={styles.cardBody}>P.O. Box 115, Juba, South Sudan</p>
+          <h2 className={styles.cardTitle}>{text(cards.visitTitle, "Visit Us")}</h2>
+          <p className={styles.cardBody}>{settings.address}</p>
           <Link
             className={styles.visitCta}
-            href="https://maps.google.com/?q=Juba,+South+Sudan"
+            href={settings.mapsUrl}
             target="_blank"
             rel="noreferrer"
           >
-            View On Map
+            {text(cards.visitCta, "View On Map")}
             <img
               className={styles.visitArrow}
               src="/images/contact-map-arrow.svg"

@@ -4,7 +4,8 @@ import { useMemo } from "react";
 import Link from "next/link";
 import styles from "@/app/news.module.css";
 import NewsStoryCard from "@/components/news/NewsStoryCard";
-import { filterNewsStories, getNewsHref } from "@/data/news";
+import { useSiteContent } from "@/components/cms/SiteContentProvider";
+import { filterNewsStories, getNewsHref, publishedNews } from "@/lib/cms/public";
 
 const FEATURED_LEFTS = [23, 445, 865] as const;
 
@@ -59,7 +60,11 @@ export default function NewsFeatured({
   selected: FilterLabel;
   onSelect: (label: FilterLabel) => void;
 }) {
-  const stories = useMemo(() => filterNewsStories(selected), [selected]);
+  const { news } = useSiteContent();
+  const stories = useMemo(
+    () => filterNewsStories(publishedNews(news), selected),
+    [news, selected],
+  );
   const featured = stories[0];
   const side = stories[1];
   const cards = stories.slice(2, 5);

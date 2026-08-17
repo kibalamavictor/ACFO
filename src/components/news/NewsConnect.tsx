@@ -1,9 +1,12 @@
 "use client";
 
 import { FormEvent } from "react";
+import { usePage } from "@/components/cms/SiteContentProvider";
+import { text } from "@/lib/cms/pages";
 import styles from "@/app/news.module.css";
 
 export default function NewsConnect() {
+  const connect = usePage("news").connect;
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
   };
@@ -13,12 +16,9 @@ export default function NewsConnect() {
       <div className={styles.connectPanel} />
       <div className={styles.connectWave} aria-hidden="true" />
 
-      <h2 className={styles.connectHeading}>Stay Connected With Our Work</h2>
+      <h2 className={styles.connectHeading}>{text(connect.heading)}</h2>
 
-      <p className={styles.connectBody}>
-        Get the latest stories, programme updates, and news from ACFO delivered
-        to your inbox.
-      </p>
+      <p className={styles.connectBody}>{text(connect.body)}</p>
 
       <form className={styles.connectForm} onSubmit={onSubmit}>
         <input

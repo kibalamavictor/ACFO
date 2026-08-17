@@ -4,12 +4,37 @@
 
 .directory {
   position: relative;
-  display: grid;
-  grid-template-columns: repeat(4, 294px);
-  gap: 40px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 56px;
   width: 1236px;
   margin: 0 22px 48px;
   padding-top: 640px;
+}
+
+.group {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+}
+
+.groupHeading {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 32, "wght" 600;
+  font-weight: 600;
+  font-size: 29px;
+  line-height: 1.2;
+  color: #000000;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 294px);
+  gap: 40px 20px;
+  width: 100%;
 }
 
 .card {
@@ -17,6 +42,7 @@
   flex-direction: column;
   align-items: flex-start;
   gap: 8px;
+  width: 294px;
   min-width: 0;
 }
 
@@ -29,10 +55,28 @@
 }
 
 .photo img {
-  width: 294px;
-  height: 355px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 22px;
+}
+
+.meta {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+}
+
+.copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  min-width: 0;
+  flex: 1 1 auto;
 }
 
 .name {
@@ -57,24 +101,53 @@
   color: #000000;
 }
 
+.social {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+.socialLink {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  background: #006838;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
 @media (max-width: 1279px) {
   .directory {
     width: 100%;
     margin: 0;
     padding: 8px 24px 48px;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 40px;
+  }
+
+  .groupHeading {
+    font-size: 24px;
+  }
+
+  .grid {
+    grid-template-columns: repeat(auto-fill, 294px);
     gap: 28px 20px;
+  }
+
+  .card {
+    width: 100%;
+    max-width: 294px;
   }
 
   .photo {
     width: 100%;
     height: auto;
     aspect-ratio: 294 / 355;
-  }
-
-  .photo img {
-    width: 100%;
-    height: 100%;
   }
 
   .name {
@@ -85,15 +158,38 @@
 @media (max-width: 900px) {
   .directory {
     padding: 8px 16px 40px;
-    grid-template-columns: 1fr;
-    gap: 24px;
+    gap: 32px;
   }
 
-  .name {
+  .group {
+    gap: 16px;
+  }
+
+  .groupHeading {
     font-size: 20px;
   }
 
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px 12px;
+  }
+
+  .card,
+  .photo {
+    width: 100%;
+    max-width: none;
+  }
+
+  .name {
+    font-size: 16px;
+  }
+
   .title {
-    font-size: 14px;
+    font-size: 13px;
+  }
+
+  .socialLink {
+    width: 16px;
+    height: 16px;
   }
 }

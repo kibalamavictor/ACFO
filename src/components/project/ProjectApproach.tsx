@@ -1,6 +1,13 @@
+"use client";
+
+import { usePage } from "@/components/cms/SiteContentProvider";
+import CmsCopy from "@/components/cms/CmsCopy";
+import { text } from "@/lib/cms/pages";
 import styles from "@/app/project.module.css";
 
 export default function ProjectApproach() {
+  const approach = usePage("education").approach;
+
   return (
     <section className={styles.approach}>
       <div className={styles.approachCopy}>
@@ -11,24 +18,19 @@ export default function ProjectApproach() {
           width={10}
           height={10}
         />
-        <h2 className={styles.approachHeading}>Our Approach</h2>
+        <h2 className={styles.approachHeading}>{text(approach.heading)}</h2>
       </div>
 
       <div className={styles.approachPhoto}>
         <img
-          src="/images/programme-livelihoods.jpg"
-          alt="Community engagement around children's education"
+          src={text(approach.photo, "/images/programme-livelihoods.jpg")}
+          alt={text(approach.photoAlt)}
           width={537}
           height={334}
         />
       </div>
 
-      <p className={styles.approachBody}>
-        We believe children&apos;s education is connected to their wellbeing,
-        protection, family stability, and wider community environment. Our
-        approach therefore combines direct education support with psychosocial
-        support, protection, and community engagement.
-      </p>
+      <CmsCopy className={styles.approachBody} value={text(approach.body)} />
     </section>
   );
 }

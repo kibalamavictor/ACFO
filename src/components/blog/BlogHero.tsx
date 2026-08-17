@@ -7,6 +7,7 @@ type BlogHeroProps = {
   body?: string;
   photo?: string;
   photoAlt?: string;
+  showDate?: boolean;
 };
 
 export default function BlogHero({
@@ -16,6 +17,7 @@ export default function BlogHero({
   body = "Discover the latest stories, updates, insights, and community highlights from African Children's Foundation Organization.",
   photo = "/images/programme-education.jpg",
   photoAlt = "Children in a classroom",
+  showDate = true,
 }: BlogHeroProps) {
   return (
     <section className={styles.hero}>
@@ -28,7 +30,14 @@ export default function BlogHero({
       </div>
 
       <div className={styles.photo}>
-        <img src={photo} alt={photoAlt} width={493} height={246} />
+        <img
+          src={photo}
+          alt={photoAlt}
+          width={493}
+          height={246}
+          fetchPriority="high"
+          decoding="async"
+        />
       </div>
 
       <div className={styles.heroCopy}>
@@ -37,10 +46,12 @@ export default function BlogHero({
             <img src="/images/badge-dot.svg" alt="" width={10} height={10} />
             {chip}
           </div>
-          <p className={styles.date}>
-            <span className={styles.dateDot} />
-            {date}
-          </p>
+          {showDate ? (
+            <p className={styles.date}>
+              <span className={styles.dateDot} />
+              {date}
+            </p>
+          ) : null}
         </div>
 
         <h1 className={styles.heading}>{title}</h1>

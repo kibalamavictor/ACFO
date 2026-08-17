@@ -264,6 +264,14 @@
   word-break: break-word;
 }
 
+.cardBody strong {
+  font-weight: 700;
+}
+
+.cardBody em {
+  font-style: italic;
+}
+
 .card .progress {
   position: relative;
   width: 100%;

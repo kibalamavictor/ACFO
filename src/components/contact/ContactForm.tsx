@@ -1,3 +1,10 @@
+"use client";
+
+import { useState } from "react";
+import { usePage } from "@/components/cms/SiteContentProvider";
+import { text } from "@/lib/cms/pages";
+import { DEFAULT_COUNTRY } from "@/lib/countries";
+import CountryCodeSelect from "@/components/contact/CountryCodeSelect";
 import styles from "@/app/contact.module.css";
 
 const PHOTOS = [
@@ -8,6 +15,9 @@ const PHOTOS = [
 ] as const;
 
 export default function ContactForm() {
+  const form = usePage("contact").form;
+  const [country, setCountry] = useState(DEFAULT_COUNTRY);
+
   return (
     <section className={styles.formSection}>
       <img
@@ -20,13 +30,11 @@ export default function ContactForm() {
 
       <div className={styles.formBadge}>
         <img src="/images/badge-dot.svg" alt="" width={10} height={10} />
-        Contact Form
+        {text(form.badge, "Contact Form")}
       </div>
 
-      <h2 className={styles.formHeading}>Send Us a Message</h2>
-      <p className={styles.formBody}>
-        Fill in the form below and our team will get back to you.
-      </p>
+      <h2 className={styles.formHeading}>{text(form.heading)}</h2>
+      <p className={styles.formBody}>{text(form.body)}</p>
 
       {PHOTOS.map((photo) => (
         <div
@@ -100,27 +108,19 @@ export default function ContactForm() {
                 />
               </span>
             </label>
-            <label className={styles.field}>
+            <div className={styles.field}>
               <span className={styles.fieldLabel}>Phone</span>
-              <span className={styles.inputWrap}>
-                <span className={styles.phonePrefix}>
-                  <img src="/images/flag-ss.svg" alt="" width={29} height={20} />
-                  <img
-                    src="/images/contact-form-caret.svg"
-                    alt=""
-                    width={16}
-                    height={16}
-                  />
-                </span>
+              <span className={`${styles.inputWrap} ${styles.phoneField}`}>
+                <CountryCodeSelect value={country} onChange={setCountry} />
                 <input
                   className={styles.input}
                   type="tel"
                   name="phone"
-                  placeholder="+211 11 96123-4567"
+                  placeholder="11 96123-4567"
                   autoComplete="tel"
                 />
               </span>
-            </label>
+            </div>
           </div>
 
           <label className={styles.fieldWide}>

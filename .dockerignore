@@ -1,0 +1,15 @@
+node_modules
+.next
+.git
+.gitignore
+.vercel
+.DS_Store
+*.log
+.env
+.env.local
+Dockerfile
+docker-compose.yml
+README.md
+content/*.json
+public/uploads/*
+!public/uploads/.gitkeep
