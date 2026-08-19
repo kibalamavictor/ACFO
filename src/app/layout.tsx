@@ -8,13 +8,14 @@ import "./globals.css";
 export const metadata: Metadata = rootMetadata();
 
 export const viewport = {
-  width: 1280,
+  width: "device-width",
+  initialScale: 1,
   themeColor: "#006838",
 };
 
 export const dynamic = "force-dynamic";
 
-const SCALE_SCRIPT = `(function(){if(location.pathname.indexOf("/admin")===0)return;var s=(window.innerWidth||1280)/1280;document.documentElement.classList.add("site-scale");document.documentElement.style.setProperty("--site-scale",String(s));var b=document.body;if(b){b.style.zoom=String(s);b.style.margin="0";}})();`;
+const SCALE_SCRIPT = `(function(){if(location.pathname.indexOf("/admin")===0)return;var w=window.innerWidth||1280;if(w>=1280){var s=w/1280;var n=String(s);document.documentElement.classList.add("site-scale");document.documentElement.style.setProperty("--site-scale",n);document.documentElement.style.zoom=n;var b=document.body;if(b){b.style.zoom="";b.style.margin="0";}}})();`;
 
 export default async function RootLayout({
   children,

@@ -29,21 +29,40 @@ export function applySiteScale() {
   if (location.pathname.startsWith("/admin")) {
     html.classList.remove("site-scale");
     html.style.removeProperty("--site-scale");
+    html.style.zoom = "";
     body.style.zoom = "";
     body.style.margin = "";
     return;
   }
 
   const width = window.innerWidth;
-  const scale = Math.max(width / DESIGN_WIDTH, 0.01);
+
+  if (width < DESIGN_WIDTH) {
+    html.classList.remove("site-scale");
+    html.style.removeProperty("--site-scale");
+    html.style.zoom = "";
+    body.style.zoom = "";
+    body.style.margin = "";
+    return;
+  }
+
+  const scale = width / DESIGN_WIDTH;
+  const next = String(scale);
 
   html.classList.add("site-scale");
-  html.style.setProperty("--site-scale", String(scale));
+
+  if (html.style.getPropertyValue("--site-scale") === next) {
+    return;
+  }
+
+  html.style.setProperty("--site-scale", next);
 
   if (supportsZoom()) {
-    body.style.zoom = String(scale);
+    html.style.zoom = next;
+    body.style.zoom = "";
     body.style.margin = "0";
   } else {
+    html.style.zoom = "";
     body.style.zoom = "";
     body.style.margin = "0 auto";
   }
@@ -61,11 +80,9 @@ export default function ViewportScale({
 
     const onResize = () => applySiteScale();
     window.addEventListener("resize", onResize);
-    window.visualViewport?.addEventListener("resize", onResize);
 
     return () => {
       window.removeEventListener("resize", onResize);
-      window.visualViewport?.removeEventListener("resize", onResize);
     };
   }, [pathname]);
 

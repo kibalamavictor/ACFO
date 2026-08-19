@@ -774,7 +774,7 @@
   mask-mode: alpha;
 }
 
-@media (max-width: 0) {
+@media (max-width: 900px) {
   .page {
     width: 100%;
     min-height: 0;

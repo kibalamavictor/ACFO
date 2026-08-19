@@ -616,7 +616,7 @@
   white-space: nowrap;
 }
 
-@media (max-width: 0) {
+@media (max-width: 1299px) {
   .page {
     width: 100%;
     min-height: 0;
@@ -670,13 +670,13 @@
   }
 }
 
-@media all {
+@media (min-width: 1280px) and (max-width: 1299px) {
   .support {
     top: 24px;
   }
 }
 
-@media (max-width: 0) {
+@media (max-width: 1099px) {
   .detail {
     grid-template-columns: 1fr;
   }
@@ -689,7 +689,7 @@
   }
 }
 
-@media all {
+@media (min-width: 1300px) {
   .detail {
     display: grid;
     grid-template-columns: 537px 312px;
@@ -791,7 +791,7 @@
   }
 }
 
-@media (max-width: 0) {
+@media (max-width: 1299px) {
   .hero {
     display: flex;
     flex-direction: column;
@@ -1102,7 +1102,7 @@
   }
 }
 
-@media (max-width: 0) {
+@media (max-width: 900px) {
   .hero {
     margin: 84px 16px 24px;
     padding: 28px 18px 28px;
