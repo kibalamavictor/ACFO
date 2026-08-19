@@ -1178,7 +1178,7 @@
   top: 3317px;
   width: 1280px;
   height: 501px;
-  overflow: hidden;
+  overflow: visible;
   isolation: isolate;
 }
 

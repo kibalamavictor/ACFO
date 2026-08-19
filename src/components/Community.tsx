@@ -233,11 +233,16 @@ export default function Community({ top = 3317 }: CommunityProps) {
       cancelAnimationFrame(frame);
       frame = requestAnimationFrame(() => {
         const stageBox = stage.getBoundingClientRect();
-        if (stageBox.width > 0 && stageBox.height > 0) {
+        const zoom = parseFloat(
+          getComputedStyle(document.documentElement).zoom || "1",
+        ) || 1;
+        const w = stageBox.width / zoom;
+        const h = stageBox.height / zoom;
+        if (w > 0 && h > 0) {
           setSize((current) =>
-            current.width === stageBox.width && current.height === stageBox.height
+            current.width === w && current.height === h
               ? current
-              : { width: stageBox.width, height: stageBox.height },
+              : { width: w, height: h },
           );
         }
 
@@ -249,10 +254,10 @@ export default function Community({ top = 3317 }: CommunityProps) {
         }
 
         const next = {
-          left: copyBox.left - stageBox.left,
-          top: copyBox.top - stageBox.top,
-          right: copyBox.right - stageBox.left,
-          bottom: copyBox.bottom - stageBox.top,
+          left: (copyBox.left - stageBox.left) / zoom,
+          top: (copyBox.top - stageBox.top) / zoom,
+          right: (copyBox.right - stageBox.left) / zoom,
+          bottom: (copyBox.bottom - stageBox.top) / zoom,
         };
         setCopy((current) =>
           current &&
