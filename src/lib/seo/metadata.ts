@@ -45,7 +45,7 @@ export function rootMetadata(): Metadata {
     category: "nonprofit",
     keywords: SEO_KEYWORDS,
     generator: "Next.js",
-    referrer: "origin-when-cross-origin",
+    referrer: "strict-origin-when-cross-origin",
     formatDetection: {
       email: false,
       address: false,
@@ -98,8 +98,8 @@ export function rootMetadata(): Metadata {
         : undefined,
     },
     icons: {
-      icon: [{ url: "/icon", type: "image/png" }],
-      apple: [{ url: "/apple-icon", type: "image/png" }],
+      icon: [{ url: "/icon.png", type: "image/png" }],
+      apple: [{ url: "/apple-icon.png", type: "image/png" }],
     },
     manifest: "/manifest.webmanifest",
     other: {

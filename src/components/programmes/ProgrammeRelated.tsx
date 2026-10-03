@@ -99,6 +99,7 @@ function MiniCard({ programme }: { programme: CmsProgramme }) {
         </p>
         <Link href={getProgrammeHref(programme.id)} className={programmeStyles.learn}>
           Learn More
+          <span className="sr-only"> about {programme.title}</span>
         </Link>
       </div>
     </article>

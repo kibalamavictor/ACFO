@@ -4,9 +4,13 @@ import { useState } from "react";
 import NewsMore from "@/components/news/NewsMore";
 import { ProgrammesCommunity } from "@/components/defer";
 import Footer from "@/components/Footer";
+import { useContentBottom } from "@/components/ContentAwareTail";
 import { useSiteContent } from "@/components/cms/SiteContentProvider";
 import { publishedNews } from "@/lib/cms/public";
 import styles from "@/app/blog.module.css";
+
+/** Bottom edge of the article content in the original 1280px design. */
+const DESIGNED_BOTTOM = 2460;
 
 const COLLAPSED = {
   community: 3181,
@@ -21,16 +25,18 @@ const EXPANDED = {
 } as const;
 
 export default function BlogRelated({
-  extraHeight = 0,
   excludeSlug,
 }: {
-  extraHeight?: number;
   excludeSlug?: string;
 }) {
   const [rows, setRows] = useState<1 | 2>(1);
   const layout = rows === 2 ? EXPANDED : COLLAPSED;
   const { news } = useSiteContent();
-  const related = publishedNews(news).filter((story) => story.slug !== excludeSlug);
+  const related = publishedNews(news).filter(
+    (story) => story.slug !== excludeSlug,
+  );
+
+  const extraHeight = useContentBottom(`.${styles.article}`, DESIGNED_BOTTOM);
 
   return (
     <>
@@ -39,7 +45,10 @@ export default function BlogRelated({
         style={{ height: layout.minHeight + extraHeight }}
         aria-hidden
       />
-      <div className={styles.newsTail}>
+      <div
+        className={styles.newsTail}
+        style={extraHeight !== 0 ? { top: -199 + extraHeight } : undefined}
+      >
         <NewsMore
           heading="Related stories"
           headingColor="#000000"

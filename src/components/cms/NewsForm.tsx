@@ -30,7 +30,7 @@ export default function NewsForm({
   const [date, setDate] = useState(story?.date ?? formatNewsDate());
   const [chip, setChip] = useState(story?.chip ?? "Education");
   const [excerpt, setExcerpt] = useState(story?.excerpt ?? "");
-  const [photo, setPhoto] = useState(story?.photo ?? "/images/community-1.jpg");
+  const [photo, setPhoto] = useState(story?.photo ?? "/images/community-1.webp");
   const [photoAlt, setPhotoAlt] = useState(story?.photoAlt ?? "");
   const [published, setPublished] = useState(story?.published ?? true);
   const [body, setBody] = useState(story?.body ?? "");

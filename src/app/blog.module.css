@@ -1,6 +1,6 @@
 .page {
   width: 1280px;
-  min-height: 4187px;
+  min-height: 0;
   margin: 0 auto;
   position: relative;
   background: #ffffff;
@@ -120,8 +120,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -141,8 +141,8 @@
   gap: 12px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -185,8 +185,8 @@
   height: 76px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -224,8 +224,8 @@
 .quickLinkActive {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -251,8 +251,8 @@
   gap: 10px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   color: #000000;
@@ -347,8 +347,8 @@
   width: 473.33px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -439,8 +439,8 @@
   width: 473.33px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -522,8 +522,8 @@
   width: 473.33px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -568,8 +568,8 @@
   border-left: 4px solid #02b702;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: italic;
@@ -597,8 +597,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -690,8 +690,8 @@
   height: 83px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -729,8 +729,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -851,7 +851,7 @@
     grid-template-columns: minmax(160px, 200px) minmax(0, 1fr) minmax(260px, 340px);
     grid-template-areas: "side main card";
     gap: 28px 24px;
-    padding: 8px 24px 48px;
+    padding: 8px 24px 32px;
     align-items: start;
   }
 
@@ -1090,7 +1090,7 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
-    padding: 8px 16px 40px;
+    padding: 8px 16px 24px;
   }
 
   .articleSidebar {
@@ -1131,7 +1131,7 @@
 
   .supportCard {
     max-width: none;
-    min-height: 420px;
+    min-height: 0;
     padding: 24px 18px 28px;
   }
 

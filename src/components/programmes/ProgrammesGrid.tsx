@@ -127,6 +127,7 @@ export default function ProgrammesGrid() {
 
                 <Link href={getProgrammeHref(programme.id)} className={styles.learn}>
                   Learn More
+                  <span className="sr-only"> about {programme.title}</span>
                 </Link>
               </div>
             </article>

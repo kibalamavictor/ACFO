@@ -119,6 +119,7 @@ export default function Programmes() {
                 </p>
                 <Link href={getProgrammeHref(programme.id)} className={styles.programmeLearn}>
                   Learn More
+                  <span className="sr-only"> about {programme.title}</span>
                 </Link>
               </div>
             </article>

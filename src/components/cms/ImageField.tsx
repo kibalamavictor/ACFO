@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 async function prepareUpload(file: File) {
   if (
@@ -36,6 +36,22 @@ async function prepareUpload(file: File) {
   }
 }
 
+function isRemoteUrl(value: string) {
+  return /^https?:\/\//i.test(value.trim());
+}
+
+async function postUpload(data: FormData) {
+  const response = await fetch("/api/cms/upload", {
+    method: "POST",
+    body: data,
+  });
+  const payload = (await response.json()) as { url?: string; error?: string };
+  if (!response.ok || !payload.url) {
+    throw new Error(payload.error || "Upload failed");
+  }
+  return payload.url;
+}
+
 export default function ImageField({
   label,
   value,
@@ -48,9 +64,46 @@ export default function ImageField({
   const [uploading, setUploading] = useState(false);
   const [error, setError] = useState("");
   const [preview, setPreview] = useState(value);
+  const lastImported = useRef(value);
+  const onChangeRef = useRef(onChange);
+  onChangeRef.current = onChange;
 
   useEffect(() => {
     setPreview(value);
+  }, [value]);
+
+  useEffect(() => {
+    const url = value.trim();
+    if (!isRemoteUrl(url) || url === lastImported.current) {
+      return;
+    }
+
+    const timer = window.setTimeout(() => {
+      void (async () => {
+        lastImported.current = url;
+        setUploading(true);
+        setError("");
+        try {
+          const data = new FormData();
+          data.append("url", url);
+          const imported = await postUpload(data);
+          lastImported.current = imported;
+          onChangeRef.current(imported);
+          setPreview(imported);
+        } catch (caught) {
+          lastImported.current = "";
+          setError(
+            caught instanceof Error
+              ? caught.message
+              : "Could not import that image URL",
+          );
+        } finally {
+          setUploading(false);
+        }
+      })();
+    }, 700);
+
+    return () => window.clearTimeout(timer);
   }, [value]);
 
   const onFile = async (file: File | undefined) => {
@@ -65,16 +118,10 @@ export default function ImageField({
     data.append("file", prepared);
 
     try {
-      const response = await fetch("/api/cms/upload", {
-        method: "POST",
-        body: data,
-      });
-      const payload = (await response.json()) as { url?: string; error?: string };
-      if (!response.ok || !payload.url) {
-        throw new Error(payload.error || "Upload failed");
-      }
-      onChange(payload.url);
-      setPreview(payload.url);
+      const url = await postUpload(data);
+      lastImported.current = url;
+      onChange(url);
+      setPreview(url);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Upload failed");
     } finally {
@@ -87,7 +134,17 @@ export default function ImageField({
       <span>{label}</span>
       <div className="cmsImageRow">
         {preview ? (
-          <img className="cmsImagePreview" src={preview} alt="" />
+          <img
+            className="cmsImagePreview"
+            src={preview}
+            alt=""
+            referrerPolicy="no-referrer"
+            onError={() => {
+              if (!uploading) {
+                setError("This image could not be previewed. Upload the file or use a direct image URL.");
+              }
+            }}
+          />
         ) : (
           <div className="cmsImagePreview cmsImageEmpty">No image</div>
         )}
@@ -97,8 +154,9 @@ export default function ImageField({
             onChange={(event) => {
               onChange(event.target.value);
               setPreview(event.target.value);
+              setError("");
             }}
-            placeholder="/images/community-1.jpg"
+            placeholder="Paste an image URL or upload a file"
           />
           <label className="cmsUpload">
             {uploading ? "Uploading…" : "Upload image"}

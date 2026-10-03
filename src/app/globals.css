@@ -45,8 +45,8 @@ body {
   color: #000000;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-synthesis: none;
   touch-action: manipulation;
 }
@@ -83,4 +83,16 @@ button {
 img {
   display: block;
   max-width: none;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

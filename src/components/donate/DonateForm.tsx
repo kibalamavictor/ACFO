@@ -7,10 +7,10 @@ import styles from "@/app/donate.module.css";
 const AMOUNTS = ["$10", "$25", "$50", "$100", "$250"] as const;
 
 const PHOTOS = [
-  { src: "/images/community-1.jpg", left: 99, top: 816 },
-  { src: "/images/community-2.jpg", left: 211, top: 945 },
-  { src: "/images/community-3.jpg", left: 989, top: 979 },
-  { src: "/images/community-4.jpg", left: 1097, top: 797 },
+  { src: "/images/community-1.webp", left: 99, top: 816 },
+  { src: "/images/community-2.webp", left: 211, top: 945 },
+  { src: "/images/community-3.webp", left: 989, top: 979 },
+  { src: "/images/community-4.webp", left: 1097, top: 797 },
 ] as const;
 
 const PAY_METHODS = [

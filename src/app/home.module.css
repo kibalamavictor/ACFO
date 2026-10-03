@@ -1,9 +1,10 @@
 .page {
   width: 1280px;
-  min-height: 5094px;
+  min-height: 5196px;
   margin: 0 auto;
   position: relative;
   background: #ffffff;
+  overflow-x: clip;
 }
 
 .header {
@@ -68,8 +69,8 @@
   gap: 21px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -79,8 +80,8 @@
 
 .link {
   flex-shrink: 0;
-  font-weight: 400;
-  font-variation-settings: "opsz" 14, "wght" 400;
+  font-weight: 300;
+  font-variation-settings: "opsz" 14, "wght" 300;
 }
 
 .contact {
@@ -99,8 +100,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -124,8 +125,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -184,48 +185,59 @@
 }
 
 .heading {
-  position: absolute;
-  left: 797px;
-  top: 550px;
+  position: relative;
+  left: auto;
+  top: auto;
   z-index: 2;
-  width: 547px;
-  height: 80px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  height: auto;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-variation-settings: "opsz" 32, "wght" 700;
   font-weight: 700;
   font-size: 33px;
-  line-height: normal;
+  line-height: 1.2;
   font-style: normal;
   color: #006838;
+  white-space: normal;
+  overflow-wrap: anywhere;
   word-break: break-word;
 }
 
 .subtitle {
-  position: absolute;
-  left: 797px;
-  top: 643px;
+  position: relative;
+  left: auto;
+  top: auto;
   z-index: 2;
-  width: 418px;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
   height: auto;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
-  line-height: normal;
+  line-height: 1.4;
   font-style: normal;
   color: #000000;
+  white-space: normal;
+  overflow-wrap: anywhere;
   word-break: break-word;
 }
 
 .programmes {
-  position: absolute;
-  left: 797px;
-  top: 703px;
+  position: relative;
+  left: auto;
+  top: auto;
   z-index: 2;
-  width: 164px;
-  height: 39px;
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+  height: auto;
+  min-height: 39px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -235,22 +247,27 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
-  line-height: normal;
+  line-height: 1.2;
   font-style: normal;
   color: #ffffff;
-  white-space: nowrap;
+  white-space: normal;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .partner {
-  position: absolute;
-  left: 969px;
-  top: 703px;
+  position: relative;
+  left: auto;
+  top: auto;
   z-index: 2;
-  width: 156px;
-  height: 39px;
+  width: auto;
+  max-width: 100%;
+  min-width: 0;
+  height: auto;
+  min-height: 39px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -260,51 +277,84 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
-  line-height: normal;
+  line-height: 1.2;
   font-style: normal;
   color: #ffffff;
-  white-space: nowrap;
+  white-space: normal;
+  text-align: center;
+  overflow-wrap: anywhere;
 }
 
 .dots {
   position: absolute;
-  left: 593px;
-  bottom: 28px;
+  left: 571px;
+  bottom: 20px;
   z-index: 2;
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 0;
   width: auto;
   height: auto;
 }
 
+/* 24px hit area (WCAG target size) around the 8px Figma dot. */
 .dot,
 .dotActive {
-  width: 8px;
-  height: 8px;
+  position: relative;
+  width: 24px;
+  height: 24px;
   padding: 0;
   border: none;
-  border-radius: 50%;
+  background: transparent;
   cursor: pointer;
 }
 
-.dot {
+.dot::before,
+.dotActive::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border-radius: 50%;
+}
+
+.dot::before {
   background: #ffffff;
 }
 
-.dotActive {
+.dotActive::before {
   background: #02b702;
 }
 
+.dot:focus-visible,
+.dotActive:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: -2px;
+  border-radius: 50%;
+}
+
 .heroActions {
-  display: contents;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
 }
 
 .heroCopy {
-  display: contents;
+  position: absolute;
+  left: 797px;
+  top: 550px;
+  width: 461px;
+  max-width: calc(1280px - 819px);
+  min-width: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
 }
 
 .about,
@@ -354,8 +404,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -391,15 +441,19 @@
   left: 664px;
   top: 965px;
   width: 430px;
-  height: 70px;
+  max-width: 430px;
+  min-width: 0;
+  height: auto;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-variation-settings: "opsz" 32, "wght" 600;
   font-weight: 600;
   font-size: 29px;
-  line-height: normal;
+  line-height: 1.2;
   font-style: normal;
   color: #000000;
+  white-space: normal;
+  overflow-wrap: anywhere;
   word-break: break-word;
 }
 
@@ -408,15 +462,19 @@
   left: 664px;
   top: 1058px;
   width: 418px;
-  height: 165px;
+  max-width: 418px;
+  min-width: 0;
+  height: auto;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
   color: #000000;
+  white-space: normal;
+  overflow-wrap: anywhere;
   word-break: break-word;
 }
 
@@ -443,8 +501,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -513,8 +571,8 @@
   height: 50px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -600,8 +658,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -633,15 +691,19 @@
   left: 127px;
   top: 1731px;
   width: 333px;
-  height: 66px;
+  max-width: 333px;
+  min-width: 0;
+  height: auto;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-variation-settings: "opsz" 32, "wght" 600;
   font-weight: 600;
   font-size: 27px;
-  line-height: normal;
+  line-height: 1.2;
   font-style: normal;
   color: #ffffff;
+  white-space: normal;
+  overflow-wrap: anywhere;
   word-break: break-word;
 }
 
@@ -650,15 +712,19 @@
   left: 127px;
   top: 1822px;
   width: 452px;
-  height: 77px;
+  max-width: 452px;
+  min-width: 0;
+  height: auto;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
-  line-height: normal;
+  line-height: 1.4;
   font-style: normal;
   color: #ffffff;
+  white-space: normal;
+  overflow-wrap: anywhere;
   word-break: break-word;
 }
 
@@ -784,8 +850,8 @@
   margin: 0;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 20px;
   line-height: normal;
   font-style: normal;
@@ -812,8 +878,8 @@
   margin: 0;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 14px;
   line-height: normal;
   font-style: normal;
@@ -837,8 +903,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -857,15 +923,19 @@
   left: 22px;
   top: 2542px;
   width: 541px;
-  height: 70px;
+  max-width: 541px;
+  min-width: 0;
+  height: auto;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-variation-settings: "opsz" 32, "wght" 600;
   font-weight: 600;
   font-size: 29px;
-  line-height: normal;
+  line-height: 1.2;
   font-style: normal;
   color: #000000;
+  white-space: normal;
+  overflow-wrap: anywhere;
   word-break: break-word;
 }
 
@@ -884,8 +954,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -1034,8 +1104,8 @@
   overflow: hidden;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: 1.375;
   height: 2.75em;
@@ -1136,8 +1206,8 @@
   min-width: 0;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -1163,8 +1233,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -1231,8 +1301,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -1252,16 +1322,20 @@
   top: 69px;
   z-index: 2;
   width: 339px;
-  height: 66px;
+  max-width: 339px;
+  min-width: 0;
+  height: auto;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-variation-settings: "opsz" 32, "wght" 600;
   font-weight: 600;
   font-size: 27px;
-  line-height: normal;
+  line-height: 1.2;
   font-style: normal;
   color: #006838;
   text-align: center;
+  white-space: normal;
+  overflow-wrap: anywhere;
   word-break: break-word;
 }
 
@@ -1310,8 +1384,8 @@
   height: 19px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -1335,8 +1409,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -1392,8 +1466,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -1407,46 +1481,11 @@
   flex-shrink: 0;
 }
 
-.partnersLogoA1,
-.partnersLogoA2,
-.partnersLogoA3 {
-  position: absolute;
-  top: 3951px;
-  width: 132.515px;
-  height: 35.875px;
-}
-
-.partnersLogoA1 {
-  left: 253px;
-}
-
-.partnersLogoA2 {
-  left: 676px;
-}
-
-.partnersLogoA3 {
-  left: 1099px;
-}
-
-.partnersLogoB1,
-.partnersLogoB2,
-.partnersLogoB3 {
-  position: absolute;
-  top: 3958px;
-  width: 134.98px;
-  height: 22.5px;
-}
-
-.partnersLogoB1 {
-  left: 40px;
-}
-
-.partnersLogoB2 {
-  left: 463px;
-}
-
-.partnersLogoB3 {
-  left: 886px;
+.partnersLogo {
+  width: auto;
+  max-width: 180px;
+  height: 44px;
+  object-fit: contain;
 }
 
 .newsBadge {
@@ -1465,8 +1504,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -1485,15 +1524,19 @@
   left: 22px;
   top: 4134px;
   width: 364px;
-  height: 66px;
+  max-width: 364px;
+  min-width: 0;
+  height: auto;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-variation-settings: "opsz" 32, "wght" 600;
   font-weight: 600;
   font-size: 27px;
-  line-height: normal;
+  line-height: 1.2;
   font-style: normal;
   color: #000000;
+  white-space: normal;
+  overflow-wrap: anywhere;
   word-break: break-word;
 }
 
@@ -1512,8 +1555,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -1578,7 +1621,7 @@
   display: flex;
   flex-direction: row;
   flex-wrap: nowrap;
-  gap: 20px;
+  gap: 16px;
   overflow-x: auto;
   overflow-y: hidden;
   scroll-snap-type: x mandatory;
@@ -1591,8 +1634,8 @@
 
 .newsCard {
   position: relative;
-  flex: 0 0 294px;
-  width: 294px;
+  flex: 0 0 calc((1236px - 48px) / 4);
+  width: calc((1236px - 48px) / 4);
   scroll-snap-align: start;
 }
 
@@ -1605,28 +1648,27 @@
 }
 
 .newsPhoto {
-  width: 294px;
-  height: 182px;
+  width: 100%;
+  aspect-ratio: 399 / 248;
   border-radius: 22px;
   overflow: hidden;
 }
 
 .newsPhoto img {
-  width: 294px;
-  height: 182px;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
   border-radius: 22px;
 }
 
 .newsChip {
   margin-top: 25px;
-  width: auto;
-  max-width: 100%;
+  align-self: flex-start;
   height: 29px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 5px 6px;
+  padding: 5px 10px;
   background: #e8e8e8;
   border-radius: 8px;
   font-family: "Inter", sans-serif;
@@ -1642,8 +1684,7 @@
 
 .newsBody {
   margin-top: 12px;
-  width: 294px;
-  height: 62px;
+  width: 100%;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
   font-variation-settings: "opsz" 14, "wght" 500;
@@ -1652,13 +1693,37 @@
   line-height: normal;
   font-style: normal;
   color: #000000;
+  white-space: normal;
+  overflow-wrap: anywhere;
   word-break: break-word;
+}
+
+.newsReadMore {
+  margin-top: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 500;
+  font-weight: 500;
+  font-size: 17px;
+  line-height: normal;
+  font-style: normal;
+  color: #006838;
+  white-space: nowrap;
+}
+
+.newsReadMore img {
+  width: 14px;
+  height: 11px;
+  flex-shrink: 0;
 }
 
 .footer {
   position: absolute;
   left: 0;
-  top: 4611px;
+  top: 4691px;
   width: 1280px;
   height: 505px;
   overflow: hidden;
@@ -1750,8 +1815,8 @@
   width: 340px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 14px;
   line-height: 22px;
   color: #ffffff;
@@ -1793,8 +1858,8 @@
   gap: 20px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 14px;
   line-height: normal;
   color: #ffffff;
@@ -1815,8 +1880,8 @@
 .footerNewsletterBody {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 14px;
   line-height: 24px;
   color: #ffffff;
@@ -1859,8 +1924,8 @@
   outline: none;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 12px;
   line-height: normal;
   color: #000000;
@@ -1933,8 +1998,8 @@
 .footerCopy p {
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 32, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 32, "wght" 300;
+  font-weight: 300;
   font-size: 14px;
   line-height: normal;
   color: #ffffff;
@@ -2044,6 +2109,10 @@
     flex: 1 1 0;
     min-width: 0;
     position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    max-width: none;
     z-index: 2;
   }
 
@@ -2080,7 +2149,7 @@
 
   .dots {
     left: 50%;
-    bottom: 12px;
+    bottom: 4px;
     transform: translateX(-50%);
   }
 }
@@ -2157,7 +2226,7 @@
     color: #ffffff;
     font-family: "Inter", sans-serif;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 300;
   }
 
   .mobileContact,
@@ -2170,7 +2239,7 @@
     border-radius: 43px;
     font-family: "Inter", sans-serif;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 300;
     white-space: nowrap;
   }
 
@@ -2414,8 +2483,8 @@
   .partnerCardTitle3,
   .partnerCardTitle4 {
     font-size: 18px;
-    font-weight: 400;
-    font-variation-settings: "opsz" 14, "wght" 400;
+    font-weight: 300;
+    font-variation-settings: "opsz" 14, "wght" 300;
   }
 
   .partnerWave {
@@ -2491,8 +2560,8 @@
     align-items: center;
     line-height: 1.3;
     font-size: 16px;
-    font-weight: 400;
-    font-variation-settings: "opsz" 14, "wght" 400;
+    font-weight: 300;
+    font-variation-settings: "opsz" 14, "wght" 300;
   }
 
   .partnerCardChevron {
@@ -2992,18 +3061,13 @@
     padding-right: 40px;
   }
 
-  .partnersLogoA1,
-  .partnersLogoA2,
-  .partnersLogoA3,
-  .partnersLogoB1,
-  .partnersLogoB2,
-  .partnersLogoB3 {
+  .partnersLogo {
     position: relative;
     left: auto;
     top: auto !important;
     width: auto;
-    max-width: 136px;
-    height: 36px;
+    max-width: 180px;
+    height: 44px;
     object-fit: contain;
   }
 }
@@ -3020,14 +3084,9 @@
     padding-right: 28px;
   }
 
-  .partnersLogoA1,
-  .partnersLogoA2,
-  .partnersLogoA3,
-  .partnersLogoB1,
-  .partnersLogoB2,
-  .partnersLogoB3 {
-    max-width: 120px;
-    height: 28px;
+  .partnersLogo {
+    max-width: 160px;
+    height: 40px;
   }
 }
 
@@ -3091,18 +3150,13 @@
     padding-right: 40px;
   }
 
-  .partnersLogoA1,
-  .partnersLogoA2,
-  .partnersLogoA3,
-  .partnersLogoB1,
-  .partnersLogoB2,
-  .partnersLogoB3 {
+  .partnersLogo {
     position: relative;
     left: auto;
     top: auto !important;
     width: auto;
-    max-width: 136px;
-    height: 36px;
+    max-width: 180px;
+    height: 44px;
     object-fit: contain;
   }
 }
@@ -3209,8 +3263,7 @@
   }
 
   .newsPhoto {
-    max-height: 182px;
-    aspect-ratio: 294 / 182;
+    aspect-ratio: 399 / 248;
   }
 
   .newsPhoto img {

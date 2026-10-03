@@ -20,7 +20,7 @@ export default function TeamForm({
   const [category, setCategory] = useState(member?.category ?? "leadership");
   const [id, setId] = useState(member?.id ?? "");
   const [idTouched, setIdTouched] = useState(Boolean(member?.id));
-  const [photo, setPhoto] = useState(member?.photo ?? "/images/about-photo.jpg");
+  const [photo, setPhoto] = useState(member?.photo ?? "/images/about-photo.webp");
   const [photoAlt, setPhotoAlt] = useState(member?.photoAlt ?? "");
   const [linkedin, setLinkedin] = useState(member?.linkedin ?? "");
   const [instagram, setInstagram] = useState(member?.instagram ?? "");

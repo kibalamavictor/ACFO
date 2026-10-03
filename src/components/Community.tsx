@@ -19,37 +19,37 @@ const DESKTOP = { width: 1280, height: 501 };
 
 const PORTRAITS = [
   {
-    src: "/images/community-1.jpg",
+    src: "/images/community-1.webp",
     alt: "Community member",
     orbit: "left" as const,
     angle: 0.4,
   },
   {
-    src: "/images/community-2.jpg",
+    src: "/images/community-2.webp",
     alt: "Community member",
     orbit: "left" as const,
     angle: 2.4,
   },
   {
-    src: "/images/community-3.jpg",
+    src: "/images/community-3.webp",
     alt: "Community member",
     orbit: "left" as const,
     angle: 4.3,
   },
   {
-    src: "/images/community-4.jpg",
+    src: "/images/community-4.webp",
     alt: "Community member",
     orbit: "right" as const,
     angle: 5.5,
   },
   {
-    src: "/images/community-5.jpg",
+    src: "/images/community-5.webp",
     alt: "Community member",
     orbit: "right" as const,
     angle: 1.2,
   },
   {
-    src: "/images/community-6.jpg",
+    src: "/images/community-6.webp",
     alt: "Community member",
     orbit: "right" as const,
     angle: 3.3,
@@ -197,8 +197,8 @@ function OrbitingPortrait({
   });
 
   return (
-    <motion.button
-      type="button"
+    <motion.div
+      role="img"
       className={styles.communityPhoto}
       style={{ x, y }}
       whileHover={{ scale: 1.08 }}
@@ -206,7 +206,7 @@ function OrbitingPortrait({
       aria-label={alt}
     >
       <img src={src} alt="" width={PHOTO} height={PHOTO} loading="lazy" decoding="async" />
-    </motion.button>
+    </motion.div>
   );
 }
 

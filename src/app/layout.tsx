@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
 import { SiteContentProvider } from "@/components/cms/SiteContentProvider";
 import ViewportScale from "@/components/ViewportScale";
 import { getSiteContent, hydrateCms } from "@/lib/cms/store";
@@ -22,7 +23,8 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  await hydrateCms();
+  const [, requestHeaders] = await Promise.all([hydrateCms(), headers()]);
+  const nonce = requestHeaders.get("x-nonce") ?? undefined;
   const content = getSiteContent();
 
   return (
@@ -39,7 +41,7 @@ export default async function RootLayout({
         <link rel="author" href="/humans.txt" />
       </head>
       <body>
-        <script dangerouslySetInnerHTML={{ __html: SCALE_SCRIPT }} />
+        <script nonce={nonce} dangerouslySetInnerHTML={{ __html: SCALE_SCRIPT }} />
         <SiteContentProvider initial={content}>
           <ViewportScale>{children}</ViewportScale>
         </SiteContentProvider>

@@ -205,6 +205,303 @@
   gap: 16px;
 }
 
+/* Dashboard */
+
+.cmsDash {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.cmsDash > * {
+  min-width: 0;
+}
+
+.cmsPanel {
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 4px 16px rgba(0, 104, 56, 0.06);
+  padding: 22px;
+}
+
+.cmsPanelHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 18px;
+}
+
+.cmsPanelHead h2 {
+  font-size: 19px;
+  font-weight: 600;
+}
+
+.cmsPanelHead p {
+  margin-top: 4px;
+  color: #4d6b4d;
+  font-size: 13px;
+}
+
+.cmsDashCorner {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
+  border: 1px solid #d6e6d6;
+  border-radius: 12px;
+  color: #006838;
+}
+
+.cmsDashOverview {
+  grid-column: span 2;
+  grid-row: span 2;
+  display: flex;
+  flex-direction: column;
+}
+
+.cmsDonut {
+  position: relative;
+  margin: 4px auto;
+}
+
+.cmsDonutCenter {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.cmsDonutCenter strong {
+  font-size: 40px;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.cmsDonutCenter span {
+  margin-top: 6px;
+  color: #4d6b4d;
+  font-size: 13px;
+}
+
+.cmsDashLegend {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px 16px;
+  margin-top: auto;
+  padding-top: 18px;
+}
+
+.cmsDashLegend a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  color: inherit;
+}
+
+.cmsDashLegend a:hover {
+  background: #f4f9f4;
+}
+
+.cmsDashLegend i {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.cmsDashLegend span {
+  flex: 1;
+  font-size: 14px;
+  color: #4d6b4d;
+}
+
+.cmsDashLegend strong {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.cmsDashStat {
+  display: flex;
+  flex-direction: column;
+  color: inherit;
+}
+
+.cmsDashStat:hover {
+  box-shadow: 0 6px 20px rgba(0, 104, 56, 0.12);
+}
+
+.cmsDashStatHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.cmsDashStatHead span {
+  color: #006838;
+  font-size: 14px;
+}
+
+.cmsDashArrow {
+  color: #006838;
+  flex-shrink: 0;
+}
+
+.cmsDashStat strong {
+  font-size: 38px;
+  font-weight: 600;
+  line-height: 1.05;
+}
+
+.cmsDashStat strong.cmsDashSmallValue {
+  font-size: 18px;
+  overflow-wrap: anywhere;
+}
+
+.cmsDashStat p {
+  margin-top: 10px;
+  color: #4d6b4d;
+  font-size: 13px;
+}
+
+.cmsDashStat .cmsDashUp {
+  color: #02b702;
+}
+
+.cmsDashBarsPanel,
+.cmsDashGauge {
+  grid-column: span 2;
+}
+
+.cmsDashBars {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cmsDashBarMeta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.cmsDashBarMeta span {
+  color: #4d6b4d;
+}
+
+.cmsDashBarMeta strong {
+  font-weight: 600;
+}
+
+.cmsDashBarTrack {
+  height: 8px;
+  border-radius: 8px;
+  background: #eef4ee;
+  overflow: hidden;
+}
+
+.cmsDashBarTrack i {
+  display: block;
+  height: 100%;
+  border-radius: 8px;
+  background: linear-gradient(to right, #006838, #02b702);
+}
+
+.cmsDashBars small {
+  display: block;
+  margin-top: 6px;
+  color: #4d6b4d;
+  font-size: 12px;
+}
+
+.cmsDashEmpty {
+  color: #4d6b4d;
+  font-size: 14px;
+}
+
+.cmsGaugeWrap {
+  position: relative;
+  max-width: 260px;
+  margin: 0 auto;
+}
+
+.cmsGaugeSvg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.cmsGaugeValue {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 4px;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 600;
+}
+
+.cmsGaugeStats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin-top: 18px;
+  text-align: center;
+}
+
+.cmsGaugeStats strong {
+  display: block;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.cmsGaugeStats span {
+  display: block;
+  margin-top: 4px;
+  color: #4d6b4d;
+  font-size: 13px;
+}
+
+.cmsDashTablePanel {
+  grid-column: span 3;
+}
+
+.cmsDashTableWrap {
+  overflow-x: auto;
+}
+
+.cmsDashTablePanel .cmsTable td,
+.cmsDashTablePanel .cmsTable th {
+  padding: 12px 14px;
+}
+
+.cmsDashTablePanel .cmsTable tr:last-child td {
+  border-bottom: none;
+}
+
+.cmsDashDate {
+  white-space: nowrap;
+  color: #4d6b4d;
+}
+
+.cmsDashReach {
+  grid-column: span 1;
+}
+
 .cmsSection {
   overflow: hidden;
   border: 1px solid #eef4ee;
@@ -418,7 +715,7 @@
 .cmsImagePreview {
   width: 120px;
   height: 88px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 16px;
   background: #eef8ee;
 }
@@ -662,6 +959,16 @@
   font: inherit;
 }
 
+@media (max-width: 1400px) {
+  .cmsDashTablePanel {
+    grid-column: span 4;
+  }
+
+  .cmsDashReach {
+    grid-column: span 2;
+  }
+}
+
 @media (max-width: 980px) {
   .cmsTopLinks,
   .cmsTopGhost,
@@ -713,6 +1020,19 @@
   .cmsGrid2,
   .cmsGrid3 {
     grid-template-columns: 1fr;
+  }
+
+  .cmsDash {
+    grid-template-columns: 1fr;
+  }
+
+  .cmsDashOverview,
+  .cmsDashBarsPanel,
+  .cmsDashGauge,
+  .cmsDashTablePanel,
+  .cmsDashReach {
+    grid-column: span 1;
+    grid-row: auto;
   }
 
   .cmsPageHead {

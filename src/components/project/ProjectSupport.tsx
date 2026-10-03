@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { usePage } from "@/components/cms/SiteContentProvider";
+import { usePage, useSiteContent } from "@/components/cms/SiteContentProvider";
 import CmsCopy from "@/components/cms/CmsCopy";
 import { text } from "@/lib/cms/pages";
 import styles from "@/app/project.module.css";
 
 const SUPPORT_PHOTOS = [
   {
-    src: "/images/community-1.jpg",
+    src: "/images/community-1.webp",
     left: 35,
     top: 302,
     size: 100,
@@ -16,7 +16,7 @@ const SUPPORT_PHOTOS = [
     zIndex: 3,
   },
   {
-    src: "/images/community-3.jpg",
+    src: "/images/community-3.webp",
     left: 150,
     top: 336,
     size: 100,
@@ -24,7 +24,7 @@ const SUPPORT_PHOTOS = [
     zIndex: 4,
   },
   {
-    src: "/images/community-2.jpg",
+    src: "/images/community-2.webp",
     left: 265,
     top: 308,
     size: 100,
@@ -33,8 +33,26 @@ const SUPPORT_PHOTOS = [
   },
 ] as const;
 
-export default function ProjectSupport() {
+export default function ProjectSupport({
+  programmeId = "education",
+}: {
+  programmeId?: string;
+}) {
   const support = usePage("education").support;
+  const { programmes } = useSiteContent();
+  const programme = programmes.find((p) => p.id === programmeId);
+
+  const isEducation = programmeId === "education";
+  const heading = isEducation
+    ? text(support.heading)
+    : `Support ${programme?.title ?? "This Programme"}`;
+  const body = isEducation
+    ? text(support.body)
+    : programme?.excerpt ?? "";
+  const cta = isEducation
+    ? text(support.cta, "Support This Programme")
+    : programme?.heroCta || "Support This Programme";
+
   return (
     <aside className={styles.support}>
       <div className={styles.supportWave}>
@@ -42,7 +60,7 @@ export default function ProjectSupport() {
       </div>
 
       <div className={styles.supportHead}>
-        <h3 className={styles.supportHeading}>{text(support.heading)}</h3>
+        <h3 className={styles.supportHeading}>{heading}</h3>
         <img
           className={styles.supportMap}
           src="/images/africa-map.svg"
@@ -51,7 +69,7 @@ export default function ProjectSupport() {
           height={120}
         />
       </div>
-      <CmsCopy className={styles.supportBody} value={text(support.body)} />
+      <CmsCopy className={styles.supportBody} value={body} />
 
       <div className={styles.supportPhotos}>
         {SUPPORT_PHOTOS.map((photo) => (
@@ -73,7 +91,7 @@ export default function ProjectSupport() {
       </div>
 
       <Link href="/donate" className={styles.supportCta}>
-        {text(support.cta, "Support This Programme")}
+        {cta}
       </Link>
     </aside>
   );

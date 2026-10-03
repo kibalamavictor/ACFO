@@ -47,9 +47,10 @@ export function SiteContentProvider({
       }
     };
 
-    void load();
     const onFocus = () => {
-      void load();
+      if (document.visibilityState === "visible") {
+        void load();
+      }
     };
     window.addEventListener("focus", onFocus);
     document.addEventListener("visibilitychange", onFocus);

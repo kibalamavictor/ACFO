@@ -5,8 +5,14 @@ import CmsCopy from "@/components/cms/CmsCopy";
 import { text } from "@/lib/cms/pages";
 import styles from "@/app/project.module.css";
 
-export default function ProjectGirls() {
+export default function ProjectGirls({
+  programmeId = "education",
+}: {
+  programmeId?: string;
+}) {
   const girls = usePage("education").girls;
+
+  if (programmeId !== "education") return null;
 
   return (
     <section className={styles.girls}>
@@ -23,7 +29,7 @@ export default function ProjectGirls() {
 
       <div className={styles.girlsPhoto}>
         <img
-          src={text(girls.photo, "/images/partner-photo.jpg")}
+          src={text(girls.photo, "/images/partner-photo.webp")}
           alt={text(girls.photoAlt)}
           width={537}
           height={334}

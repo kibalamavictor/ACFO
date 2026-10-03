@@ -17,7 +17,7 @@ function normalize(input: Partial<CmsTeamMember>, fallbackId: string): CmsTeamMe
     name,
     title,
     category,
-    photo: input.photo?.trim() || "/images/about-photo.jpg",
+    photo: input.photo?.trim() || "/images/about-photo.webp",
     photoAlt: input.photoAlt?.trim() || `Portrait of ${name}`,
     linkedin:
       input.linkedin?.trim() ||

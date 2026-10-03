@@ -27,7 +27,7 @@ export default function About() {
       <div className={styles.aboutMain}>
         <div className={styles.aboutPhoto}>
           <img
-            src={text(about.photo, "/images/about-photo.jpg")}
+            src={text(about.photo, "/images/about-photo.webp")}
             alt={text(about.photoAlt)}
             width={422}
             height={328}
@@ -46,6 +46,7 @@ export default function About() {
 
           <Link href="/about-us" className={styles.aboutLearnMore}>
             {text(about.cta, "Learn More")}
+            <span className="sr-only"> about ACFO</span>
           </Link>
         </div>
       </div>

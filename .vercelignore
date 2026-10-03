@@ -1,0 +1,9 @@
+.env
+.env.*
+!.env.example
+content/*.json
+.next
+out
+node_modules
+*.log
+tsconfig.tsbuildinfo

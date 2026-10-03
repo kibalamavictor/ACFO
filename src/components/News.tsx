@@ -81,14 +81,23 @@ export default function News() {
                 <img
                   src={story.photo}
                   alt={story.photoAlt}
-                  width={294}
-                  height={182}
+                  width={399}
+                  height={248}
                   loading="lazy"
                   decoding="async"
                 />
               </div>
               <div className={styles.newsChip}>{story.chip}</div>
               <p className={styles.newsBody}>{story.title}</p>
+              <span className={styles.newsReadMore}>
+                Read More
+                <img
+                  src="/images/programme-chevron.svg"
+                  alt=""
+                  width={14}
+                  height={11}
+                />
+              </span>
             </Link>
           </article>
         ))}

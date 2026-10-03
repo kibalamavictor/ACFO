@@ -15,9 +15,21 @@ export default function TeamTable({ members }: { members: CmsTeamMember[] }) {
       return;
     }
     setBusy(id);
-    await fetch(`/api/cms/team/${id}`, { method: "DELETE" });
-    router.refresh();
-    setBusy("");
+    try {
+      const response = await fetch(`/api/cms/team/${id}`, { method: "DELETE" });
+      if (!response.ok) {
+        const data = (await response.json().catch(() => null)) as {
+          error?: string;
+        } | null;
+        alert(data?.error || "Could not delete this team member.");
+        return;
+      }
+      router.refresh();
+    } catch {
+      alert("Network error — please try again.");
+    } finally {
+      setBusy("");
+    }
   };
 
   if (members.length === 0) {

@@ -96,14 +96,14 @@ export default function Hero() {
           })}
         </div>
 
-        <div className={styles.dots} role="tablist" aria-label="Hero images">
+        <div className={styles.dots} role="group" aria-label="Hero images">
           {slides.map((slide, index) => (
             <button
               key={`${slide.desktop}-${index}`}
               type="button"
               className={index === active ? styles.dotActive : styles.dot}
               aria-label={`Show image ${index + 1}`}
-              aria-selected={index === active}
+              aria-current={index === active ? "true" : undefined}
               onClick={() => {
                 setLoaded((current) => {
                   if (current.has(index)) {

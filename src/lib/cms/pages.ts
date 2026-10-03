@@ -1,3 +1,5 @@
+import { defaultPartnerLogos, isPlaceholderPartnerLogos } from "@/data/partners";
+
 export type TextField = {
   type: "text";
   key: string;
@@ -153,6 +155,26 @@ export const PAGE_DEFS: PageDef[] = [
           { type: "text", key: "badge", label: "Badge" },
           { type: "text", key: "heading", label: "Heading", multiline: true },
           { type: "text", key: "cta", label: "See more label" },
+        ],
+      },
+      {
+        id: "partners",
+        title: "Partners",
+        description: "Logos shown in the partners strip on Home and About Us.",
+        fields: [
+          { type: "text", key: "badge", label: "Badge" },
+          {
+            type: "repeater",
+            key: "logos",
+            label: "Partner logos",
+            itemLabel: "Logo",
+            min: 1,
+            max: 16,
+            fields: [
+              { type: "image", key: "src", label: "Logo" },
+              { type: "text", key: "name", label: "Partner name" },
+            ],
+          },
         ],
       },
     ],
@@ -454,22 +476,22 @@ export const defaultPages: PagesContent = {
       secondaryCta: "Partner With Us",
       slides: [
         {
-          desktop: "/images/hero.jpg",
-          mobile: "/images/hero-mobile.jpg",
+          desktop: "/images/hero.webp",
+          mobile: "/images/hero-mobile.webp",
           alt: "A smiling child in a classroom raising both arms",
         },
         {
-          desktop: "/images/programme-education.jpg",
+          desktop: "/images/programme-education.webp",
           mobile: "",
           alt: "Children learning in a classroom",
         },
         {
-          desktop: "/images/programme-protection.jpg",
+          desktop: "/images/programme-protection.webp",
           mobile: "",
           alt: "Children outdoors in their community",
         },
         {
-          desktop: "/images/partner-photo.jpg",
+          desktop: "/images/partner-photo.webp",
           mobile: "",
           alt: "Children smiling and raising their arms outdoors",
         },
@@ -483,7 +505,7 @@ export const defaultPages: PagesContent = {
       body2:
         "Founded in 2022, ACFO partners with communities, institutions, and development organizations to create sustainable solutions that improve children's wellbeing and strengthen families across South Sudan.",
       cta: "Learn More",
-      photo: "/images/about-photo.jpg",
+      photo: "/images/about-photo.webp",
       photoAlt: "Two smiling children holding a stuffed toy",
       stats: [
         { value: "100+", label: "Children Supported Through Education" },
@@ -496,7 +518,7 @@ export const defaultPages: PagesContent = {
       badge: "Why Partner With ACFO?",
       heading: "Together, We Create Lasting Impact",
       body: "We believe sustainable change happens through meaningful partnerships. By working together, we can expand opportunities for children and strengthen communities across South Sudan.",
-      photo: "/images/partner-photo.jpg",
+      photo: "/images/partner-photo.webp",
       photoAlt: "Four children smiling and raising their arms outdoors",
       cards: [
         {
@@ -535,6 +557,10 @@ export const defaultPages: PagesContent = {
       heading: "Stories of Hope, Progress, and Community Impact",
       cta: "See more",
     },
+    partners: {
+      badge: "Partners",
+      logos: defaultPartnerLogos.map((logo) => ({ ...logo })),
+    },
   },
   about: {
     hero: {
@@ -543,14 +569,14 @@ export const defaultPages: PagesContent = {
       heading: "Building Brighter Futures for Children and Communities",
       body: "African Children's Foundation Organization (ACFO) is a national, non-profit and non-political civil society organization dedicated to advancing the rights and wellbeing of vulnerable children and communities in South Sudan.",
       cta: "Explore Our Programmes",
-      photo: "/images/partner-photo.jpg",
+      photo: "/images/partner-photo.webp",
       photoAlt: "Children standing together outdoors",
     },
     story: {
       badge: "Our Story",
       heading: "Born From Experience. Driven by Purpose.",
       body: "ACFO was founded on 22 July 2022 by ten committed young people, many of whom experienced internal displacement. Their shared experiences shaped an organization committed to responding to the challenges affecting children and families, including conflict, poverty, displacement, inequality and limited access to essential services.",
-      photo: "/images/about-photo.jpg",
+      photo: "/images/about-photo.webp",
       photoAlt: "Two smiling children holding a stuffed toy",
     },
     vision: {
@@ -669,14 +695,14 @@ export const defaultPages: PagesContent = {
       heading: "Education Access & Quality",
       body: "We promote inclusive, equitable, and quality education for children and young people, helping create opportunities for them to learn, grow, and reach their potential.",
       cta: "Support Education",
-      photo: "/images/programme-education.jpg",
+      photo: "/images/programme-education.webp",
       photoAlt: "Children in a classroom",
     },
     whatWeDo: {
       heading: "What We Do",
       intro:
         "Our education programme supports children through practical interventions that address barriers to learning and encourage stronger participation from families and communities.",
-      photo: "/images/about-photo.jpg",
+      photo: "/images/about-photo.webp",
       photoAlt: "Children supported through education",
       activities: [
         {
@@ -708,13 +734,13 @@ export const defaultPages: PagesContent = {
     girls: {
       heading: "Supporting Girls to Stay in School",
       body: "Every term, ACFO provides sanitary pads and washing soap to girls to support menstrual hygiene, dignity, and continued participation in school. The initiative has supported 12 girls with sanitary kits to help them remain focused in class and reduce the challenges associated with menstruation.",
-      photo: "/images/partner-photo.jpg",
+      photo: "/images/partner-photo.webp",
       photoAlt: "Girls supported to stay in school",
     },
     approach: {
       heading: "Our Approach",
       body: "We believe children's education is connected to their wellbeing, protection, family stability, and wider community environment. Our approach therefore combines direct education support with psychosocial support, protection, and community engagement.",
-      photo: "/images/programme-livelihoods.jpg",
+      photo: "/images/programme-livelihoods.webp",
       photoAlt: "Community engagement around children's education",
     },
     support: {
@@ -758,8 +784,8 @@ export function mergeWithDefaults<T>(defaults: T, saved: unknown): T {
 }
 
 const HERO_ASSET_ALIASES: Record<string, string> = {
-  "/images/hero.png": "/images/hero.jpg",
-  "/images/hero-mobile.png": "/images/hero-mobile.jpg",
+  "/images/hero.png": "/images/hero.webp",
+  "/images/hero-mobile.png": "/images/hero-mobile.webp",
 };
 
 function rewriteHeroAsset(value: unknown) {
@@ -782,6 +808,11 @@ export function mergePages(saved: unknown): PagesContent {
         mobile: rewriteHeroAsset((slide as { mobile?: unknown }).mobile),
       };
     });
+  }
+
+  const logos = pages.home?.partners?.logos;
+  if (Array.isArray(logos) && isPlaceholderPartnerLogos(logos)) {
+    pages.home.partners.logos = defaultPartnerLogos.map((logo) => ({ ...logo }));
   }
 
   return pages;

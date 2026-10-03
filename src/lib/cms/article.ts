@@ -305,17 +305,17 @@ Access to quality education can open doors to a brighter future.
 
 At African Children's Foundation Organization, we work to support vulnerable children and young people through education sponsorship, learning materials, early childhood development, girls' education, and community engagement.
 
-![Children supported through education](/images/about-photo.jpg)
+![Children supported through education](/images/about-photo.webp)
 
 ## Supporting Children to Stay in School
 Our education programme supports children through practical interventions that address barriers to learning and encourage stronger participation from families and communities.
 
 Providing scholarships and education sponsorship for vulnerable children and young people.
 
-![Children supported to stay in school](/images/partner-photo.jpg)
+![Children supported to stay in school](/images/partner-photo.webp)
 
 ## Supporting Girls' Education
-![Girls supported through education](/images/programme-education.jpg)
+![Girls supported through education](/images/programme-education.webp)
 
 Every term, ACFO provides sanitary pads and washing soap to girls to support menstrual hygiene, dignity, and continued participation in school.
 

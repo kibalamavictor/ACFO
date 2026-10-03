@@ -16,7 +16,7 @@ export default function AboutStory() {
 
       <div className={styles.storyPhoto}>
         <img
-          src={text(story.photo, "/images/about-photo.jpg")}
+          src={text(story.photo, "/images/about-photo.webp")}
           alt={text(story.photoAlt)}
           width={422}
           height={328}

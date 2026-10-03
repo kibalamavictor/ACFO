@@ -1,5 +1,6 @@
 import { revalidatePath, unstable_noStore as noStore } from "next/cache";
 import { newsStories } from "@/data/news";
+import { newsBodies } from "@/data/news-bodies";
 import { programmes, projects, getProgrammeReach } from "@/data/projects";
 import { teamMembers } from "@/data/team";
 import { defaultEducationBody } from "@/lib/cms/article";
@@ -76,13 +77,12 @@ async function persistJson(name: ContentFile, value: unknown) {
 }
 
 function seedNews(): CmsNewsStory[] {
-  return newsStories.map((story, index) => ({
+  return newsStories.map((story) => ({
     ...story,
     published: true,
     body:
-      index === 0
-        ? defaultEducationBody
-        : `## Introduction
+      newsBodies[story.slug] ??
+      `## Introduction
 ${story.excerpt}
 
 ![${story.photoAlt}](${story.photo})

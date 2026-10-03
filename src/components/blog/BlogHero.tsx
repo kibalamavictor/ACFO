@@ -15,7 +15,7 @@ export default function BlogHero({
   date = "15 August 2026",
   title = "Creating Opportunities Through Education",
   body = "Discover the latest stories, updates, insights, and community highlights from African Children's Foundation Organization.",
-  photo = "/images/programme-education.jpg",
+  photo = "/images/programme-education.webp",
   photoAlt = "Children in a classroom",
   showDate = true,
 }: BlogHeroProps) {

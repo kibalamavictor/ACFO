@@ -122,8 +122,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -163,8 +163,8 @@
   height: 102px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -184,8 +184,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -252,8 +252,8 @@
   overflow: hidden;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: 1.375;
   height: 2.75em;
@@ -286,8 +286,8 @@
   min-width: 0;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -313,8 +313,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -345,8 +345,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -403,8 +403,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -445,8 +445,8 @@
   height: 57px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -469,8 +469,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -691,20 +691,20 @@
     margin: 0 auto;
   }
 
-  .communityStage {
+  .communityStage.communityStage {
     position: relative;
     left: auto;
     top: auto !important;
     width: 100%;
     height: auto !important;
-    min-height: 420px;
-    margin: 8px 0 0;
+    min-height: 0;
+    margin: 0;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     gap: 24px;
-    padding: 24px 32px 56px;
+    padding: 16px 32px 48px;
   }
 
   .communityOrbit {
@@ -753,9 +753,9 @@
 }
 
 @media (max-width: 1100px) {
-  .communityStage {
+  .communityStage.communityStage {
     flex-direction: column;
-    padding: 16px 24px 48px;
+    padding: 8px 24px 40px;
   }
 
   .communityOrbit {
@@ -922,10 +922,11 @@
     display: none;
   }
 
-  .communityStage {
+  .communityStage.communityStage {
     flex-direction: column;
     min-height: 0;
     height: auto !important;
+    margin: 0;
     padding: 0 0 32px;
   }
 
@@ -934,6 +935,9 @@
     width: 100%;
     max-width: none;
     height: 280px;
+    transform: scale(0.62);
+    transform-origin: top left;
+    margin-bottom: -90px;
   }
 
   .communityCopy {

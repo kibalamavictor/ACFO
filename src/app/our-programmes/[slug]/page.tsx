@@ -1,20 +1,21 @@
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import Navbar from "@/components/Navbar";
-import BlogHero from "@/components/blog/BlogHero";
-import BlogArticle from "@/components/blog/BlogArticle";
-import ProgrammeRelated from "@/components/programmes/ProgrammeRelated";
+import ProjectHero from "@/components/project/ProjectHero";
+import ProjectWhatWeDo from "@/components/project/ProjectWhatWeDo";
+import ProjectApproach from "@/components/project/ProjectApproach";
+import ProjectGirls from "@/components/project/ProjectGirls";
+import ProjectSupport from "@/components/project/ProjectSupport";
+import ProjectTail from "@/components/project/ProjectTail";
 import JsonLd from "@/components/seo/JsonLd";
-import { estimateArticleHeight } from "@/lib/cms/article";
 import { getProgrammeById, getPublishedProgrammes, getSettings } from "@/lib/cms/store";
-import type { CmsNewsStory } from "@/lib/cms/types";
 import { pageMetadata } from "@/lib/seo/metadata";
 import {
   breadcrumbNode,
   programmeNode,
   siteGraph,
 } from "@/lib/seo/jsonld";
-import styles from "@/app/blog.module.css";
+import styles from "@/app/project.module.css";
 
 type ProgrammePageProps = {
   params: Promise<{ slug: string }>;
@@ -58,25 +59,6 @@ export default async function ProgrammePage({ params }: ProgrammePageProps) {
     notFound();
   }
 
-  const articleStory: CmsNewsStory = {
-    slug: programme.id,
-    title: programme.title,
-    excerpt: programme.excerpt,
-    chip: programme.category,
-    chipWidth: 0,
-    photo: programme.photo,
-    photoAlt: programme.photoAlt,
-    date: "",
-    published: true,
-    body: programme.detailBody,
-  };
-
-  const designedHeight = 2000;
-  const extraHeight = Math.max(
-    0,
-    estimateArticleHeight(programme.detailBody) - designedHeight,
-  );
-
   return (
     <>
       <JsonLd
@@ -90,28 +72,18 @@ export default async function ProgrammePage({ params }: ProgrammePageProps) {
         ])}
       />
       <main className={styles.page}>
-      <Navbar />
-      <BlogHero
-        chip={programme.category}
-        title={programme.title}
-        body={programme.excerpt}
-        photo={programme.photo}
-        photoAlt={programme.photoAlt}
-        showDate={false}
-      />
-      <BlogArticle
-        story={articleStory}
-        primaryCta={{
-          href: "/donate",
-          label: programme.heroCta || "Support This Programme",
-        }}
-        secondaryCta={{
-          href: "/contact-us",
-          label: "Partner With ACFO",
-        }}
-      />
-      <ProgrammeRelated extraHeight={extraHeight} excludeId={programme.id} />
-    </main>
+        <Navbar />
+        <ProjectHero programmeId={programme.id} />
+        <div className={styles.detail}>
+          <div className={styles.detailMain}>
+            <ProjectWhatWeDo programmeId={programme.id} />
+            <ProjectApproach programmeId={programme.id} />
+            <ProjectGirls programmeId={programme.id} />
+          </div>
+          <ProjectSupport programmeId={programme.id} />
+        </div>
+        <ProjectTail after={`.${styles.detail}`} />
+      </main>
     </>
   );
 }

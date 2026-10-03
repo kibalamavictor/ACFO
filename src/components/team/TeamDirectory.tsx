@@ -7,7 +7,7 @@ export default function TeamDirectory() {
 
   return (
     <div className={styles.directory}>
-      {groups.map((group) => (
+      {groups.map((group, groupIndex) => (
         <section
           key={group.id}
           className={styles.group}
@@ -18,7 +18,9 @@ export default function TeamDirectory() {
           </h2>
 
           <div className={styles.grid}>
-            {group.members.map((member) => (
+            {group.members.map((member, memberIndex) => {
+              const aboveFold = groupIndex === 0 && memberIndex < 2;
+              return (
               <article key={member.id} className={styles.card}>
                 <div className={styles.photo}>
                   <img
@@ -26,6 +28,9 @@ export default function TeamDirectory() {
                     alt={member.photoAlt}
                     width={294}
                     height={355}
+                    loading={aboveFold ? "eager" : "lazy"}
+                    fetchPriority={aboveFold ? "high" : "auto"}
+                    decoding="async"
                   />
                 </div>
                 <div className={styles.meta}>
@@ -62,7 +67,8 @@ export default function TeamDirectory() {
                   </div>
                 </div>
               </article>
-            ))}
+              );
+            })}
           </div>
         </section>
       ))}

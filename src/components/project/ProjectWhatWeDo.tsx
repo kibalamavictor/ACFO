@@ -1,6 +1,6 @@
 "use client";
 
-import { usePage } from "@/components/cms/SiteContentProvider";
+import { usePage, useSiteContent } from "@/components/cms/SiteContentProvider";
 import CmsCopy from "@/components/cms/CmsCopy";
 import { list, text } from "@/lib/cms/pages";
 import styles from "@/app/project.module.css";
@@ -14,9 +14,33 @@ const ACTIVITY_LAYOUT = [
   { titleTop: 1677, bodyTop: 1716, titleWidth: 239 },
 ] as const;
 
-export default function ProjectWhatWeDo() {
+export default function ProjectWhatWeDo({
+  programmeId = "education",
+}: {
+  programmeId?: string;
+}) {
   const section = usePage("education").whatWeDo;
-  const activities = list<{ title: string; body: string }>(section.activities);
+  const { programmes } = useSiteContent();
+  const programme = programmes.find((p) => p.id === programmeId);
+
+  const isEducation = programmeId === "education";
+  const heading = isEducation ? text(section.heading, "What We Do") : "What We Do";
+  const intro = isEducation
+    ? text(section.intro)
+    : programme?.excerpt ?? "";
+  const sectionPhoto = isEducation
+    ? text(section.photo, "/images/about-photo.webp")
+    : programme?.photo ?? "/images/about-photo.webp";
+  const sectionPhotoAlt = isEducation
+    ? text(section.photoAlt)
+    : programme?.photoAlt ?? "";
+  const activities = isEducation
+    ? list<{ title: string; body: string }>(section.activities)
+    : [];
+
+  if (!isEducation && !programme?.detailBody && activities.length === 0) {
+    return null;
+  }
 
   return (
     <section className={styles.whatWeDo}>
@@ -28,39 +52,41 @@ export default function ProjectWhatWeDo() {
           width={10}
           height={10}
         />
-        <h2 className={styles.sectionHeading}>{text(section.heading, "What We Do")}</h2>
+        <h2 className={styles.sectionHeading}>{heading}</h2>
 
-        <CmsCopy className={styles.sectionIntro} value={text(section.intro)} />
+        <CmsCopy className={styles.sectionIntro} value={intro} />
 
         <div className={styles.sectionPhoto}>
           <img
-            src={text(section.photo, "/images/about-photo.jpg")}
-            alt={text(section.photoAlt)}
+            src={sectionPhoto}
+            alt={sectionPhotoAlt}
             width={537}
             height={334}
           />
         </div>
 
-        <div className={styles.activities}>
-          {activities.map((item, index) => {
-            const layout = ACTIVITY_LAYOUT[index] ?? ACTIVITY_LAYOUT[ACTIVITY_LAYOUT.length - 1];
-            return (
-              <div key={`${item.title}-${index}`} className={styles.activity}>
-                <h3
-                  className={styles.activityTitle}
-                  style={{ top: layout.titleTop, width: layout.titleWidth }}
-                >
-                  {text(item.title)}
-                </h3>
-                <CmsCopy
-                  className={styles.activityBody}
-                  style={{ top: layout.bodyTop }}
-                  value={text(item.body)}
-                />
-              </div>
-            );
-          })}
-        </div>
+        {activities.length > 0 && (
+          <div className={styles.activities}>
+            {activities.map((item, index) => {
+              const layout = ACTIVITY_LAYOUT[index] ?? ACTIVITY_LAYOUT[ACTIVITY_LAYOUT.length - 1];
+              return (
+                <div key={`${item.title}-${index}`} className={styles.activity}>
+                  <h3
+                    className={styles.activityTitle}
+                    style={{ top: layout.titleTop, width: layout.titleWidth }}
+                  >
+                    {text(item.title)}
+                  </h3>
+                  <CmsCopy
+                    className={styles.activityBody}
+                    style={{ top: layout.bodyTop }}
+                    value={text(item.body)}
+                  />
+                </div>
+              );
+            })}
+          </div>
+        )}
       </div>
     </section>
   );

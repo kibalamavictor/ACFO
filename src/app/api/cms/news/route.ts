@@ -16,7 +16,7 @@ function normalize(input: Partial<CmsNewsStory>, fallbackSlug: string): CmsNewsS
     excerpt: input.excerpt?.trim() || "",
     chip,
     chipWidth: input.chipWidth || chipWidthForLabel(chip),
-    photo: input.photo?.trim() || "/images/community-1.jpg",
+    photo: input.photo?.trim() || "/images/community-1.webp",
     photoAlt: input.photoAlt?.trim() || title,
     date: input.date?.trim() || "",
     published: input.published !== false,

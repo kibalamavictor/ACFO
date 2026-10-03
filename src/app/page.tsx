@@ -38,7 +38,7 @@ export default function HomePage() {
   const pages = getPages();
   const slides = list<{ desktop: string; mobile: string }>(pages.home.hero.slides);
   const first = slides[0];
-  const desktop = first?.desktop || "/images/hero.jpg";
+  const desktop = first?.desktop || "/images/hero.webp";
   const mobile = first?.mobile || desktop;
 
   return (

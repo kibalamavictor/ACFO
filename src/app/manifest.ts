@@ -18,7 +18,7 @@ export default function manifest(): MetadataRoute.Manifest {
     categories: ["nonprofits", "education", "community"],
     icons: [
       {
-        src: "/icon",
+        src: "/icon.png",
         sizes: "64x64",
         type: "image/png",
       },
@@ -28,7 +28,7 @@ export default function manifest(): MetadataRoute.Manifest {
         type: "image/png",
       },
       {
-        src: "/apple-icon",
+        src: "/apple-icon.png",
         sizes: "180x180",
         type: "image/png",
       },

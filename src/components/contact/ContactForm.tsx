@@ -8,10 +8,10 @@ import CountryCodeSelect from "@/components/contact/CountryCodeSelect";
 import styles from "@/app/contact.module.css";
 
 const PHOTOS = [
-  { src: "/images/community-1.jpg", left: 99, top: 816 },
-  { src: "/images/community-2.jpg", left: 211, top: 945 },
-  { src: "/images/community-3.jpg", left: 989, top: 979 },
-  { src: "/images/community-4.jpg", left: 1097, top: 797 },
+  { src: "/images/community-1.webp", left: 99, top: 816 },
+  { src: "/images/community-2.webp", left: 211, top: 945 },
+  { src: "/images/community-3.webp", left: 989, top: 979 },
+  { src: "/images/community-4.webp", left: 1097, top: 797 },
 ] as const;
 
 export default function ContactForm() {

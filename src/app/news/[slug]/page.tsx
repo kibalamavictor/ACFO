@@ -5,7 +5,6 @@ import BlogHero from "@/components/blog/BlogHero";
 import BlogArticle from "@/components/blog/BlogArticle";
 import BlogRelated from "@/components/blog/BlogRelated";
 import JsonLd from "@/components/seo/JsonLd";
-import { estimateArticleHeight } from "@/lib/cms/article";
 import { getNewsBySlug, getPublishedNews, getSettings } from "@/lib/cms/store";
 import { pageMetadata } from "@/lib/seo/metadata";
 import {
@@ -63,12 +62,6 @@ export default async function NewsStoryPage({ params }: NewsStoryPageProps) {
     notFound();
   }
 
-  const designedHeight = 2000;
-  const extraHeight = Math.max(
-    0,
-    estimateArticleHeight(story.body) - designedHeight,
-  );
-
   return (
     <>
       <JsonLd
@@ -97,7 +90,7 @@ export default async function NewsStoryPage({ params }: NewsStoryPageProps) {
         photoAlt={story.photoAlt}
       />
       <BlogArticle story={story} />
-      <BlogRelated extraHeight={extraHeight} excludeSlug={story.slug} />
+      <BlogRelated excludeSlug={story.slug} />
     </main>
     </>
   );

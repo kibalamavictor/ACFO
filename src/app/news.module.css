@@ -94,8 +94,8 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.06);
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -135,8 +135,8 @@
   height: 102px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -155,8 +155,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -278,8 +278,8 @@
   height: 62px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -295,8 +295,8 @@
   gap: 8px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -443,8 +443,8 @@
   height: 23px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -519,8 +519,8 @@
   height: 38px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -553,8 +553,8 @@
   outline: none;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   color: #000000;
@@ -577,8 +577,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -635,8 +635,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -659,8 +659,8 @@
   border-radius: 43px;
   font-family: "Inter", sans-serif;
   font-optical-sizing: auto;
-  font-variation-settings: "opsz" 14, "wght" 400;
-  font-weight: 400;
+  font-variation-settings: "opsz" 14, "wght" 300;
+  font-weight: 300;
   font-size: 16px;
   line-height: normal;
   font-style: normal;
@@ -794,6 +794,10 @@
     flex-direction: column;
     gap: 24px;
     padding: 8px 24px 48px;
+  }
+
+  .more {
+    padding-bottom: 32px;
   }
 
   .featuredDot,
@@ -985,6 +989,10 @@
     gap: 16px;
     padding: 8px 16px 40px;
     overflow: hidden;
+  }
+
+  .more {
+    padding-bottom: 24px;
   }
 
   .filterRow {

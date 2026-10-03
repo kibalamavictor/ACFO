@@ -8,9 +8,43 @@ export function hasRemoteStore() {
   return Boolean(blobToken());
 }
 
+function publicBlobBase() {
+  const storeId = blobToken().match(/^vercel_blob_rw_([a-z0-9]+)_/i)?.[1];
+  return storeId ? `https://${storeId.toLowerCase()}.public.blob.vercel-storage.com` : null;
+}
+
+async function pullDirect(name: string): Promise<unknown | null | undefined> {
+  const base = publicBlobBase();
+  if (!base) {
+    return undefined;
+  }
+
+  // Blob's CDN caches for at least 60s; a unique query forces a fresh read after edits.
+  const response = await fetch(`${base}/cms/${name}.json?v=${Date.now()}`, {
+    cache: "no-store",
+    signal: AbortSignal.timeout(4000),
+  });
+  if (response.status === 404) {
+    return null;
+  }
+  if (!response.ok) {
+    return undefined;
+  }
+  return (await response.json()) as unknown;
+}
+
 export async function pullRemoteJson(name: string) {
   if (!blobToken()) {
     return null;
+  }
+
+  try {
+    const direct = await pullDirect(name);
+    if (direct !== undefined) {
+      return direct;
+    }
+  } catch {
+    // fall back to listing the store
   }
 
   try {

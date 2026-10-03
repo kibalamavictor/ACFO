@@ -15,7 +15,7 @@ export function defaultProgrammeDetail(programme: {
   }
 
   const intro = programme.excerpt?.trim() || programme.body?.trim() || programme.title;
-  const photo = programme.photo || "/images/community-1.jpg";
+  const photo = programme.photo || "/images/community-1.webp";
   const alt = programme.photoAlt || programme.title;
 
   return `## Introduction
@@ -57,7 +57,7 @@ export function normalizeProgramme(
     targetLabel: input.targetLabel?.trim() || "People",
     reach: Number(input.reach) || 0,
     href: `/our-programmes/${id}`,
-    photo: input.photo?.trim() || "/images/community-1.jpg",
+    photo: input.photo?.trim() || "/images/community-1.webp",
     photoAlt: input.photoAlt?.trim() || title,
     heroCta: input.heroCta?.trim() || "Support This Programme",
   };

@@ -29,7 +29,7 @@ export default function ProgrammeForm({
   const [category, setCategory] = useState(programme?.category ?? "Community");
   const [excerpt, setExcerpt] = useState(programme?.excerpt ?? "");
   const [summary, setSummary] = useState(programme?.body ?? "");
-  const [photo, setPhoto] = useState(programme?.photo ?? "/images/community-1.jpg");
+  const [photo, setPhoto] = useState(programme?.photo ?? "/images/community-1.webp");
   const [photoAlt, setPhotoAlt] = useState(programme?.photoAlt ?? "");
   const [published, setPublished] = useState(programme?.published ?? true);
   const [target, setTarget] = useState(programme?.target ?? 100);

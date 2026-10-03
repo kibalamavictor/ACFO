@@ -24,7 +24,7 @@ const SHARE = [
 
 const SUPPORT_PHOTOS = [
   {
-    src: "/images/community-1.jpg",
+    src: "/images/community-1.webp",
     left: 35,
     top: 302,
     size: 100,
@@ -32,7 +32,7 @@ const SUPPORT_PHOTOS = [
     zIndex: 3,
   },
   {
-    src: "/images/community-3.jpg",
+    src: "/images/community-3.webp",
     left: 150,
     top: 336,
     size: 100,
@@ -40,7 +40,7 @@ const SUPPORT_PHOTOS = [
     zIndex: 4,
   },
   {
-    src: "/images/community-2.jpg",
+    src: "/images/community-2.webp",
     left: 265,
     top: 308,
     size: 100,
@@ -274,7 +274,7 @@ export default function BlogArticle({
           </p>
           <div className={styles.introPhoto}>
             <img
-              src="/images/about-photo.jpg"
+              src="/images/about-photo.webp"
               alt="Children supported through education"
               width={473}
               height={248}
@@ -298,7 +298,7 @@ export default function BlogArticle({
           </p>
           <div className={styles.childrenPhoto}>
             <img
-              src="/images/partner-photo.jpg"
+              src="/images/partner-photo.webp"
               alt="Children supported to stay in school"
               width={473}
               height={248}
@@ -313,7 +313,7 @@ export default function BlogArticle({
           </h2>
           <div className={styles.girlsPhoto}>
             <img
-              src="/images/programme-education.jpg"
+              src="/images/programme-education.webp"
               alt="Girls supported through education"
               width={473}
               height={248}

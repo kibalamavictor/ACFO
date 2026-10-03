@@ -29,7 +29,7 @@ export default function Partner() {
 
           <div className={styles.partnerPhoto}>
             <img
-              src={text(partner.photo, "/images/partner-photo.jpg")}
+              src={text(partner.photo, "/images/partner-photo.webp")}
               alt={text(partner.photoAlt)}
               width={413}
               height={416}

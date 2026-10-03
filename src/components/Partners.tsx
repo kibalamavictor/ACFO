@@ -1,43 +1,12 @@
-import styles from "@/app/home.module.css";
+"use client";
 
-const LOGOS = [
-  {
-    src: "/images/partner-logo-b.svg",
-    className: "partnersLogoB1",
-    width: 135,
-    height: 23,
-  },
-  {
-    src: "/images/partner-logo-a.svg",
-    className: "partnersLogoA1",
-    width: 133,
-    height: 36,
-  },
-  {
-    src: "/images/partner-logo-b.svg",
-    className: "partnersLogoB2",
-    width: 135,
-    height: 23,
-  },
-  {
-    src: "/images/partner-logo-a.svg",
-    className: "partnersLogoA2",
-    width: 133,
-    height: 36,
-  },
-  {
-    src: "/images/partner-logo-b.svg",
-    className: "partnersLogoB3",
-    width: 135,
-    height: 23,
-  },
-  {
-    src: "/images/partner-logo-a.svg",
-    className: "partnersLogoA3",
-    width: 133,
-    height: 36,
-  },
-] as const;
+import { usePage } from "@/components/cms/SiteContentProvider";
+import { list, text } from "@/lib/cms/pages";
+import {
+  defaultPartnerLogos,
+  isPlaceholderPartnerLogos,
+} from "@/data/partners";
+import styles from "@/app/home.module.css";
 
 const HOME_BADGE_TOP = 3857;
 
@@ -46,36 +15,48 @@ type PartnersProps = {
 };
 
 export default function Partners({ top = HOME_BADGE_TOP }: PartnersProps) {
+  const section = usePage("home").partners;
+  const badge = text(section?.badge, "Partners");
+  const logos = list<{ src: string; name: string }>(section?.logos)
+    .filter((logo) => text(logo.src))
+    .map((logo) => ({
+      src: text(logo.src),
+      name: text(logo.name, "Partner"),
+    }));
+  const items = isPlaceholderPartnerLogos(logos)
+    ? defaultPartnerLogos.map((logo) => ({ ...logo }))
+    : logos;
+
   return (
     <section className={styles.partnersSection} style={{ top }}>
       <div className={styles.partnersBadge}>
         <img src="/images/badge-dot.svg" alt="" width={10} height={10} />
-        Partners
+        {badge}
       </div>
 
       <div className={styles.partnersMarquee}>
         <div className={styles.partnersTrack}>
           <div className={styles.partnersLogos}>
-            {LOGOS.map((logo) => (
+            {items.map((logo, index) => (
               <img
-                key={logo.className}
-                className={styles[logo.className]}
+                key={`${logo.src}-${index}`}
+                className={styles.partnersLogo}
                 src={logo.src}
-                alt=""
-                width={logo.width}
-                height={logo.height}
+                alt={logo.name}
+                width={136}
+                height={36}
               />
             ))}
           </div>
           <div className={styles.partnersLogosRepeat} aria-hidden="true">
-            {LOGOS.map((logo) => (
+            {items.map((logo, index) => (
               <img
-                key={`${logo.className}-repeat`}
-                className={styles[logo.className]}
+                key={`${logo.src}-${index}-repeat`}
+                className={styles.partnersLogo}
                 src={logo.src}
                 alt=""
-                width={logo.width}
-                height={logo.height}
+                width={136}
+                height={36}
               />
             ))}
           </div>

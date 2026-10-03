@@ -37,7 +37,7 @@ export default function AboutHero() {
 
       <div className={styles.photo}>
         <img
-          src={text(hero.photo, "/images/partner-photo.jpg")}
+          src={text(hero.photo, "/images/partner-photo.webp")}
           alt={text(hero.photoAlt)}
           width={537}
           height={417}
