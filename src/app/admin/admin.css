@@ -959,6 +959,37 @@
   font: inherit;
 }
 
+.cmsPassword {
+  position: relative;
+  display: block;
+}
+
+.cmsPassword input {
+  width: 100%;
+  padding-right: 72px;
+}
+
+.cmsPasswordToggle {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  border: none;
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: #e8f3e8;
+  color: #006838;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cmsPasswordToggle:focus-visible {
+  outline: 2px solid #006838;
+  outline-offset: 2px;
+}
+
 @media (max-width: 1400px) {
   .cmsDashTablePanel {
     grid-column: span 4;

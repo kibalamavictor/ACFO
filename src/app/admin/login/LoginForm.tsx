@@ -3,6 +3,7 @@
 import { FormEvent, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
+import PasswordInput from "@/components/cms/PasswordInput";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -71,8 +72,7 @@ export default function LoginForm() {
             onChange={(event) => setEmail(event.target.value)}
             required
           />
-          <input
-            type="password"
+          <PasswordInput
             name="password"
             autoComplete="current-password"
             placeholder="Password"

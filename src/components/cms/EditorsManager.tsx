@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import PasswordInput from "@/components/cms/PasswordInput";
 import type { CmsPublicUser, CmsUserRole } from "@/lib/cms/types";
 
 export default function EditorsManager({
@@ -162,8 +163,7 @@ export default function EditorsManager({
         <div className="cmsGrid2">
           <label className="cmsField">
             <span>Password</span>
-            <input
-              type="password"
+            <PasswordInput
               value={password}
               onChange={(event) => setPassword(event.target.value)}
               autoComplete="new-password"
