@@ -49,18 +49,11 @@ export default function Navbar() {
     >
       <Link href="/" className={styles.logo} aria-label="ACFO home">
         <img
-          className={styles.wordmark}
-          src="/images/acfo-wordmark.svg"
+          className={styles.logoImage}
+          src="/images/acfo-logo-nav.png"
           alt=""
-          width={76.3145}
-          height={37.1965}
-        />
-        <img
-          className={styles.mark}
-          src="/images/acfo-mark.svg"
-          alt=""
-          width={42.5174}
-          height={37.1917}
+          width={116}
+          height={37}
         />
       </Link>
 

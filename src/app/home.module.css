@@ -40,20 +40,10 @@
   z-index: 21;
 }
 
-.wordmark {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 76.3145px;
+.logoImage {
+  display: block;
+  width: auto;
   height: 37.1965px;
-}
-
-.mark {
-  position: absolute;
-  left: 77.536px;
-  top: 0;
-  width: 42.5174px;
-  height: 37.1917px;
 }
 
 .links {
