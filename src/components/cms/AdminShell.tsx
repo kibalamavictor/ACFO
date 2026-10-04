@@ -51,8 +51,7 @@ export default function AdminShell({
     <div className="cmsShell">
       <header className="cmsTopbar">
         <Link href="/admin" className="cmsLogo" aria-label="ACFO CMS home">
-          <img src="/images/acfo-wordmark.svg" alt="" width={76} height={37} />
-          <img src="/images/acfo-mark.svg" alt="" width={43} height={37} />
+          <img src="/images/acfo-logo-header.png" alt="" width={116} height={37} />
         </Link>
 
         <span className="cmsBadge">
