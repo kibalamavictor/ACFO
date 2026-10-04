@@ -7,14 +7,22 @@ import Programmes from "@/components/Programmes";
 import { Community, News, Partners } from "@/components/defer";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/seo/JsonLd";
-import { getPages, getSettings } from "@/lib/cms/store";
+import { SiteContentScope } from "@/components/cms/SiteContentProvider";
+import {
+  getNewsSummaries,
+  getPages,
+  getProgrammeSummaries,
+  getSettings,
+  loadCms,
+} from "@/lib/cms/store";
 import { list, text } from "@/lib/cms/pages";
 import { ORG_LEGAL_NAME, ORG_SHORT_NAME } from "@/lib/seo/config";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbNode, siteGraph, webPageNode } from "@/lib/seo/jsonld";
 import styles from "./home.module.css";
 
-export function generateMetadata(): Metadata {
+export async function generateMetadata(): Promise<Metadata> {
+  await loadCms();
   const pages = getPages();
   const settings = getSettings();
 
@@ -33,7 +41,8 @@ export function generateMetadata(): Metadata {
   };
 }
 
-export default function HomePage() {
+export default async function HomePage() {
+  await loadCms();
   const settings = getSettings();
   const pages = getPages();
   const slides = list<{ desktop: string; mobile: string }>(pages.home.hero.slides);
@@ -68,17 +77,19 @@ export default function HomePage() {
           breadcrumbNode([{ name: "Home", path: "/" }]),
         ])}
       />
-      <main className={styles.page}>
-        <Navbar />
-        <Hero />
-        <About />
-        <Partner />
-        <Programmes />
-        <Community />
-        <Partners />
-        <News />
-        <Footer />
-      </main>
+      <SiteContentScope content={{ ...getProgrammeSummaries(), news: getNewsSummaries() }}>
+        <main className={styles.page}>
+          <Navbar />
+          <Hero />
+          <About />
+          <Partner />
+          <Programmes />
+          <Community />
+          <Partners />
+          <News />
+          <Footer />
+        </main>
+      </SiteContentScope>
     </>
   );
 }

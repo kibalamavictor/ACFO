@@ -1,8 +1,9 @@
 import AdminShell from "@/components/cms/AdminShell";
 import SettingsForm from "@/components/cms/SettingsForm";
-import { getSettings } from "@/lib/cms/store";
+import { getSettings, loadCms } from "@/lib/cms/store";
 
-export default function AdminSettingsPage() {
+export default async function AdminSettingsPage() {
+  await loadCms();
   const settings = getSettings();
 
   return (

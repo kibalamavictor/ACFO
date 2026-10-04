@@ -1,4 +1,4 @@
-import { getPublishedNews, getPublishedProgrammes, getSettings } from "@/lib/cms/store";
+import { getPublishedNews, getPublishedProgrammes, getSettings, loadCms } from "@/lib/cms/store";
 import { ORG_LEGAL_NAME, absoluteUrl, getSiteUrl } from "@/lib/seo/config";
 import { toPlainText } from "@/lib/seo/plain";
 
@@ -6,6 +6,7 @@ export const runtime = "nodejs";
 export const revalidate = 3600;
 
 export async function GET() {
+  await loadCms();
   const settings = getSettings();
   const siteUrl = getSiteUrl();
   const programmes = getPublishedProgrammes();

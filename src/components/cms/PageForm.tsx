@@ -173,7 +173,6 @@ export default function PageForm({
         throw new Error(result.error || "Could not save page");
       }
       setSaved(true);
-      window.dispatchEvent(new Event("acfo-cms-updated"));
       router.refresh();
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Could not save page");

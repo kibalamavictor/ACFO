@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { isTeamCategory, slugify } from "@/lib/cms/public";
 import { getTeam, saveTeam } from "@/lib/cms/store";
 import type { CmsTeamMember } from "@/lib/cms/types";
+import { cmsSaveFailed, requireCmsEditor } from "@/lib/cms/session";
 
 export const runtime = "nodejs";
 
@@ -27,10 +28,20 @@ function normalize(input: Partial<CmsTeamMember>, fallbackId: string): CmsTeamMe
 }
 
 export async function GET() {
+  const { response } = await requireCmsEditor();
+  if (response) {
+    return response;
+  }
+
   return NextResponse.json(getTeam());
 }
 
 export async function POST(request: Request) {
+  const { response } = await requireCmsEditor();
+  if (response) {
+    return response;
+  }
+
   const body = (await request.json().catch(() => null)) as Partial<CmsTeamMember> | null;
   if (!body) {
     return NextResponse.json({ error: "Invalid member" }, { status: 400 });
@@ -43,5 +54,8 @@ export async function POST(request: Request) {
   }
 
   const persisted = await saveTeam([...team, member]);
+  if (!persisted) {
+    return cmsSaveFailed();
+  }
   return NextResponse.json({ member, persisted }, { status: 201 });
 }

@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
-import { getPublishedNews, getPublishedProgrammes } from "@/lib/cms/store";
+import { getPublishedNews, getPublishedProgrammes, loadCms } from "@/lib/cms/store";
 import { absoluteUrl } from "@/lib/seo/config";
 import { parseDisplayDate } from "@/lib/seo/plain";
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  await loadCms();
   const now = new Date();
   const staticPages: MetadataRoute.Sitemap = [
     { url: absoluteUrl("/"), lastModified: now, changeFrequency: "weekly", priority: 1 },

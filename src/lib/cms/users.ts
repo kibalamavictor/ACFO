@@ -1,10 +1,26 @@
-import { randomBytes } from "node:crypto";
-import { cmsAdminEmail, cmsPassword } from "@/lib/cms/auth";
+import {
+  createCipheriv,
+  createDecipheriv,
+  hkdfSync,
+  randomBytes,
+} from "node:crypto";
+import { cmsAdminEmail, cmsPassword, cmsSecret } from "@/lib/cms/auth";
 import { readJsonFile, writeJsonFile } from "@/lib/cms/data-dir";
 import { hashPassword, verifyPassword } from "@/lib/cms/passwords";
+import { hasRemoteStore, pullRemoteText, pushRemoteText } from "@/lib/cms/remote";
 import type { CmsPublicUser, CmsUser, CmsUserRole } from "@/lib/cms/types";
 
-let memory: CmsUser[] | null = null;
+// Blob stores are publicly readable, so the users file is encrypted at rest.
+const REMOTE_USERS = "cms/users.enc.json";
+const LOCAL_USERS = "users.json";
+const CACHE_TTL_MS = 5000;
+
+let cache: { users: CmsUser[]; at: number } | null = null;
+
+function remember(users: CmsUser[]) {
+  cache = { users, at: Date.now() };
+  return users;
+}
 
 function seedUsers(): CmsUser[] {
   return [
@@ -18,32 +34,98 @@ function seedUsers(): CmsUser[] {
   ];
 }
 
-function persist(users: CmsUser[]) {
-  memory = users;
-  return writeJsonFile("users.json", `${JSON.stringify(users, null, 2)}\n`);
+function usersKey() {
+  return Buffer.from(hkdfSync("sha256", cmsSecret(), "acfo-cms", "users-file-v1", 32));
 }
 
-export function getUsers(): CmsUser[] {
-  if (memory && memory.length > 0) {
-    return memory;
-  }
+function encryptUsers(users: CmsUser[]) {
+  const iv = randomBytes(12);
+  const cipher = createCipheriv("aes-256-gcm", usersKey(), iv);
+  const data = Buffer.concat([cipher.update(JSON.stringify(users), "utf8"), cipher.final()]);
+  return JSON.stringify({
+    v: 1,
+    iv: iv.toString("base64"),
+    tag: cipher.getAuthTag().toString("base64"),
+    data: data.toString("base64"),
+  });
+}
 
+function decryptUsers(raw: string): CmsUser[] | null {
   try {
-    const raw = readJsonFile("users.json");
-    if (raw) {
-      const parsed = JSON.parse(raw) as CmsUser[];
-      if (Array.isArray(parsed) && parsed.length > 0) {
-        memory = parsed;
-        return parsed;
-      }
-    }
+    const box = JSON.parse(raw) as { v: number; iv: string; tag: string; data: string };
+    const decipher = createDecipheriv("aes-256-gcm", usersKey(), Buffer.from(box.iv, "base64"));
+    decipher.setAuthTag(Buffer.from(box.tag, "base64"));
+    const plain = Buffer.concat([
+      decipher.update(Buffer.from(box.data, "base64")),
+      decipher.final(),
+    ]).toString("utf8");
+    const users = JSON.parse(plain) as CmsUser[];
+    return Array.isArray(users) && users.length > 0 ? users : null;
   } catch {
-    // Seed the first administrator when no users file exists yet.
+    return null;
+  }
+}
+
+function readLocalUsers(): CmsUser[] | null {
+  try {
+    const raw = readJsonFile(LOCAL_USERS);
+    const users = raw ? (JSON.parse(raw) as CmsUser[]) : null;
+    return Array.isArray(users) && users.length > 0 ? users : null;
+  } catch {
+    return null;
+  }
+}
+
+async function persist(users: CmsUser[]) {
+  const ok = hasRemoteStore()
+    ? await pushRemoteText(REMOTE_USERS, encryptUsers(users), "application/json")
+    : writeJsonFile(LOCAL_USERS, `${JSON.stringify(users, null, 2)}\n`);
+  if (ok) {
+    remember(users);
+  }
+  return ok;
+}
+
+async function loadUsers({ fresh = false } = {}): Promise<CmsUser[]> {
+  if (!fresh && cache && Date.now() - cache.at < CACHE_TTL_MS) {
+    return cache.users;
   }
 
-  const seeded = seedUsers();
-  persist(seeded);
-  return seeded;
+  if (!hasRemoteStore()) {
+    const local = readLocalUsers();
+    if (local) {
+      return remember(local);
+    }
+    const seeded = seedUsers();
+    await persist(seeded);
+    return seeded;
+  }
+
+  const raw = await pullRemoteText(REMOTE_USERS);
+
+  if (typeof raw === "string") {
+    const users = decryptUsers(raw);
+    if (users) {
+      return remember(users);
+    }
+    // Usually means CMS_SECRET changed. Fall back to the env administrator without
+    // overwriting the stored file, so restoring the old secret recovers the editors.
+    console.error(`Could not decrypt ${REMOTE_USERS}; only the CMS_ADMIN_EMAIL account can sign in.`);
+    return seedUsers();
+  }
+
+  if (raw === null) {
+    const initial = readLocalUsers() ?? seedUsers();
+    await persist(initial);
+    return initial;
+  }
+
+  // Store unreachable: never seed over it, keep serving the last copy we saw.
+  return cache?.users ?? seedUsers();
+}
+
+export async function getUsers(): Promise<CmsUser[]> {
+  return loadUsers();
 }
 
 export function toPublicUser(user: CmsUser): CmsPublicUser {
@@ -55,17 +137,13 @@ export function toPublicUser(user: CmsUser): CmsPublicUser {
   };
 }
 
-export function findUserById(id: string) {
-  return getUsers().find((user) => user.id === id) ?? null;
+export async function findUserById(id: string) {
+  return (await loadUsers()).find((user) => user.id === id) ?? null;
 }
 
-export function findUserByEmail(email: string) {
+export async function authenticateUser(email: string, password: string) {
   const needle = email.trim().toLowerCase();
-  return getUsers().find((user) => user.email === needle) ?? null;
-}
-
-export function authenticateUser(email: string, password: string) {
-  const user = findUserByEmail(email);
+  const user = (await loadUsers()).find((item) => item.email === needle);
   if (!user) {
     return null;
   }
@@ -77,12 +155,12 @@ function normalizeRole(role: string | undefined): CmsUserRole {
   return role === "admin" ? "admin" : "editor";
 }
 
-export function createUser(input: {
+export async function createUser(input: {
   name?: string;
   email?: string;
   password?: string;
   role?: string;
-}): { user: CmsPublicUser } | { error: string } {
+}): Promise<{ user: CmsPublicUser } | { error: string }> {
   const name = input.name?.trim() ?? "";
   const email = input.email?.trim().toLowerCase() ?? "";
   const password = input.password ?? "";
@@ -96,7 +174,9 @@ export function createUser(input: {
   if (password.length < 8) {
     return { error: "Password must be at least 8 characters." };
   }
-  if (findUserByEmail(email)) {
+
+  const users = await loadUsers({ fresh: true });
+  if (users.some((user) => user.email === email)) {
     return { error: "An account with this email already exists." };
   }
 
@@ -108,12 +188,17 @@ export function createUser(input: {
     role: normalizeRole(input.role),
   };
 
-  persist([...getUsers(), user]);
+  if (!(await persist([...users, user]))) {
+    return { error: "Could not save the new editor. Try again." };
+  }
   return { user: toPublicUser(user) };
 }
 
-export function deleteUser(id: string, actorId: string): { ok: true } | { error: string } {
-  const users = getUsers();
+export async function deleteUser(
+  id: string,
+  actorId: string,
+): Promise<{ ok: true } | { error: string }> {
+  const users = await loadUsers({ fresh: true });
   const target = users.find((user) => user.id === id);
   if (!target) {
     return { error: "That editor was not found." };
@@ -128,6 +213,8 @@ export function deleteUser(id: string, actorId: string): { ok: true } | { error:
     return { error: "Keep at least one administrator." };
   }
 
-  persist(users.filter((user) => user.id !== id));
+  if (!(await persist(users.filter((user) => user.id !== id)))) {
+    return { error: "Could not remove that editor. Try again." };
+  }
   return { ok: true };
 }

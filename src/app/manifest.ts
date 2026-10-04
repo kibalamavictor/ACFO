@@ -1,9 +1,10 @@
 import type { MetadataRoute } from "next";
-import { getSettings } from "@/lib/cms/store";
+import { getSettings, loadCms } from "@/lib/cms/store";
 import { ORG_SHORT_NAME, THEME_COLOR } from "@/lib/seo/config";
 import { toPlainText } from "@/lib/seo/plain";
 
-export default function manifest(): MetadataRoute.Manifest {
+export default async function manifest(): Promise<MetadataRoute.Manifest> {
+  await loadCms();
   const settings = getSettings();
 
   return {

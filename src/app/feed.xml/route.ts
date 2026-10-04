@@ -1,4 +1,4 @@
-import { getPublishedNews, getSettings } from "@/lib/cms/store";
+import { getPublishedNews, getSettings, loadCms } from "@/lib/cms/store";
 import { ORG_LEGAL_NAME, absoluteUrl, getSiteUrl } from "@/lib/seo/config";
 import { parseDisplayDate, toPlainText } from "@/lib/seo/plain";
 
@@ -14,6 +14,7 @@ function escapeXml(value: string) {
 }
 
 export async function GET() {
+  await loadCms();
   const settings = getSettings();
   const siteUrl = getSiteUrl();
   const stories = getPublishedNews();

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { chipWidthForLabel, slugify } from "@/lib/cms/public";
 import { getNews, saveNews } from "@/lib/cms/store";
 import type { CmsNewsStory } from "@/lib/cms/types";
+import { cmsSaveFailed, requireCmsEditor } from "@/lib/cms/session";
 
 export const runtime = "nodejs";
 
@@ -25,10 +26,20 @@ function normalize(input: Partial<CmsNewsStory>, fallbackSlug: string): CmsNewsS
 }
 
 export async function GET() {
+  const { response } = await requireCmsEditor();
+  if (response) {
+    return response;
+  }
+
   return NextResponse.json(getNews());
 }
 
 export async function POST(request: Request) {
+  const { response } = await requireCmsEditor();
+  if (response) {
+    return response;
+  }
+
   const body = (await request.json().catch(() => null)) as Partial<CmsNewsStory> | null;
   if (!body) {
     return NextResponse.json({ error: "Invalid story" }, { status: 400 });
@@ -41,5 +52,8 @@ export async function POST(request: Request) {
   }
 
   const persisted = await saveNews([story, ...news]);
+  if (!persisted) {
+    return cmsSaveFailed();
+  }
   return NextResponse.json({ story, persisted }, { status: 201 });
 }

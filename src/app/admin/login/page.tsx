@@ -1,5 +1,7 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { Suspense } from "react";
+import { getCurrentUser } from "@/lib/cms/session";
 import AdminLoginPage from "./LoginForm";
 
 function LoginFallback() {
@@ -15,7 +17,11 @@ function LoginFallback() {
   );
 }
 
-export default function Page() {
+export default async function Page() {
+  if (await getCurrentUser()) {
+    redirect("/admin");
+  }
+
   return (
     <Suspense fallback={<LoginFallback />}>
       <AdminLoginPage />

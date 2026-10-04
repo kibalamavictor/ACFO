@@ -13,7 +13,7 @@ export default async function AdminEditorsPage() {
   return (
     <AdminShell title="Editors">
       <EditorsManager
-        users={getUsers().map(toPublicUser)}
+        users={(await getUsers()).map(toPublicUser)}
         currentUserId={me.id}
       />
     </AdminShell>

@@ -32,7 +32,6 @@ export default function SettingsForm({ settings }: { settings: SiteSettings }) {
         throw new Error(result.error || "Could not save settings");
       }
       setSaved(true);
-      window.dispatchEvent(new Event("acfo-cms-updated"));
       router.refresh();
     } catch (caught) {
       setError(

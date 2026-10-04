@@ -15,7 +15,7 @@ export async function DELETE(_request: Request, context: RouteContext) {
   }
 
   const { id } = await context.params;
-  const result = deleteUser(id, user.id);
+  const result = await deleteUser(id, user.id);
   if ("error" in result) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }

@@ -1,4 +1,4 @@
-import { put, list } from "@vercel/blob";
+import { get, list, put } from "@vercel/blob";
 
 function blobToken() {
   return process.env.BLOB_READ_WRITE_TOKEN || "";
@@ -13,82 +13,88 @@ function publicBlobBase() {
   return storeId ? `https://${storeId.toLowerCase()}.public.blob.vercel-storage.com` : null;
 }
 
-async function pullDirect(name: string): Promise<unknown | null | undefined> {
-  const base = publicBlobBase();
-  if (!base) {
-    return undefined;
-  }
-
-  // Blob's CDN caches for at least 60s; a unique query forces a fresh read after edits.
-  const response = await fetch(`${base}/cms/${name}.json?v=${Date.now()}`, {
-    cache: "no-store",
-    signal: AbortSignal.timeout(4000),
+// The SDK's get() uses its own HTTP client, so these reads never opt a statically
+// rendered page into dynamic rendering the way a no-store fetch() would.
+async function readBlobText(url: string): Promise<string | null> {
+  const result = await get(url, {
+    access: "public",
+    token: blobToken(),
+    abortSignal: AbortSignal.timeout(4000),
   });
-  if (response.status === 404) {
+  if (!result || result.statusCode !== 200) {
     return null;
   }
-  if (!response.ok) {
-    return undefined;
-  }
-  return (await response.json()) as unknown;
+  return new Response(result.stream).text();
 }
 
-export async function pullRemoteJson(name: string) {
+async function locateBlob(pathname: string) {
+  const { blobs } = await list({ prefix: pathname, limit: 1, token: blobToken() });
+  return blobs.find((blob) => blob.pathname === pathname)?.url ?? null;
+}
+
+/**
+ * Resolves to the blob text, `null` when the blob does not exist, or
+ * `undefined` when the store could not be reached.
+ */
+export async function pullRemoteText(pathname: string): Promise<string | null | undefined> {
   if (!blobToken()) {
     return null;
   }
 
+  const base = publicBlobBase();
   try {
-    const direct = await pullDirect(name);
-    if (direct !== undefined) {
-      return direct;
+    if (base) {
+      // Blob's CDN caches for at least 60s; a unique query forces a fresh read after edits.
+      return await readBlobText(`${base}/${pathname}?v=${Date.now()}`);
     }
-  } catch {
-    // fall back to listing the store
-  }
-
-  try {
-    const { blobs } = await list({
-      prefix: `cms/${name}.json`,
-      limit: 1,
-      token: blobToken(),
-    });
-    const url = blobs[0]?.url;
-    if (!url) {
-      return null;
-    }
-
-    const response = await fetch(url, { cache: "no-store" });
-    if (!response.ok) {
-      return null;
-    }
-
-    return (await response.json()) as unknown;
+    const url = await locateBlob(pathname);
+    return url ? await readBlobText(`${url}?v=${Date.now()}`) : null;
   } catch (error) {
-    console.error(`Could not read remote cms/${name}.json`, error);
-    return null;
+    console.error(`Could not read remote ${pathname}`, error);
+    return undefined;
   }
 }
 
-export async function pushRemoteJson(name: string, value: unknown) {
+export async function pushRemoteText(pathname: string, body: string, contentType: string) {
   if (!blobToken()) {
     return false;
   }
 
   try {
-    await put(`cms/${name}.json`, `${JSON.stringify(value, null, 2)}\n`, {
+    await put(pathname, body, {
       access: "public",
       addRandomSuffix: false,
       allowOverwrite: true,
       cacheControlMaxAge: 0,
-      contentType: "application/json",
+      contentType,
       token: blobToken(),
     });
     return true;
   } catch (error) {
-    console.error(`Could not write remote cms/${name}.json`, error);
+    console.error(`Could not write remote ${pathname}`, error);
     return false;
   }
+}
+
+export async function pullRemoteJson(name: string): Promise<unknown | null | undefined> {
+  const raw = await pullRemoteText(`cms/${name}.json`);
+  if (typeof raw !== "string") {
+    return raw;
+  }
+  try {
+    return JSON.parse(raw) as unknown;
+  } catch (error) {
+    console.error(`Remote cms/${name}.json is not valid JSON`, error);
+    return undefined;
+  }
+}
+
+export async function pushRemoteJson(name: string, value: unknown) {
+  return pushRemoteText(
+    `cms/${name}.json`,
+    `${JSON.stringify(value, null, 2)}\n`,
+    "application/json",
+  );
 }
 
 export async function pushRemoteUpload(

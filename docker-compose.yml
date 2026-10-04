@@ -6,8 +6,8 @@ services:
       - "3001:3000"
     environment:
       CMS_ADMIN_EMAIL: ${CMS_ADMIN_EMAIL:-admin@acfo.org}
-      CMS_PASSWORD: ${CMS_PASSWORD:-acfo-admin}
-      CMS_SECRET: ${CMS_SECRET:-acfo-local-dev-secret}
+      CMS_PASSWORD: ${CMS_PASSWORD:?Set CMS_PASSWORD (8+ characters)}
+      CMS_SECRET: ${CMS_SECRET:?Set CMS_SECRET (32+ random characters)}
     volumes:
       - ./content:/app/content
       - ./public/uploads:/app/public/uploads

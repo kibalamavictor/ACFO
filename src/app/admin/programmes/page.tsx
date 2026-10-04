@@ -1,9 +1,10 @@
 import Link from "next/link";
 import AdminShell from "@/components/cms/AdminShell";
 import ProgrammeTable from "@/components/cms/ProgrammeTable";
-import { getProgrammes } from "@/lib/cms/store";
+import { getProgrammes, loadCms } from "@/lib/cms/store";
 
-export default function AdminProgrammesPage() {
+export default async function AdminProgrammesPage() {
+  await loadCms();
   const programmes = getProgrammes();
 
   return (

@@ -10,7 +10,7 @@ export async function GET() {
     return response;
   }
 
-  return NextResponse.json(getUsers().map(toPublicUser));
+  return NextResponse.json((await getUsers()).map(toPublicUser));
 }
 
 export async function POST(request: Request) {
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Invalid editor." }, { status: 400 });
   }
 
-  const result = createUser(body);
+  const result = await createUser(body);
   if ("error" in result) {
     return NextResponse.json({ error: result.error }, { status: 400 });
   }

@@ -1,8 +1,9 @@
 import { getTeamByCategory } from "@/lib/cms/public";
-import { getTeam } from "@/lib/cms/store";
+import { getTeam, loadCms } from "@/lib/cms/store";
 import styles from "@/app/team.module.css";
 
-export default function TeamDirectory() {
+export default async function TeamDirectory() {
+  await loadCms();
   const groups = getTeamByCategory(getTeam());
 
   return (

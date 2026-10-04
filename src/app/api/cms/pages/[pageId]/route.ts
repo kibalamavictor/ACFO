@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { isPageId } from "@/lib/cms/pages";
 import { savePage } from "@/lib/cms/store";
+import { cmsSaveFailed, requireCmsEditor } from "@/lib/cms/session";
 
 export const runtime = "nodejs";
 
@@ -9,6 +10,11 @@ type RouteContext = {
 };
 
 export async function PUT(request: Request, context: RouteContext) {
+  const { response } = await requireCmsEditor();
+  if (response) {
+    return response;
+  }
+
   const { pageId } = await context.params;
   if (!isPageId(pageId)) {
     return NextResponse.json({ error: "Unknown page" }, { status: 404 });
@@ -23,5 +29,8 @@ export async function PUT(request: Request, context: RouteContext) {
   }
 
   const persisted = await savePage(pageId, body);
+  if (!persisted) {
+    return cmsSaveFailed();
+  }
   return NextResponse.json({ pageId, persisted });
 }

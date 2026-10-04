@@ -1,12 +1,22 @@
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import { CMS_COOKIE, verifySessionToken } from "@/lib/cms/auth";
+import { SCALE_SCRIPT } from "@/lib/scale-script";
 
-function contentSecurityPolicy(nonce: string) {
+let scaleScriptHash: Promise<string> | null = null;
+
+function hashScaleScript() {
+  scaleScriptHash ??= crypto.subtle
+    .digest("SHA-256", new TextEncoder().encode(SCALE_SCRIPT))
+    .then((digest) => `'sha256-${btoa(String.fromCharCode(...new Uint8Array(digest)))}'`);
+  return scaleScriptHash;
+}
+
+function contentSecurityPolicy(scriptSrc: string) {
   const dev = process.env.NODE_ENV !== "production";
   return [
     "default-src 'self'",
-    `script-src 'self' 'nonce-${nonce}'${dev ? " 'unsafe-eval'" : ""}`,
+    `script-src 'self' ${scriptSrc}${dev ? " 'unsafe-eval'" : ""}`,
     "style-src 'self' 'unsafe-inline'",
     "img-src 'self' data: blob: https:",
     "font-src 'self'",
@@ -23,12 +33,19 @@ function contentSecurityPolicy(nonce: string) {
   ].join("; ");
 }
 
-function withCsp(request: NextRequest) {
+// Public pages are served as cached static HTML, which cannot carry a per-request nonce.
+function withPublicCsp() {
+  const response = NextResponse.next();
+  response.headers.set("Content-Security-Policy", contentSecurityPolicy("'unsafe-inline'"));
+  return response;
+}
+
+async function withNonceCsp(request: NextRequest) {
   const nonce = btoa(crypto.randomUUID());
-  const csp = contentSecurityPolicy(nonce);
+  const csp = contentSecurityPolicy(`'nonce-${nonce}' ${await hashScaleScript()}`);
   const headers = new Headers(request.headers);
-  headers.set("x-nonce", nonce);
   headers.set("Content-Security-Policy", csp);
+  headers.set("x-cms-path", request.nextUrl.pathname);
 
   const response = NextResponse.next({ request: { headers } });
   response.headers.set("Content-Security-Policy", csp);
@@ -37,25 +54,20 @@ function withCsp(request: NextRequest) {
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  const isLoginPage = pathname === "/admin/login";
-  const isLoginApi = pathname === "/api/cms/login";
   const isAdmin = pathname.startsWith("/admin");
   const isCmsApi = pathname.startsWith("/api/cms");
 
-  if (isLoginApi || (!isAdmin && !isCmsApi)) {
-    return withCsp(request);
+  if (!isAdmin && !isCmsApi) {
+    return withPublicCsp();
   }
 
-  const token = request.cookies.get(CMS_COOKIE)?.value;
-  const signedIn = await verifySessionToken(token);
-
-  if (isLoginPage) {
-    if (signedIn) {
-      return NextResponse.redirect(new URL("/admin", request.url));
-    }
-    return withCsp(request);
+  if (pathname === "/admin/login" || pathname === "/api/cms/login") {
+    return withNonceCsp(request);
   }
 
+  // Cheap signature check at the edge; the Node routes and admin layout also
+  // confirm the account still exists.
+  const signedIn = await verifySessionToken(request.cookies.get(CMS_COOKIE)?.value);
   if (!signedIn) {
     if (isCmsApi) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -66,7 +78,7 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(login);
   }
 
-  return withCsp(request);
+  return withNonceCsp(request);
 }
 
 export const config = {

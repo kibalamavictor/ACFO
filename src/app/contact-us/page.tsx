@@ -6,13 +6,14 @@ import ContactForm from "@/components/contact/ContactForm";
 import { ProgrammesCommunity } from "@/components/defer";
 import Footer from "@/components/Footer";
 import JsonLd from "@/components/seo/JsonLd";
-import { getPages, getSettings } from "@/lib/cms/store";
+import { getPages, getSettings, loadCms } from "@/lib/cms/store";
 import { text } from "@/lib/cms/pages";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbNode, siteGraph, webPageNode } from "@/lib/seo/jsonld";
 import styles from "@/app/contact.module.css";
 
-export function generateMetadata(): Metadata {
+export async function generateMetadata(): Promise<Metadata> {
+  await loadCms();
   const pages = getPages();
 
   return pageMetadata({
@@ -24,7 +25,8 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export default function ContactUsPage() {
+export default async function ContactUsPage() {
+  await loadCms();
   const settings = getSettings();
   const pages = getPages();
 

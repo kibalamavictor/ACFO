@@ -2,13 +2,14 @@ import { notFound } from "next/navigation";
 import AdminShell from "@/components/cms/AdminShell";
 import PageForm from "@/components/cms/PageForm";
 import { getPageDef } from "@/lib/cms/pages";
-import { getPages } from "@/lib/cms/store";
+import { getPages, loadCms } from "@/lib/cms/store";
 
 type PageProps = {
   params: Promise<{ pageId: string }>;
 };
 
 export default async function EditPageContentPage({ params }: PageProps) {
+  await loadCms();
   const { pageId } = await params;
   const page = getPageDef(pageId);
 

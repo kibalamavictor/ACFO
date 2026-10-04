@@ -4,8 +4,15 @@ import Navbar from "@/components/Navbar";
 import BlogHero from "@/components/blog/BlogHero";
 import BlogArticle from "@/components/blog/BlogArticle";
 import BlogRelated from "@/components/blog/BlogRelated";
+import { SiteContentScope } from "@/components/cms/SiteContentProvider";
 import JsonLd from "@/components/seo/JsonLd";
-import { getNewsBySlug, getPublishedNews, getSettings } from "@/lib/cms/store";
+import {
+  getNewsBySlug,
+  getNewsSummaries,
+  getPublishedNews,
+  getSettings,
+  loadCms,
+} from "@/lib/cms/store";
 import { pageMetadata } from "@/lib/seo/metadata";
 import {
   breadcrumbNode,
@@ -20,7 +27,8 @@ type NewsStoryPageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  await loadCms();
   return getPublishedNews().map((story) => ({ slug: story.slug }));
 }
 
@@ -29,6 +37,7 @@ export const dynamicParams = true;
 export async function generateMetadata({
   params,
 }: NewsStoryPageProps): Promise<Metadata> {
+  await loadCms();
   const { slug } = await params;
   const story = getNewsBySlug(slug);
 
@@ -55,6 +64,7 @@ export async function generateMetadata({
 }
 
 export default async function NewsStoryPage({ params }: NewsStoryPageProps) {
+  await loadCms();
   const { slug } = await params;
   const story = getNewsBySlug(slug);
 
@@ -79,19 +89,21 @@ export default async function NewsStoryPage({ params }: NewsStoryPageProps) {
           ]),
         ])}
       />
-      <main className={styles.page}>
-      <Navbar />
-      <BlogHero
-        chip={story.chip}
-        date={story.date}
-        title={story.title}
-        body={story.excerpt}
-        photo={story.photo}
-        photoAlt={story.photoAlt}
-      />
-      <BlogArticle story={story} />
-      <BlogRelated excludeSlug={story.slug} />
-    </main>
+      <SiteContentScope content={{ news: getNewsSummaries() }}>
+        <main className={styles.page}>
+          <Navbar />
+          <BlogHero
+            chip={story.chip}
+            date={story.date}
+            title={story.title}
+            body={story.excerpt}
+            photo={story.photo}
+            photoAlt={story.photoAlt}
+          />
+          <BlogArticle story={story} />
+          <BlogRelated excludeSlug={story.slug} />
+        </main>
+      </SiteContentScope>
     </>
   );
 }

@@ -74,7 +74,6 @@ export default function NewsForm({
         throw new Error(result.error || "Could not save story");
       }
       router.push("/admin/news");
-      window.dispatchEvent(new Event("acfo-cms-updated"));
       router.refresh();
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Could not save story");

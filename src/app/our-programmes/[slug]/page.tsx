@@ -7,8 +7,15 @@ import ProjectApproach from "@/components/project/ProjectApproach";
 import ProjectGirls from "@/components/project/ProjectGirls";
 import ProjectSupport from "@/components/project/ProjectSupport";
 import ProjectTail from "@/components/project/ProjectTail";
+import { SiteContentScope } from "@/components/cms/SiteContentProvider";
 import JsonLd from "@/components/seo/JsonLd";
-import { getProgrammeById, getPublishedProgrammes, getSettings } from "@/lib/cms/store";
+import {
+  getProgrammeById,
+  getProgrammeSummaries,
+  getPublishedProgrammes,
+  getSettings,
+  loadCms,
+} from "@/lib/cms/store";
 import { pageMetadata } from "@/lib/seo/metadata";
 import {
   breadcrumbNode,
@@ -21,7 +28,8 @@ type ProgrammePageProps = {
   params: Promise<{ slug: string }>;
 };
 
-export function generateStaticParams() {
+export async function generateStaticParams() {
+  await loadCms();
   return getPublishedProgrammes().map((programme) => ({ slug: programme.id }));
 }
 
@@ -30,6 +38,7 @@ export const dynamicParams = true;
 export async function generateMetadata({
   params,
 }: ProgrammePageProps): Promise<Metadata> {
+  await loadCms();
   const { slug } = await params;
   const programme = getProgrammeById(slug);
 
@@ -52,6 +61,7 @@ export async function generateMetadata({
 }
 
 export default async function ProgrammePage({ params }: ProgrammePageProps) {
+  await loadCms();
   const { slug } = await params;
   const programme = getProgrammeById(slug);
 
@@ -71,19 +81,21 @@ export default async function ProgrammePage({ params }: ProgrammePageProps) {
           ]),
         ])}
       />
-      <main className={styles.page}>
-        <Navbar />
-        <ProjectHero programmeId={programme.id} />
-        <div className={styles.detail}>
-          <div className={styles.detailMain}>
-            <ProjectWhatWeDo programmeId={programme.id} />
-            <ProjectApproach programmeId={programme.id} />
-            <ProjectGirls programmeId={programme.id} />
+      <SiteContentScope content={getProgrammeSummaries(programme.id)}>
+        <main className={styles.page}>
+          <Navbar />
+          <ProjectHero programmeId={programme.id} />
+          <div className={styles.detail}>
+            <div className={styles.detailMain}>
+              <ProjectWhatWeDo programmeId={programme.id} />
+              <ProjectApproach programmeId={programme.id} />
+              <ProjectGirls programmeId={programme.id} />
+            </div>
+            <ProjectSupport programmeId={programme.id} />
           </div>
-          <ProjectSupport programmeId={programme.id} />
-        </div>
-        <ProjectTail after={`.${styles.detail}`} />
-      </main>
+          <ProjectTail after={`.${styles.detail}`} />
+        </main>
+      </SiteContentScope>
     </>
   );
 }

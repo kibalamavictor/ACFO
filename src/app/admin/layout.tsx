@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
 import { CmsSessionProvider } from "@/components/cms/CmsSession";
 import { getCurrentUser } from "@/lib/cms/session";
+import { loadCms } from "@/lib/cms/store";
 import "./admin.css";
 
 export const metadata: Metadata = {
@@ -21,7 +24,12 @@ export default async function AdminLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const user = await getCurrentUser();
+  const [user, requestHeaders] = await Promise.all([getCurrentUser(), headers(), loadCms()]);
+  const path = requestHeaders.get("x-cms-path") ?? "";
+
+  if (!user && path !== "/admin/login") {
+    redirect(`/admin/login?next=${encodeURIComponent(path || "/admin")}`);
+  }
 
   return <CmsSessionProvider user={user}>{children}</CmsSessionProvider>;
 }

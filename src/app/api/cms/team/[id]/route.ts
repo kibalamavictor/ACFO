@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { isTeamCategory, slugify } from "@/lib/cms/public";
 import { getTeam, saveTeam } from "@/lib/cms/store";
 import type { CmsTeamMember } from "@/lib/cms/types";
+import { cmsSaveFailed, requireCmsEditor } from "@/lib/cms/session";
 
 export const runtime = "nodejs";
 
@@ -10,6 +11,11 @@ type RouteContext = {
 };
 
 export async function PUT(request: Request, context: RouteContext) {
+  const { response } = await requireCmsEditor();
+  if (response) {
+    return response;
+  }
+
   const { id } = await context.params;
   const body = (await request.json().catch(() => null)) as Partial<CmsTeamMember> | null;
   if (!body) {
@@ -42,10 +48,18 @@ export async function PUT(request: Request, context: RouteContext) {
   }
 
   const persisted = await saveTeam(team.map((item) => (item.id === id ? next : item)));
+  if (!persisted) {
+    return cmsSaveFailed();
+  }
   return NextResponse.json({ member: next, persisted });
 }
 
 export async function DELETE(_request: Request, context: RouteContext) {
+  const { response } = await requireCmsEditor();
+  if (response) {
+    return response;
+  }
+
   const { id } = await context.params;
   const team = getTeam();
   if (!team.some((item) => item.id === id)) {
@@ -53,5 +67,8 @@ export async function DELETE(_request: Request, context: RouteContext) {
   }
 
   const persisted = await saveTeam(team.filter((item) => item.id !== id));
+  if (!persisted) {
+    return cmsSaveFailed();
+  }
   return NextResponse.json({ ok: true, persisted });
 }

@@ -1,10 +1,10 @@
 import Link from "next/link";
 import AdminShell from "@/components/cms/AdminShell";
 import TeamTable from "@/components/cms/TeamTable";
-import { getTeam, hydrateCms } from "@/lib/cms/store";
+import { getTeam, loadCms } from "@/lib/cms/store";
 
 export default async function AdminTeamPage() {
-  await hydrateCms();
+  await loadCms();
   const members = getTeam();
 
   return (

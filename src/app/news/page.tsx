@@ -1,12 +1,14 @@
 import type { Metadata } from "next";
 import JsonLd from "@/components/seo/JsonLd";
-import { getPages, getSettings } from "@/lib/cms/store";
+import { SiteContentScope } from "@/components/cms/SiteContentProvider";
+import { getNewsSummaries, getPages, getSettings, loadCms } from "@/lib/cms/store";
 import { text } from "@/lib/cms/pages";
 import { pageMetadata } from "@/lib/seo/metadata";
 import { breadcrumbNode, siteGraph, webPageNode } from "@/lib/seo/jsonld";
 import NewsPageClient from "@/app/news/NewsPageClient";
 
-export function generateMetadata(): Metadata {
+export async function generateMetadata(): Promise<Metadata> {
+  await loadCms();
   const pages = getPages();
   const settings = getSettings();
 
@@ -19,7 +21,8 @@ export function generateMetadata(): Metadata {
   });
 }
 
-export default function NewsPage() {
+export default async function NewsPage() {
+  await loadCms();
   const settings = getSettings();
   const pages = getPages();
 
@@ -39,7 +42,9 @@ export default function NewsPage() {
           ]),
         ])}
       />
-      <NewsPageClient />
+      <SiteContentScope content={{ news: getNewsSummaries() }}>
+        <NewsPageClient />
+      </SiteContentScope>
     </>
   );
 }

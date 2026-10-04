@@ -1,4 +1,5 @@
-import { revalidatePath, unstable_noStore as noStore } from "next/cache";
+import { revalidatePath } from "next/cache";
+import { cache } from "react";
 import { newsStories } from "@/data/news";
 import { newsBodies } from "@/data/news-bodies";
 import { programmes, projects, getProgrammeReach } from "@/data/projects";
@@ -8,7 +9,7 @@ import { migrateProgramme } from "@/lib/cms/programmes";
 import { defaultPages, mergePages, type PageId, type PagesContent } from "@/lib/cms/pages";
 import { defaultSettings } from "@/lib/cms/public";
 import { readJsonFile, writeJsonFile } from "@/lib/cms/data-dir";
-import { pullRemoteJson, pushRemoteJson } from "@/lib/cms/remote";
+import { hasRemoteStore, pullRemoteJson, pushRemoteJson } from "@/lib/cms/remote";
 import type {
   CmsNewsStory,
   CmsProgramme,
@@ -21,13 +22,10 @@ import type {
 type ContentFile = "news" | "team" | "programmes" | "settings" | "pages";
 
 const memory: Partial<Record<ContentFile, unknown>> = {};
-const dirty = new Set<ContentFile>();
 const FILES: ContentFile[] = ["pages", "news", "team", "programmes", "settings"];
 
 function readJson<T>(name: ContentFile, fallback: T): T {
-  noStore();
-
-  if (dirty.has(name) && memory[name] !== undefined) {
+  if (hasRemoteStore() && memory[name] !== undefined) {
     return memory[name] as T;
   }
 
@@ -49,19 +47,13 @@ function readJson<T>(name: ContentFile, fallback: T): T {
   return fallback;
 }
 
-function writeJson(name: ContentFile, value: unknown) {
-  memory[name] = value;
-  dirty.add(name);
-  return writeJsonFile(`${name}.json`, `${JSON.stringify(value, null, 2)}\n`);
-}
-
+/** Pulls the latest content from the Blob store into this server instance. */
 export async function hydrateCms() {
-  noStore();
+  if (!hasRemoteStore()) {
+    return;
+  }
   await Promise.all(
     FILES.map(async (name) => {
-      if (dirty.has(name) && memory[name] !== undefined) {
-        return;
-      }
       const remote = await pullRemoteJson(name);
       if (remote != null) {
         memory[name] = remote;
@@ -70,10 +62,17 @@ export async function hydrateCms() {
   );
 }
 
+/** Per-render hydration: pages, layouts and metadata in one render share a single pull. */
+export const loadCms = cache(hydrateCms);
+
 async function persistJson(name: ContentFile, value: unknown) {
-  writeJson(name, value);
-  await pushRemoteJson(name, value);
-  return true;
+  const ok = hasRemoteStore()
+    ? await pushRemoteJson(name, value)
+    : writeJsonFile(`${name}.json`, `${JSON.stringify(value, null, 2)}\n`);
+  if (ok) {
+    memory[name] = value;
+  }
+  return ok;
 }
 
 function seedNews(): CmsNewsStory[] {
@@ -122,19 +121,17 @@ ${programme.excerpt || programme.body}
 
 export function revalidateSite() {
   revalidatePath("/", "layout");
-  revalidatePath("/");
-  revalidatePath("/news");
-  revalidatePath("/news/[slug]");
-  revalidatePath("/about-us");
-  revalidatePath("/our-team");
-  revalidatePath("/our-programmes");
-  revalidatePath("/our-programmes/[slug]");
-  revalidatePath("/contact-us");
-  revalidatePath("/donate");
-  revalidatePath("/sitemap.xml");
-  revalidatePath("/robots.txt");
-  revalidatePath("/feed.xml");
-  revalidatePath("/llms.txt");
+  for (const path of [
+    "/sitemap.xml",
+    "/robots.txt",
+    "/manifest.webmanifest",
+    "/feed.xml",
+    "/news/rss.xml",
+    "/llms.txt",
+    "/llms-full.txt",
+  ]) {
+    revalidatePath(path);
+  }
 }
 
 export function getNews(): CmsNewsStory[] {
@@ -244,6 +241,24 @@ export function getSiteContent(): SiteContent {
 
 export function getPublishedNews() {
   return getNews().filter((story) => story.published !== false);
+}
+
+/** Published stories for list views; article bodies are left out of the page payload. */
+export function getNewsSummaries(): CmsNewsStory[] {
+  return getPublishedNews().map((story) => ({ ...story, body: "" }));
+}
+
+/** Published programmes with long-form copy kept only for `detailFor`. */
+export function getProgrammeSummaries(detailFor?: string): Pick<SiteContent, "programmes" | "projects"> {
+  const { programmes, projects } = getProgrammesData();
+  return {
+    programmes: programmes
+      .filter((programme) => programme.published !== false)
+      .map((programme) =>
+        programme.id === detailFor ? programme : { ...programme, detailBody: "" },
+      ),
+    projects,
+  };
 }
 
 export function getNewsBySlug(slug: string) {

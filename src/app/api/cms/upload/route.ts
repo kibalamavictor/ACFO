@@ -4,6 +4,7 @@ import { slugify } from "@/lib/cms/public";
 import { writeUpload } from "@/lib/cms/data-dir";
 import { pushRemoteUpload } from "@/lib/cms/remote";
 import { optimizeUpload } from "@/lib/optimize-image";
+import { requireCmsUser } from "@/lib/cms/session";
 
 export const runtime = "nodejs";
 
@@ -152,6 +153,11 @@ async function importFromUrl(raw: string) {
 }
 
 export async function POST(request: Request) {
+  const { response } = await requireCmsUser();
+  if (response) {
+    return response;
+  }
+
   const form = await request.formData();
   const sourceUrl = form.get("url");
   if (typeof sourceUrl === "string" && sourceUrl.trim()) {

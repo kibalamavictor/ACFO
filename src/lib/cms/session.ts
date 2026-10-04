@@ -1,6 +1,7 @@
 import { cookies } from "next/headers";
 import { NextResponse } from "next/server";
-import { CMS_COOKIE, readSession } from "@/lib/cms/auth";
+import { CMS_COOKIE, CmsConfigError, readSession } from "@/lib/cms/auth";
+import { hydrateCms } from "@/lib/cms/store";
 import { findUserById, toPublicUser } from "@/lib/cms/users";
 import type { CmsPublicUser } from "@/lib/cms/types";
 
@@ -15,8 +16,16 @@ export async function getCurrentUser(): Promise<CmsPublicUser | null> {
     return null;
   }
 
-  const user = findUserById(session.userId);
-  return user ? toPublicUser(user) : null;
+  try {
+    const user = await findUserById(session.userId);
+    return user ? toPublicUser(user) : null;
+  } catch (error) {
+    if (error instanceof CmsConfigError) {
+      console.error(`CMS sign-in disabled: ${error.message}`);
+      return null;
+    }
+    throw error;
+  }
 }
 
 export async function requireCmsUser(): Promise<CmsGuard> {
@@ -29,6 +38,22 @@ export async function requireCmsUser(): Promise<CmsGuard> {
   }
 
   return { user, response: null };
+}
+
+/** Signed-in guard for content routes; also loads the latest stored content before it is read or edited. */
+export async function requireCmsEditor(): Promise<CmsGuard> {
+  const guard = await requireCmsUser();
+  if (!guard.response) {
+    await hydrateCms();
+  }
+  return guard;
+}
+
+export function cmsSaveFailed() {
+  return NextResponse.json(
+    { error: "Your change could not be saved to storage. Please try again." },
+    { status: 503 },
+  );
 }
 
 export async function requireAdmin(): Promise<CmsGuard> {

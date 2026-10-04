@@ -2,7 +2,7 @@ import Link from "next/link";
 import AdminShell from "@/components/cms/AdminShell";
 import { PAGE_DEFS } from "@/lib/cms/pages";
 import { getCurrentUser } from "@/lib/cms/session";
-import { getSiteContent } from "@/lib/cms/store";
+import { getSiteContent, loadCms } from "@/lib/cms/store";
 import { getUsers } from "@/lib/cms/users";
 
 const DONUT_COLORS = ["#006838", "#02b702", "#179123", "#a8dca8"];
@@ -108,10 +108,11 @@ function Gauge({ percent }: { percent: number }) {
 }
 
 export default async function AdminDashboardPage() {
+  await loadCms();
   const content = getSiteContent();
   const user = await getCurrentUser();
   const isAdmin = user?.role === "admin";
-  const users = isAdmin ? getUsers() : [];
+  const users = isAdmin ? await getUsers() : [];
 
   const published = content.news.filter((story) => story.published);
   const drafts = content.news.length - published.length;

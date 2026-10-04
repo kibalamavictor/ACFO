@@ -3,8 +3,54 @@ const encoder = new TextEncoder();
 export const CMS_COOKIE = "acfo_cms";
 export const CMS_COOKIE_MAX_AGE = 60 * 60 * 24 * 7;
 
+const DEV_PASSWORD = "acfo-admin";
+const DEV_SECRET = "acfo-local-dev-secret";
+const KNOWN_DEFAULTS = new Set([
+  DEV_PASSWORD,
+  DEV_SECRET,
+  "change-me-to-a-long-random-string",
+]);
+const MIN_SECRET_LENGTH = 32;
+const MIN_PASSWORD_LENGTH = 8;
+
+export class CmsConfigError extends Error {
+  constructor(message: string) {
+    super(message);
+    this.name = "CmsConfigError";
+  }
+}
+
+function isProduction() {
+  return process.env.NODE_ENV === "production";
+}
+
+function requiredEnv(
+  name: "CMS_PASSWORD" | "CMS_SECRET",
+  devFallback: string,
+  minLength: number,
+) {
+  const value = process.env[name]?.trim() ?? "";
+  if (!isProduction()) {
+    return value || devFallback;
+  }
+  if (!value) {
+    throw new CmsConfigError(`${name} must be set in production.`);
+  }
+  if (KNOWN_DEFAULTS.has(value)) {
+    throw new CmsConfigError(`${name} is still set to a published default value.`);
+  }
+  if (value.length < minLength) {
+    throw new CmsConfigError(`${name} must be at least ${minLength} characters.`);
+  }
+  return value;
+}
+
 export function cmsPassword() {
-  return process.env.CMS_PASSWORD || "acfo-admin";
+  return requiredEnv("CMS_PASSWORD", DEV_PASSWORD, MIN_PASSWORD_LENGTH);
+}
+
+export function cmsSecret() {
+  return requiredEnv("CMS_SECRET", DEV_SECRET, MIN_SECRET_LENGTH);
 }
 
 export function cmsAdminEmail() {
@@ -15,10 +61,6 @@ export type CmsSession = {
   exp: number;
   userId: string;
 };
-
-function cmsSecret() {
-  return process.env.CMS_SECRET || "acfo-local-dev-secret";
-}
 
 async function hmacHex(message: string) {
   const key = await crypto.subtle.importKey(
@@ -82,7 +124,17 @@ export async function readSession(
     return null;
   }
 
-  const expected = await hmacHex(payload);
+  let expected: string;
+  try {
+    expected = await hmacHex(payload);
+  } catch (error) {
+    if (error instanceof CmsConfigError) {
+      console.error(`CMS sign-in disabled: ${error.message}`);
+      return null;
+    }
+    throw error;
+  }
+
   if (!timingSafeEqual(expected, signature)) {
     return null;
   }

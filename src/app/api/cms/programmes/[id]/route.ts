@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { normalizeProgramme } from "@/lib/cms/programmes";
 import { getProgrammes, saveProgrammes } from "@/lib/cms/store";
 import type { CmsProgramme } from "@/lib/cms/types";
+import { cmsSaveFailed, requireCmsEditor } from "@/lib/cms/session";
 
 export const runtime = "nodejs";
 
@@ -10,6 +11,11 @@ type RouteContext = {
 };
 
 export async function GET(_request: Request, context: RouteContext) {
+  const { response } = await requireCmsEditor();
+  if (response) {
+    return response;
+  }
+
   const { id } = await context.params;
   const programme = getProgrammes().find((item) => item.id === id);
 
@@ -21,6 +27,11 @@ export async function GET(_request: Request, context: RouteContext) {
 }
 
 export async function PUT(request: Request, context: RouteContext) {
+  const { response } = await requireCmsEditor();
+  if (response) {
+    return response;
+  }
+
   const { id } = await context.params;
   const body = (await request.json().catch(() => null)) as Partial<CmsProgramme> | null;
 
@@ -47,11 +58,19 @@ export async function PUT(request: Request, context: RouteContext) {
   const persisted = await saveProgrammes(
     programmes.map((item) => (item.id === id ? next : item)),
   );
+  if (!persisted) {
+    return cmsSaveFailed();
+  }
 
   return NextResponse.json({ programme: next, persisted });
 }
 
 export async function DELETE(_request: Request, context: RouteContext) {
+  const { response } = await requireCmsEditor();
+  if (response) {
+    return response;
+  }
+
   const { id } = await context.params;
   const programmes = getProgrammes();
 
@@ -60,5 +79,8 @@ export async function DELETE(_request: Request, context: RouteContext) {
   }
 
   const persisted = await saveProgrammes(programmes.filter((item) => item.id !== id));
+  if (!persisted) {
+    return cmsSaveFailed();
+  }
   return NextResponse.json({ ok: true, persisted });
 }

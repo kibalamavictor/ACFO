@@ -1,15 +1,15 @@
 import { notFound } from "next/navigation";
 import AdminShell from "@/components/cms/AdminShell";
 import TeamForm from "@/components/cms/TeamForm";
-import { getTeam, hydrateCms } from "@/lib/cms/store";
+import { getTeam, loadCms } from "@/lib/cms/store";
 
 type PageProps = {
   params: Promise<{ id: string }>;
 };
 
 export default async function EditTeamPage({ params }: PageProps) {
+  await loadCms();
   const { id } = await params;
-  await hydrateCms();
   const member = getTeam().find((item) => item.id === id);
 
   if (!member) {

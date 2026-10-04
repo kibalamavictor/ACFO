@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { chipWidthForLabel, slugify } from "@/lib/cms/public";
 import { getNews, saveNews } from "@/lib/cms/store";
 import type { CmsNewsStory } from "@/lib/cms/types";
+import { cmsSaveFailed, requireCmsEditor } from "@/lib/cms/session";
 
 export const runtime = "nodejs";
 
@@ -33,6 +34,11 @@ function normalize(
 }
 
 export async function PUT(request: Request, context: RouteContext) {
+  const { response } = await requireCmsEditor();
+  if (response) {
+    return response;
+  }
+
   const { slug } = await context.params;
   const body = (await request.json().catch(() => null)) as Partial<CmsNewsStory> | null;
   if (!body) {
@@ -53,10 +59,18 @@ export async function PUT(request: Request, context: RouteContext) {
   const persisted = await saveNews(
     news.map((item) => (item.slug === slug ? next : item)),
   );
+  if (!persisted) {
+    return cmsSaveFailed();
+  }
   return NextResponse.json({ story: next, persisted });
 }
 
 export async function DELETE(_request: Request, context: RouteContext) {
+  const { response } = await requireCmsEditor();
+  if (response) {
+    return response;
+  }
+
   const { slug } = await context.params;
   const news = getNews();
   if (!news.some((item) => item.slug === slug)) {
@@ -64,5 +78,8 @@ export async function DELETE(_request: Request, context: RouteContext) {
   }
 
   const persisted = await saveNews(news.filter((item) => item.slug !== slug));
+  if (!persisted) {
+    return cmsSaveFailed();
+  }
   return NextResponse.json({ ok: true, persisted });
 }
