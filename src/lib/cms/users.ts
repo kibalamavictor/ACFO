@@ -1,8 +1,10 @@
 import {
   createCipheriv,
   createDecipheriv,
+  createHash,
   hkdfSync,
   randomBytes,
+  timingSafeEqual,
 } from "node:crypto";
 import { cmsAdminEmail, cmsPassword, cmsSecret } from "@/lib/cms/auth";
 import { readJsonFile, writeJsonFile } from "@/lib/cms/data-dir";
@@ -22,16 +24,27 @@ function remember(users: CmsUser[]) {
   return users;
 }
 
+const ENV_ADMIN_ID = "usr_admin";
+
+// The CMS_ADMIN_EMAIL account always signs in with the current CMS_PASSWORD, so its
+// stored passwordHash is unused and changing the env var takes effect on redeploy.
+function envAdminUser(): CmsUser {
+  return {
+    id: ENV_ADMIN_ID,
+    name: "Administrator",
+    email: cmsAdminEmail(),
+    passwordHash: "",
+    role: "admin",
+  };
+}
+
 function seedUsers(): CmsUser[] {
-  return [
-    {
-      id: "usr_admin",
-      name: "Administrator",
-      email: cmsAdminEmail(),
-      passwordHash: hashPassword(cmsPassword()),
-      role: "admin",
-    },
-  ];
+  return [envAdminUser()];
+}
+
+function matchesEnvPassword(password: string) {
+  const digest = (value: string) => createHash("sha256").update(value).digest();
+  return timingSafeEqual(digest(password), digest(cmsPassword()));
 }
 
 function usersKey() {
@@ -138,17 +151,28 @@ export function toPublicUser(user: CmsUser): CmsPublicUser {
 }
 
 export async function findUserById(id: string) {
-  return (await loadUsers()).find((user) => user.id === id) ?? null;
+  const users = await loadUsers();
+  const user = users.find((item) => item.id === id);
+  if (user) {
+    return user;
+  }
+  const adminStored = users.some((item) => item.email === cmsAdminEmail());
+  return id === ENV_ADMIN_ID && !adminStored ? envAdminUser() : null;
 }
 
 export async function authenticateUser(email: string, password: string) {
   const needle = email.trim().toLowerCase();
-  const user = (await loadUsers()).find((item) => item.email === needle);
-  if (!user) {
-    return null;
+  const users = await loadUsers();
+
+  if (needle === cmsAdminEmail()) {
+    if (!matchesEnvPassword(password)) {
+      return null;
+    }
+    return users.find((item) => item.email === needle) ?? envAdminUser();
   }
 
-  return verifyPassword(password, user.passwordHash) ? user : null;
+  const user = users.find((item) => item.email === needle);
+  return user && verifyPassword(password, user.passwordHash) ? user : null;
 }
 
 function normalizeRole(role: string | undefined): CmsUserRole {
