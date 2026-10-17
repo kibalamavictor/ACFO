@@ -26,7 +26,7 @@ export default function Footer({ top = 4611, cover = 0 }: FooterProps) {
   const { settings } = useSiteContent();
   const supportLinks = [
     ...SUPPORT_LINKS,
-    { label: "Whatsapp", href: settings.whatsapp },
+    { label: "WhatsApp", href: settings.whatsapp },
   ];
   const social = [
     { label: "Instagram", href: settings.instagram, src: "/images/footer-instagram.svg" },

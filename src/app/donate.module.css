@@ -488,6 +488,70 @@
   object-fit: cover;
 }
 
+.bankBlock {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #d6e6d6;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.bankRow {
+  display: grid;
+  grid-template-columns: 148px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  background: #ffffff;
+}
+
+.bankRow + .bankRow {
+  border-top: 1px solid #e6f0e6;
+}
+
+.bankLabel {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 500;
+  font-weight: 500;
+  font-size: 13px;
+  line-height: 1.3;
+  color: #4e4e4e;
+}
+
+.bankValue {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 600;
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.35;
+  color: #000000;
+  overflow-wrap: anywhere;
+}
+
+.copyBtn {
+  justify-self: end;
+  border: none;
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: #e8f3e8;
+  color: #006838;
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-variation-settings: "opsz" 14, "wght" 600;
+  font-weight: 600;
+  font-size: 13px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.copyBtn:focus-visible {
+  outline: 2px solid #006838;
+  outline-offset: 2px;
+}
+
 .payNote {
   margin: -8px 0 0;
   width: 100%;
@@ -968,9 +1032,18 @@
   .amountRow,
   .summary,
   .payList,
+  .bankBlock,
   .doneBody,
   .doneActions {
     width: 100%;
+  }
+
+  .bankRow {
+    grid-template-columns: 1fr auto;
+  }
+
+  .bankLabel {
+    grid-column: 1 / -1;
   }
 
   .formRow,

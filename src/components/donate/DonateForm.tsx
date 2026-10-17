@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { ACFO_BANK, donationReference } from "@/lib/donate/bank";
 import styles from "@/app/donate.module.css";
 
 const AMOUNTS = ["$10", "$25", "$50", "$100", "$250"] as const;
@@ -13,87 +14,22 @@ const PHOTOS = [
   { src: "/images/community-4.webp", left: 1097, top: 797 },
 ] as const;
 
-const PAY_METHODS = [
-  {
-    id: "momo",
-    name: "Mobile Money",
-    desc: "MTN MoMo, m-Gurush and other local wallets",
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <rect
-          x="7"
-          y="2.5"
-          width="10"
-          height="19"
-          rx="2.5"
-          stroke="currentColor"
-          strokeWidth="1.8"
-        />
-        <line
-          x1="10.5"
-          y1="18.5"
-          x2="13.5"
-          y2="18.5"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
-      </svg>
-    ),
-  },
-  {
-    id: "card",
-    name: "Credit / Debit Card",
-    desc: "Visa, Mastercard and other major cards",
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <rect
-          x="2.5"
-          y="5"
-          width="19"
-          height="14"
-          rx="2.5"
-          stroke="currentColor"
-          strokeWidth="1.8"
-        />
-        <line
-          x1="2.5"
-          y1="9.5"
-          x2="21.5"
-          y2="9.5"
-          stroke="currentColor"
-          strokeWidth="1.8"
-        />
-        <line
-          x1="6"
-          y1="14.5"
-          x2="10"
-          y2="14.5"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinecap="round"
-        />
-      </svg>
-    ),
-  },
-  {
-    id: "paypal",
-    name: "PayPal",
-    desc: "Donate securely with your PayPal account",
-    icon: (
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-        <path
-          d="M7 21L9.5 3h6a4.5 4.5 0 0 1 0 9H11l-1.5 9H7z"
-          stroke="currentColor"
-          strokeWidth="1.8"
-          strokeLinejoin="round"
-        />
-      </svg>
-    ),
-  },
+const LOCAL_DETAILS = [
+  ["Account name", ACFO_BANK.accountName],
+  ["Account number", ACFO_BANK.accountNumber],
+  ["Currency", ACFO_BANK.currency],
+  ["Bank", ACFO_BANK.bank],
+  ["Branch", ACFO_BANK.branch],
 ] as const;
 
-type Step = "details" | "payment" | "payDetails" | "done";
+const SWIFT_DETAILS = [
+  ["Correspondent bank", ACFO_BANK.correspondent],
+  ["Beneficiary bank", ACFO_BANK.beneficiaryBank],
+  ["Bank branch and address", ACFO_BANK.branch],
+  ["SWIFT code", ACFO_BANK.swift],
+] as const;
+
+type Step = "details" | "transfer";
 
 export default function DonateForm() {
   const [step, setStep] = useState<Step>("details");
@@ -102,15 +38,8 @@ export default function DonateForm() {
   const [customAmount, setCustomAmount] = useState<string>("");
   const [fullName, setFullName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [payMethod, setPayMethod] = useState<string>("momo");
-  const [momoProvider, setMomoProvider] = useState<"mtn" | "mgurush">("mtn");
-  const [momoNumber, setMomoNumber] = useState<string>("");
-  const [cardName, setCardName] = useState<string>("");
-  const [cardNumber, setCardNumber] = useState<string>("");
-  const [cardExpiry, setCardExpiry] = useState<string>("");
-  const [cardCvv, setCardCvv] = useState<string>("");
-  const [cardZip, setCardZip] = useState<string>("");
-  const [paypalEmail, setPaypalEmail] = useState<string>("");
+  const [reference, setReference] = useState<string>("");
+  const [copied, setCopied] = useState<string>("");
 
   const isCustom = amount === "custom";
   const amountLabel = isCustom ? `$${customAmount || "0"}` : amount;
@@ -121,19 +50,22 @@ export default function DonateForm() {
     fullName.trim().length > 0 &&
     /\S+@\S+\.\S+/.test(email);
 
-  const payDetailsValid =
-    payMethod === "momo"
-      ? momoNumber.trim().length > 0
-      : payMethod === "card"
-        ? cardName.trim().length > 0 &&
-          cardNumber.trim().length > 0 &&
-          cardExpiry.trim().length > 0 &&
-          cardCvv.trim().length > 0 &&
-          cardZip.trim().length > 0
-        : /\S+@\S+\.\S+/.test(paypalEmail);
+  const copyValue = async (label: string, value: string) => {
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(label);
+    } catch {
+      setCopied("");
+    }
+  };
 
-  const payMethodName =
-    PAY_METHODS.find((method) => method.id === payMethod)?.name ?? "";
+  const transferText = [
+    `Donation reference: ${reference}`,
+    `Amount: ${amountLabel} USD`,
+    `Donor: ${fullName.trim()}`,
+    ...LOCAL_DETAILS.map(([label, value]) => `${label}: ${value}`),
+    ...SWIFT_DETAILS.map(([label, value]) => `${label}: ${value}`),
+  ].join("\n");
 
   return (
     <section className={styles.formSection}>
@@ -152,7 +84,8 @@ export default function DonateForm() {
 
       <h2 className={styles.formHeading}>Support a Child Today</h2>
       <p className={styles.formBody}>
-        Choose an amount and help us reach more children across South Sudan.
+        Choose an amount, then send it by bank transfer to ACFO&apos;s Ecobank
+        account in US dollars.
       </p>
 
       {PHOTOS.map((photo) => (
@@ -173,7 +106,10 @@ export default function DonateForm() {
             className={styles.formCard}
             onSubmit={(event) => {
               event.preventDefault();
-              if (detailsValid) setStep("payment");
+              if (!detailsValid) return;
+              setReference(donationReference());
+              setCopied("");
+              setStep("transfer");
             }}
           >
             <div className={styles.formFields}>
@@ -294,7 +230,7 @@ export default function DonateForm() {
               type="submit"
               disabled={!detailsValid}
             >
-              DONATE NOW
+              CONTINUE
               <img
                 src="/images/contact-form-arrow.svg"
                 alt=""
@@ -303,9 +239,7 @@ export default function DonateForm() {
               />
             </button>
           </form>
-        ) : null}
-
-        {step === "payment" ? (
+        ) : (
           <div className={styles.formCard}>
             <button
               type="button"
@@ -320,370 +254,92 @@ export default function DonateForm() {
                 <span className={styles.summaryLabel}>
                   {frequencyLabel} donation
                 </span>
-                <span className={styles.summaryValue}>{amountLabel}</span>
+                <span className={styles.summaryValue}>{amountLabel} USD</span>
+              </div>
+
+              <p className={styles.payNote}>
+                {`Send the amount from your bank to the account below. Include the reference in the transfer description so ACFO can match your gift${fullName.trim() ? ` to ${fullName.trim()}` : ""}. Nothing is charged on this page.`}
+              </p>
+
+              {frequency === "monthly" ? (
+                <p className={styles.payNote}>
+                  Monthly is not an automatic debit. Send this amount again
+                  each month and use the same reference.
+                </p>
+              ) : null}
+
+              <div className={styles.bankBlock}>
+                <div className={styles.bankRow}>
+                  <span className={styles.bankLabel}>Your reference</span>
+                  <span className={styles.bankValue}>{reference}</span>
+                  <button
+                    type="button"
+                    className={styles.copyBtn}
+                    onClick={() => void copyValue("reference", reference)}
+                  >
+                    {copied === "reference" ? "Copied" : "Copy"}
+                  </button>
+                </div>
+                {LOCAL_DETAILS.map(([label, value]) => (
+                  <div className={styles.bankRow} key={label}>
+                    <span className={styles.bankLabel}>{label}</span>
+                    <span className={styles.bankValue}>{value}</span>
+                    {label === "Account number" ? (
+                      <button
+                        type="button"
+                        className={styles.copyBtn}
+                        onClick={() => void copyValue(label, value)}
+                      >
+                        {copied === label ? "Copied" : "Copy"}
+                      </button>
+                    ) : null}
+                  </div>
+                ))}
               </div>
 
               <div className={styles.fieldWide}>
                 <span className={styles.fieldLabel}>
-                  Choose a payment method
+                  International transfer (SWIFT)
                 </span>
-                <div className={styles.payList}>
-                  {PAY_METHODS.map((method) => {
-                    const active = payMethod === method.id;
-                    return (
-                      <button
-                        key={method.id}
-                        type="button"
-                        className={
-                          active ? styles.payOptionActive : styles.payOption
-                        }
-                        onClick={() => setPayMethod(method.id)}
-                      >
-                        <span className={styles.payIcon}>{method.icon}</span>
-                        <span className={styles.payText}>
-                          <span className={styles.payName}>{method.name}</span>
-                          <span className={styles.payDesc}>{method.desc}</span>
-                        </span>
-                        <span
-                          className={
-                            active ? styles.payRadioActive : styles.payRadio
-                          }
-                        />
-                      </button>
-                    );
-                  })}
+                <div className={styles.bankBlock}>
+                  {SWIFT_DETAILS.map(([label, value]) => (
+                    <div className={styles.bankRow} key={label}>
+                      <span className={styles.bankLabel}>{label}</span>
+                      <span className={styles.bankValue}>{value}</span>
+                      {label === "SWIFT code" ? (
+                        <button
+                          type="button"
+                          className={styles.copyBtn}
+                          onClick={() => void copyValue(label, value)}
+                        >
+                          {copied === label ? "Copied" : "Copy"}
+                        </button>
+                      ) : null}
+                    </div>
+                  ))}
                 </div>
               </div>
+
+              <p className={styles.payNote}>
+                After the transfer arrives, ACFO can confirm it by email at{" "}
+                {email}. Card payments are not available yet.
+              </p>
             </div>
-
-            <button
-              className={styles.submit}
-              type="button"
-              onClick={() => setStep("payDetails")}
-            >
-              CONTINUE TO PAYMENT
-              <img
-                src="/images/contact-form-arrow.svg"
-                alt=""
-                width={24}
-                height={24}
-              />
-            </button>
-          </div>
-        ) : null}
-
-        {step === "payDetails" ? (
-          <form
-            className={styles.formCard}
-            onSubmit={(event) => {
-              event.preventDefault();
-              if (payDetailsValid) setStep("done");
-            }}
-          >
-            <button
-              type="button"
-              className={styles.backLink}
-              onClick={() => setStep("payment")}
-            >
-              &larr; Back
-            </button>
-
-            <div className={styles.formFields}>
-              <div className={styles.summary}>
-                <span className={styles.summaryLabel}>
-                  {frequencyLabel} donation &middot; {payMethodName}
-                </span>
-                <span className={styles.summaryValue}>{amountLabel}</span>
-              </div>
-
-              {payMethod === "momo" ? (
-                <>
-                  <div className={styles.fieldWide}>
-                    <span className={styles.fieldLabel}>
-                      Choose your provider
-                    </span>
-                    <div className={styles.freqRow}>
-                      <button
-                        type="button"
-                        className={
-                          momoProvider === "mtn"
-                            ? styles.freqActive
-                            : styles.freq
-                        }
-                        onClick={() => setMomoProvider("mtn")}
-                      >
-                        MTN MoMo
-                      </button>
-                      <button
-                        type="button"
-                        className={
-                          momoProvider === "mgurush"
-                            ? styles.freqActive
-                            : styles.freq
-                        }
-                        onClick={() => setMomoProvider("mgurush")}
-                      >
-                        m-Gurush
-                      </button>
-                    </div>
-                  </div>
-
-                  <label className={styles.fieldWide}>
-                    <span className={styles.fieldLabel}>
-                      Mobile money number
-                    </span>
-                    <span className={styles.inputWrap}>
-                      <span className={styles.phonePrefix}>
-                        <img
-                          src="/images/flag-ss.svg"
-                          alt=""
-                          width={29}
-                          height={20}
-                        />
-                        <img
-                          src="/images/contact-form-caret.svg"
-                          alt=""
-                          width={16}
-                          height={16}
-                        />
-                      </span>
-                      <input
-                        className={styles.input}
-                        type="tel"
-                        name="momoNumber"
-                        placeholder="+211 9X XXX XXXX"
-                        autoComplete="tel"
-                        value={momoNumber}
-                        onChange={(event) => setMomoNumber(event.target.value)}
-                      />
-                    </span>
-                  </label>
-
-                  <p className={styles.payNote}>
-                    You will receive a prompt on your phone to approve the
-                    payment of {amountLabel}.
-                  </p>
-                </>
-              ) : null}
-
-              {payMethod === "card" ? (
-                <>
-                  <label className={styles.fieldWide}>
-                    <span className={styles.fieldLabel}>Name on card</span>
-                    <span className={styles.inputWrap}>
-                      <img
-                        src="/images/contact-form-user.svg"
-                        alt=""
-                        width={20}
-                        height={20}
-                      />
-                      <input
-                        className={styles.input}
-                        type="text"
-                        name="cardName"
-                        placeholder="Enter name on card"
-                        autoComplete="cc-name"
-                        value={cardName}
-                        onChange={(event) => setCardName(event.target.value)}
-                      />
-                    </span>
-                  </label>
-
-                  <label className={styles.fieldWide}>
-                    <span className={styles.fieldLabel}>Card number</span>
-                    <span className={styles.inputWrap}>
-                      <svg
-                        width="20"
-                        height="20"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        className={styles.payFieldIcon}
-                      >
-                        <rect
-                          x="2.5"
-                          y="5"
-                          width="19"
-                          height="14"
-                          rx="2.5"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                        />
-                        <line
-                          x1="2.5"
-                          y1="9.5"
-                          x2="21.5"
-                          y2="9.5"
-                          stroke="currentColor"
-                          strokeWidth="1.8"
-                        />
-                      </svg>
-                      <input
-                        className={styles.input}
-                        type="text"
-                        inputMode="numeric"
-                        name="cardNumber"
-                        placeholder="1234 5678 9012 3456"
-                        autoComplete="cc-number"
-                        maxLength={19}
-                        value={cardNumber}
-                        onChange={(event) => setCardNumber(event.target.value)}
-                      />
-                    </span>
-                  </label>
-
-                  <div className={styles.formRow}>
-                    <label className={styles.field}>
-                      <span className={styles.fieldLabel}>Expiry date</span>
-                      <span className={styles.inputWrap}>
-                        <input
-                          className={styles.input}
-                          type="text"
-                          inputMode="numeric"
-                          name="cardExpiry"
-                          placeholder="MM / YY"
-                          autoComplete="cc-exp"
-                          maxLength={7}
-                          value={cardExpiry}
-                          onChange={(event) =>
-                            setCardExpiry(event.target.value)
-                          }
-                        />
-                      </span>
-                    </label>
-                    <label className={styles.field}>
-                      <span className={styles.fieldLabel}>CVV</span>
-                      <span className={styles.inputWrap}>
-                        <input
-                          className={styles.input}
-                          type="password"
-                          inputMode="numeric"
-                          name="cardCvv"
-                          placeholder="123"
-                          autoComplete="cc-csc"
-                          maxLength={4}
-                          value={cardCvv}
-                          onChange={(event) => setCardCvv(event.target.value)}
-                        />
-                      </span>
-                    </label>
-                    <label className={styles.field}>
-                      <span className={styles.fieldLabel}>
-                        Billing zip code
-                      </span>
-                      <span className={styles.inputWrap}>
-                        <input
-                          className={styles.input}
-                          type="text"
-                          inputMode="numeric"
-                          name="cardZip"
-                          placeholder="Enter zip code"
-                          autoComplete="postal-code"
-                          maxLength={10}
-                          value={cardZip}
-                          onChange={(event) => setCardZip(event.target.value)}
-                        />
-                      </span>
-                    </label>
-                  </div>
-                </>
-              ) : null}
-
-              {payMethod === "paypal" ? (
-                <>
-                  <label className={styles.fieldWide}>
-                    <span className={styles.fieldLabel}>PayPal email</span>
-                    <span className={styles.inputWrap}>
-                      <img
-                        src="/images/contact-form-mail.svg"
-                        alt=""
-                        width={20}
-                        height={20}
-                      />
-                      <input
-                        className={styles.input}
-                        type="email"
-                        name="paypalEmail"
-                        placeholder="Enter your PayPal email"
-                        autoComplete="email"
-                        value={paypalEmail}
-                        onChange={(event) => setPaypalEmail(event.target.value)}
-                      />
-                    </span>
-                  </label>
-
-                  <p className={styles.payNote}>
-                    You will be redirected to PayPal to complete your donation
-                    of {amountLabel} securely.
-                  </p>
-                </>
-              ) : null}
-            </div>
-
-            <button
-              className={
-                payDetailsValid
-                  ? styles.submit
-                  : `${styles.submit} ${styles.submitDisabled}`
-              }
-              type="submit"
-              disabled={!payDetailsValid}
-            >
-              CONFIRM DONATION
-              <img
-                src="/images/contact-form-arrow.svg"
-                alt=""
-                width={24}
-                height={24}
-              />
-            </button>
-          </form>
-        ) : null}
-
-        {step === "done" ? (
-          <div className={styles.formCard}>
-            <svg
-              className={styles.doneIcon}
-              viewBox="0 0 88 88"
-              fill="none"
-              aria-hidden="true"
-            >
-              <circle cx="44" cy="44" r="44" fill="#02B702" />
-              <path
-                d="M28 45.5L39 56.5L60 34"
-                stroke="#FFFFFF"
-                strokeWidth="6"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
-
-            <h3 className={styles.doneHeading}>
-              Thank You for Your Generosity!
-            </h3>
-            <p className={styles.doneBody}>
-              We&apos;ve received your {frequencyLabel.toLowerCase()} donation
-              pledge of {amountLabel}. A confirmation and receipt will be sent
-              to {email} once the payment is completed.
-            </p>
 
             <div className={styles.doneActions}>
               <button
                 className={styles.submit}
                 type="button"
-                onClick={() => {
-                  setStep("details");
-                  setAmount("custom");
-                  setCustomAmount("");
-                }}
+                onClick={() => void copyValue("all", transferText)}
               >
-                DONATE AGAIN
+                {copied === "all" ? "DETAILS COPIED" : "COPY ALL DETAILS"}
               </button>
               <Link className={styles.doneSecondary} href="/">
                 BACK TO HOME
               </Link>
             </div>
           </div>
-        ) : null}
+        )}
       </div>
 
       <div className={styles.formWave} aria-hidden="true">

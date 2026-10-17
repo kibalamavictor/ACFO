@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { usePage, useSiteContent } from "@/components/cms/SiteContentProvider";
 import { text } from "@/lib/cms/pages";
-import { mailHref, phoneHref } from "@/lib/cms/public";
+import { mailHref, phoneHref, whatsappLabel } from "@/lib/cms/public";
 import styles from "@/app/contact.module.css";
 
 export default function ContactCards() {
@@ -34,9 +34,19 @@ export default function ContactCards() {
           />
           <h2 className={styles.cardTitle}>{text(cards.callTitle, "Call Us")}</h2>
           <p className={styles.cardBody}>{text(cards.callBody)}</p>
-          <a className={styles.cardValue} href={phoneHref(settings.phone)}>
-            {settings.phone}
-          </a>
+          <span className={styles.cardLines}>
+            <a className={styles.cardValue} href={phoneHref(settings.phone)}>
+              {settings.phone}
+            </a>
+            <a
+              className={styles.cardValue}
+              href={settings.whatsapp}
+              target="_blank"
+              rel="noreferrer"
+            >
+              WhatsApp {whatsappLabel(settings.whatsapp)}
+            </a>
+          </span>
         </article>
 
         <article className={`${styles.card} ${styles.cardEmail}`}>

@@ -6,11 +6,11 @@ export const defaultSettings: SiteSettings = {
   orgName: "African Children's Foundation Organization",
   blurb:
     "African Children's Foundation Organization (ACFO) is a national, non-profit and non-political civil society organization dedicated to advancing the rights and wellbeing of vulnerable children and communities in South Sudan.",
-  phone: "+211 000 000 000",
-  email: "info@acfo.com",
+  phone: "+211 923 022 777",
+  email: "info@african-child.org",
   address: "P.O. Box 115, Juba, South Sudan",
   mapsUrl: "https://maps.google.com/?q=Juba,+South+Sudan",
-  whatsapp: "https://wa.me/211923117001",
+  whatsapp: "https://wa.me/211928899003",
   instagram: "https://african-child.org/",
   x: "https://african-child.org/",
   linkedin:
@@ -121,6 +121,15 @@ export function isTeamCategory(value: string): value is TeamCategoryId {
 
 export function phoneHref(phone: string) {
   return `tel:${phone.replace(/[^\d+]/g, "")}`;
+}
+
+export function whatsappLabel(url: string) {
+  const digits = url.replace(/\D/g, "");
+  if (digits.startsWith("211") && digits.length > 3) {
+    const local = digits.slice(3);
+    return `+211 ${local.replace(/(\d{3})(?=\d)/g, "$1 ").trim()}`;
+  }
+  return url;
 }
 
 export function mailHref(email: string) {
