@@ -50,9 +50,9 @@ export default function Navbar() {
       <Link href="/" className={styles.logo} aria-label="ACFO home">
         <img
           className={styles.logoImage}
-          src="/images/acfo-logo-header.png"
+          src="/images/acfo-logo-full.png"
           alt=""
-          width={116}
+          width={190}
           height={37}
         />
       </Link>

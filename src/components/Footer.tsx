@@ -61,18 +61,11 @@ export default function Footer({ top = 4611, cover = 0 }: FooterProps) {
         <div className={styles.footerBrand}>
           <Link href="/" className={styles.footerLogo} aria-label="ACFO home">
             <img
-              className={styles.footerWordmark}
-              src="/images/acfo-wordmark.svg"
+              className={styles.footerLogoImage}
+              src="/images/acfo-logo-full.png"
               alt=""
-              width={141}
-              height={69}
-            />
-            <img
-              className={styles.footerMark}
-              src="/images/acfo-mark.svg"
-              alt=""
-              width={79}
-              height={69}
+              width={340}
+              height={67}
             />
           </Link>
 

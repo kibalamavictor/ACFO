@@ -35,7 +35,7 @@
   position: absolute;
   left: 14px;
   top: 12px;
-  width: 120px;
+  width: 190px;
   height: 37.1965px;
   z-index: 21;
 }
@@ -48,9 +48,9 @@
 
 .links {
   position: absolute;
-  left: 134px;
+  left: 204px;
   top: 21px;
-  width: 837px;
+  width: 767px;
   height: 19px;
   z-index: 21;
   display: flex;
@@ -1778,24 +1778,14 @@
   position: absolute;
   left: 50px;
   top: 64px;
-  width: 222px;
+  width: 340px;
   height: 70px;
 }
 
-.footerWordmark {
-  position: absolute;
-  left: 0;
-  top: 0;
-  width: 141px;
-  height: 69px;
-}
-
-.footerMark {
-  position: absolute;
-  left: 143px;
-  top: 0;
-  width: 79px;
-  height: 69px;
+.footerLogoImage {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .footerAbout {
@@ -3396,16 +3386,9 @@
     display: flex;
     align-items: center;
     gap: 2px;
-    width: 222px;
-    height: 70px;
+    width: min(340px, 100%);
+    height: auto;
     flex-shrink: 0;
-  }
-
-  .footerWordmark,
-  .footerMark {
-    position: relative;
-    left: auto;
-    top: auto;
   }
 
   .footerAbout,
