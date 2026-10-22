@@ -14,8 +14,8 @@ export const defaultSettings: SiteSettings = {
   instagram: "https://african-child.org/",
   x: "https://african-child.org/",
   linkedin:
-    "https://www.linkedin.com/company/african-children-s-foundation-organization",
-  facebook: "https://african-child.org/",
+    "https://www.linkedin.com/company/african-children-s-foundation-organization/",
+  facebook: "https://www.facebook.com/profile.php?id=61578605847544",
 };
 
 export function chipWidthForLabel(label: string) {
