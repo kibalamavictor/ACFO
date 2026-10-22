@@ -203,7 +203,15 @@ export async function saveProgrammesData(next: {
 }
 
 export function getSettings(): SiteSettings {
-  return { ...defaultSettings, ...readJson("settings", defaultSettings) };
+  const settings = { ...defaultSettings, ...readJson("settings", defaultSettings) };
+  // Replace the original homepage placeholder in previously saved settings.
+  if (settings.facebook === "https://african-child.org/") {
+    settings.facebook = defaultSettings.facebook;
+  }
+  if (settings.linkedin === defaultSettings.linkedin.replace(/\/$/, "")) {
+    settings.linkedin = defaultSettings.linkedin;
+  }
+  return settings;
 }
 
 export async function saveSettings(next: SiteSettings) {
